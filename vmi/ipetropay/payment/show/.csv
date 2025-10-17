@@ -1,0 +1,7 @@
+"Transaction Time","Transaction Date","Card Holder Name","Card Number","Customer Name",Product,"Customer Price","Total Price",Volume,"Fee Type",Switch,Bank,"Service Fee","Bank Fee","Interchange Fee","All Fees",Payment,Actuarial,"Total Volume"
+09:31:00,2023-05-30,"Joe malaponte ",'1000000785717,"iPETRO Pay",Diesel,2.289,48.34,21.12,Standard,$0.55,$0.14,$0.23,$0.12,$0.43,$1.47,$46.87,$48.34,21.12
+11:28:00,2023-05-30,"Joanne Angus",'1000000711054,"iPETRO Pay",Diesel,2.289,118.96,51.97,Standard,$0.55,$0.14,$0.57,$0.30,$1.05,$2.61,$116.35,$167.3,73.09
+,
+"iPETROPAY-SERVICEFEE: ",73.09,$0.80
+"iPETROPAY-MERCHANTFEE: ",,$4.07
+"iPETROPAY-FUELSALE: ",,$-167.30

@@ -1,0 +1,493 @@
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.login{
+	position: absolute;
+	top: 20%;
+}
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  label[for="username"],
+  label[for="password"] {
+    font-size: 28px;
+    color: white;
+    text-shadow: 4px 4px 8px #002F60; 
+    
+  }
+  .inputlog {
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    padding: 1em;
+    background-color: #ccc;
+    box-shadow: inset 2px 5px 10px rgba(0,0,0,0.3);
+    transition: 300ms ease-in-out;
+  }
+  
+  .inputlog:focus {
+    background-color: white;
+    transform: scale(1.05);
+    box-shadow: 13px 13px 100px #969696,
+               -13px -13px 100px #ffffff;
+  }
+  .error-message {
+    display: none;
+    position: absolute;
+    background-color: #f44336;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.log{
+  top:10%;
+  display: flex;
+  justify-content: center;
+  margin: 50px;
+  background: url(../images/SL.112119.25250.30-p-3200.jpg);
+  padding: 130px;
+  background-size: cover;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 350px;
+  background-color: #e8e8e8;
+  padding: 20px;
+  border-radius: 20px;
+  position: relative;
+  padding-right: 45px;
+}
+.title {
+  font-size: 28px;
+  color: royalblue;
+  font-weight: 600;
+  letter-spacing: -1px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+}
+.title::before,.title::after {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  left: 0px;
+  background-color: royalblue;
+}
+.title::before {
+  width: 18px;
+  height: 18px;
+  background-color: royalblue;
+}
+.title::after {
+  width: 18px;
+  height: 18px;
+  animation: pulse 1s linear infinite;
+}
+.message, .signin {
+  color: rgba(88, 87, 87, 0.822);
+  font-size: 14px;
+}
+.signin {
+  text-align: center;
+}
+.signin a {
+  color: royalblue;
+}
+.signin a:hover {
+  text-decoration: underline royalblue;
+}
+.flex {
+  display: flex;
+  width: 100%;
+  gap: 6px;
+}
+.form select{
+  width: 100%;
+  padding: 5px 10px 5px 10px;
+  outline: 0;
+  border: 1px solid rgba(105, 105, 105, 0.397);
+  border-radius: 10px;
+  background-color: white;
+}
+.form label {
+  position: relative;
+}
+.form label .inputlog {
+  width: 100%;
+  padding: 10px 10px 20px 10px;
+  outline: 0;
+  border: 1px solid rgba(105, 105, 105, 0.397);
+  border-radius: 10px;
+  color:#002F60;
+}
+.form label .inputlog + span {
+  position: absolute;
+  left: 10px;
+  top: 15px;
+  color: rgb(128, 128, 128);
+  font-size: 0.9em;
+  cursor: text;
+  transition: 0.3s ease;
+}
+.form label .inputlog:-webkit-autofill + span {
+  color: green;
+  top: 30px;
+  font-size: 0.7em;
+  font-weight: 600;
+}
+.form label .inputlog:placeholder-shown + span {
+  top: 15px;
+  font-size: 0.9em;
+}
+.form label .inputlog:focus + span,.form label .inputlog:valid + span {
+  top: 30px;
+  font-size: 0.7em;
+  font-weight: 600;
+}
+.form label .inputlog:valid + span {
+  color: green;
+}
+.submit {
+  border: none;
+  outline: none;
+  background-color: royalblue;
+  padding: 10px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 16px;
+  transform: .3s ease;
+  left: 30%;
+  bottom: 15%;
+  cursor: pointer;
+}
+.submit:hover {
+  background-color: rgb(56, 90, 194);
+}
+@keyframes pulse {
+  from {
+    transform: scale(0.9);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+.menu-container {
+  width: 100%;
+  background-color: #ffffff; /* Navy blue background */
+  padding: 10px 20px;
+  box-sizing: border-box;
+}
+
+.main-menu {
+  font-family: 'Roboto', sans-serif;
+  text-align: left;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center; /* Center align menu items */
+}
+
+.menu-item {
+  margin: 0 15px; /* Adjust spacing between menu items */
+  position: relative; /* Needed for absolute positioning of submenus */
+}
+
+.menu-item a {
+  color: #2a3690;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 10px;
+  display: block;
+}
+
+.menu-item.has-submenu > a:after {
+  content: ' ▼';
+  font-size: 12px;
+}
+
+.submenu {
+  list-style: none;
+  padding: 0;
+  position: absolute; /* Position the submenu */
+  background-color: #ffffff; /* Same as the main menu background */
+  display: none;
+  left: 0; /* Align submenu */
+  min-width: 100px; /* Minimum width */
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Add a subtle shadow */
+}
+
+.menu-item:hover .submenu {
+  display: block; /* Display submenu on hover */
+}
+
+.menu-item .button {
+  background-color: #ed1c24; /* Reddish color for the button */
+  border: none;
+  border-radius: 20px; /* Rounded corners */
+  color: white;
+  padding: 10px 20px;
+  text-transform: uppercase; /* Uppercase text */
+  transition: background-color 0.3s;
+}
+
+.menu-item .button:hover {
+  background-color: #2a3690; /* Darker shade on hover */
+}
+.navigation-wrap{
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+  padding-right: 60px;
+  padding-bottom: 10px;
+  padding-left: 60px;
+}
+
+.login-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.login-button {
+  display: flex;
+  align-items: center;
+  width: 250px;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-button img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.google {
+  background-color: white;
+  color: #555;
+  border: 1px solid #ccc;
+}
+
+.google:hover {
+  background-color: #f5f5f5;
+}
+
+.microsoft {
+  background-color: white;
+  color: #555;
+  border: 1px solid #ccc;
+}
+
+.microsoft:hover {
+  background-color: #f5f5f5;
+}
+
+/* Burger Menu Styles */
+.burger-menu {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  position: relative;
+  z-index: 1001;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 30px;
+  align-self: flex-end;
+  margin-right: 20px;
+}
+
+.burger-line {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: #2a3690;
+  transition: all 0.3s ease-in-out;
+  transform-origin: center;
+}
+
+.burger-menu.active .burger-line:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+.burger-menu.active .burger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.burger-menu.active .burger-line:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Mobile Menu Overlay */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.menu-overlay.active {
+  display: block;
+  opacity: 1;
+}
+
+/* Mobile Menu Container */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 80%;
+  max-width: 400px;
+  height: 100%;
+  background-color: #ffffff;
+  z-index: 1000;
+  transition: right 0.3s ease-in-out;
+  overflow-y: auto;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-menu.active {
+  right: 0;
+}
+
+.mobile-menu-header {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mobile-menu-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #2a3690;
+}
+
+.mobile-menu-content {
+  padding: 20px;
+}
+
+.mobile-menu-item {
+  margin-bottom: 15px;
+}
+
+.mobile-menu-item a {
+  display: block;
+  padding: 12px 0;
+  color: #2a3690;
+  text-decoration: none;
+  font-size: 18px;
+  border-bottom: 1px solid #eee;
+  transition: color 0.3s ease;
+}
+
+.mobile-menu-item a:hover {
+  color: #ed1c24;
+}
+
+.mobile-submenu {
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+.mobile-submenu a {
+  font-size: 16px;
+  color: #666;
+  border-bottom: none;
+  padding: 8px 0;
+}
+
+.mobile-menu-item.has-submenu > a {
+  position: relative;
+}
+
+.mobile-menu-item.has-submenu > a:after {
+  content: ' ▼';
+  font-size: 12px;
+  position: absolute;
+  right: 0;
+  transition: transform 0.3s ease;
+}
+
+.mobile-menu-item.has-submenu.expanded > a:after {
+  transform: rotate(180deg);
+}
+
+.mobile-submenu {
+  display: none;
+}
+
+.mobile-menu-item.has-submenu.expanded .mobile-submenu {
+  display: block;
+}
+
+.mobile-menu .button {
+  background-color: #ed1c24;
+  color: white;
+  border-radius: 20px;
+  padding: 12px 20px;
+  text-align: center;
+  display: inline-block;
+  text-transform: uppercase;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.mobile-menu .button:hover {
+  background-color: #2a3690;
+}
+
+/* Media Queries for Responsive Burger Menu */
+@media screen and (max-width: 1919px) {
+  .burger-menu {
+    display: flex;
+  }
+  
+  .main-nav {
+    display: none;
+  }
+  
+  .navigation-wrap {
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navigation-wrap > div:last-child {
+    display: flex;
+    align-items: center;
+  }
+}

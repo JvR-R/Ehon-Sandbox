@@ -1,0 +1,166 @@
+*  {
+  margin: 0;
+  padding: 0;
+
+  box-sizing: border-box;
+  font-family: Arial;
+}
+body {
+  min-height: auto;
+  background: white center / cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+section.topborder{
+  position:absolute;
+  width: 100%;
+  left: 0vw;
+  top: 0px;
+  height: 64px;
+  background-color: #e8e8e84f;
+  text-align: left;
+}
+.home{
+  position: absolute;
+  top: 50%;
+  left: 36.5px;
+  transform: translate(-50%, -50%);
+}
+.border{
+  width: 76px;
+  height: calc(100% - 64px);
+  background-color: #e8e8e84f;
+  position: absolute;
+  left: 0%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow-y: hidden;
+  top: 64px;
+}
+.button-link {
+  text-decoration: none;
+  margin: 5px;
+  color: #e2e1e1;
+  transition: background-color 0.3s;
+  background-color: transparent;
+  border: none;
+  margin-top:25px;
+}
+.button-link:hover {
+  width: 80%;
+  color: #F7901E;
+  box-shadow: 0 .1rem .4rem #0002;
+  border-radius: 0.8rem;
+}
+main.table {
+  width: calc(100% - 71px);
+  height: 94%;
+  background:url(/images/SL.112119.25250.30-p-3200.jpg);
+  position: absolute;
+  left: 71px;
+  top: 61px;
+  backdrop-filter: blur(7px);
+  box-shadow: 0 .4rem .8rem #0005;
+  overflow: hidden;
+  border-start-start-radius: .8rem;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10rem;
+  height: auto;
+  z-index: 1;
+}
+tbody{
+  position: relative;
+  left: 32%;
+  display: block;
+  border-collapse: collapse;
+  border-spacing: 0;
+  padding: 10px;
+  text-align: left;
+  margin-top: 3%;
+  width: auto;
+
+}
+table th {
+  background-color: #ffffff9c;
+  color: #002F60;
+  border-style: solid;
+  font-size: 36px;
+  padding: 10px;
+}
+table td{
+  background-color: #ffffff82;
+  border-style: solid;
+  font-size: 36px;
+  color: #002F60;
+  padding: 10px;
+}
+.Title{
+  position: absolute;
+  width: 100%;
+  height: 8vh;
+  background-color: #0362bb25;
+}
+h2{
+  position: absolute;
+  left: 35vw;
+  top: 1vh;
+  color: #F7901E;
+  font-weight: bold;
+  font-size: 60px;;
+}
+.search-container{
+  position: absolute;
+  left: 38vw;
+  top: 18vh;
+  margin: 10px;
+  font-weight: bold;
+  font-size: 48px;
+  text-align: center;
+}
+.search-input{
+  font-size: 30px;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.full-size{
+  width: 100%;
+}
+
+
+  .buttonc{
+    position: absolute;
+    top: 68%;
+    left:44%;
+  }
+  .buttonc2{
+    position: absolute;
+    top: 80%;
+    left: 43%;
+  }
+  .sign svg {
+    width: 32px;
+  }
+  
+  .sign svg path {
+    fill: white;
+  }
+  .button-link:hover .sign path {
+    fill: #F7901E;
+}
+select{
+  font-size: 24px;
+  color:#002F60;
+}

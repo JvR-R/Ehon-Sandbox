@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VMI Service Map - Control Room</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="control-header">
+            <div class="header-left">
+                <h1><i class="fas fa-map-marked-alt"></i> VMI Service Map</h1>
+                <div class="status-indicator">
+                    <span class="status-dot online"></span>
+                    <span>System Online</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="current-time" id="currentTime"></div>
+                <button class="btn-fullscreen" onclick="toggleFullscreen()">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <button class="btn-refresh" onclick="refreshData()">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Map Container -->
+            <div class="map-container">
+                <div id="serviceMap"></div>
+                
+                <!-- Map Controls -->
+                <div class="map-controls">
+                    <div class="legend">
+                        <h3>Console Status</h3>
+                        <div class="legend-item active" data-status="ok">
+                            <div class="status-icon ok"></div>
+                            <span>Normal</span>
+                        </div>
+                        <div class="legend-item active" data-status="warn">
+                            <div class="status-icon warn"></div>
+                            <span>Warning</span>
+                        </div>
+                        <div class="legend-item active" data-status="crit">
+                            <div class="status-icon crit"></div>
+                            <span>Critical</span>
+                        </div>
+                        <div class="legend-item active" data-status="offline">
+                            <div class="status-icon offline"></div>
+                            <span>Offline</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service Panel -->
+            <div class="service-panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-exclamation-triangle"></i> Service Alerts</h2>
+                    <div class="alert-summary">
+                        <span class="alert-count critical" id="criticalCount">0</span>
+                        <span class="alert-count warning" id="warningCount">0</span>
+                        <span class="alert-count info" id="infoCount">0</span>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="quick-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalConsoles">0</div>
+                        <div class="stat-label">Total Consoles</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="onlineConsoles">0</div>
+                        <div class="stat-label">Online</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="alertConsoles">0</div>
+                        <div class="stat-label">In Alert</div>
+                    </div>
+                </div>
+
+                <!-- Alerts List -->
+                <div class="alerts-container">
+                    <div class="alerts-filter">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="critical">Critical</button>
+                        <button class="filter-btn" data-filter="warning">Warning</button>
+                        <button class="filter-btn" data-filter="offline">Offline</button>
+                        <button class="filter-btn" data-filter="acknowledged">Acknowledged</button>
+                    </div>
+                    
+                    <div class="alerts-list" id="alertsList">
+                        <!-- Alerts will be populated here -->
+                    </div>
+                </div>
+
+                <!-- System Status -->
+                <div class="system-status">
+                    <h3><i class="fas fa-server"></i> System Status</h3>
+                    <div class="status-items">
+                        <div class="status-item">
+                            <span class="status-label">Last Update:</span>
+                            <span class="status-value" id="lastUpdate">--</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Data Source:</span>
+                            <span class="status-value">VMI Database</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">Auto Refresh:</span>
+                            <span class="status-value">30s</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Console Detail Modal -->
+    <div class="modal" id="consoleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Console Details</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Console details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script src="service-map.js"></script>
+</body>
+</html>

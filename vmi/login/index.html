@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>EHON Energy Smart energy &amp; Data Management Solutions</title>
+  
+  <!-- META TAGS -->
+  <meta content="EHON Energy specialises in offering innovative solutions..." name="description">
+  <meta property="og:title" content="EHON Energy Smart energy &amp; Data Management Solutions">
+  <meta property="og:type" content="website">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  
+  <!-- STYLESHEETS -->
+  <link href="/vmi/css/normalize.css" rel="stylesheet">
+  <link href="/vmi/css/webflow.css" rel="stylesheet">
+  <link href="/vmi/css/ehon-energy-1.webflow.css" rel="stylesheet">
+  <link href="/vmi/images/webclip.png" rel="apple-touch-icon">
+  <link rel="stylesheet" href="/vmi/login/style.css">
+  <!-- 3RD-PARTY LIBRARIES -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+</head>
+
+<body class="body">
+  <!-- NAVIGATION / HEADER -->
+  <div data-collapse="medium" data-animation="default" data-duration="400" role="banner" class="navigation w-nav">
+    <div class="navigation-wrap">
+      <div>
+        <a href="#" aria-current="page" class="logo-link w-nav-brand w--current">
+          <img src="/vmi/images/ehon_energy-logo.png"
+               width="200"
+               height="Auto"
+               alt="EHON Energy"
+               class="logo-image">
+        </a>
+      </div>
+      <div style="display:flex; justify-content: center; flex-direction: column;">
+        <!-- Burger Menu Button -->
+        <button class="burger-menu" aria-label="Toggle menu" aria-expanded="false">
+          <span class="burger-line"></span>
+          <span class="burger-line"></span>
+          <span class="burger-line"></span>
+        </button>
+        
+        <nav class="main-nav">
+          <div class="menu-container">
+            <nav class="main-menu" aria-label="Main Navigation">
+              <ul class="menu">
+                <li class="menu-item"><a href="https://ehonenergy.com.au">Home</a></li>
+                <li class="menu-item has-submenu">
+                  <a href="/about/">About</a>
+                  <ul class="submenu">
+                    <li><a href="/privacy-policy/">Privacy Policy</a></li>
+                  </ul>
+                </li>
+                <li class="menu-item"><a href="/vendor-management/">Vendor Management Inventory</a></li>
+                <li class="menu-item has-submenu">
+                  <a href="/ehon-link/">EHON Link</a>
+                  <ul class="submenu">
+                    <li><a href="/ehon-link-tank-monitoring/">EHON Link – Tank Monitoring</a></li>
+                    <li><a href="/ehon-link-fluid-cleanliness/">EHON Link – FC Fluid Cleanliness</a></li>
+                  </ul>
+                </li>
+                <li class="menu-item"><a href="/vmi/login/">VMI Login</a></li>
+                <li class="menu-item"><a href="/contact-us/" class="button">Contact Us</a></li>
+              </ul>
+            </nav>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <img src="/vmi/images/EHON-Energy-logo-02_17-May-2023_FINAL-p-1600.png" width="150" height="Auto" alt="EHON Energy">
+      <button class="mobile-menu-close" id="mobileMenuClose">×</button>
+    </div>
+    <div class="mobile-menu-content">
+      <div class="mobile-menu-item">
+        <a href="/">Home</a>
+      </div>
+      <div class="mobile-menu-item has-submenu">
+        <a href="/about/">About</a>
+        <div class="mobile-submenu">
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </div>
+      </div>
+      <div class="mobile-menu-item">
+        <a href="/vendor-management/">Vendor Management Inventory</a>
+      </div>
+      <div class="mobile-menu-item has-submenu">
+        <a href="/ehon-link/">EHON Link</a>
+        <div class="mobile-submenu">
+          <a href="/ehon-link-tank-monitoring/">EHON Link – Tank Monitoring</a>
+          <a href="/ehon-link-fluid-cleanliness/">EHON Link – FC Fluid Cleanliness</a>
+        </div>
+      </div>
+      <div class="mobile-menu-item">
+        <a href="/vmi/login/">VMI Login</a>
+      </div>
+      <div class="mobile-menu-item">
+        <a href="/contact-us/" class="button">Contact Us</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN SECTION -->
+  <div class="section cc-store-home-wrap">
+    <div class="log">
+      <main class="table">
+        <div class="dashboard-content">
+          <div class="password-recovery-form">
+            <!-- Modify the action below if your login-processor file is differently named or located -->
+            <form class="form" action="login.php" method="POST">
+              <p class="title">Login</p>
+              <p class="message">Contact Ehon support for assistance</p>
+              
+              <label>
+                <input placeholder="" type="text" class="inputlog" name="username" id="username" autocomplete="username" required>
+                <span>Username</span>
+              </label>
+              <label>
+                <input placeholder="" type="password" class="inputlog" name="password" id="password" autocomplete="password" required>
+                <span>Password</span>
+              </label>
+              <br>
+              <input type="submit" value="Login" class="submit">      
+
+              <!-- GOOGLE & MICROSOFT SSO BUTTONS -->
+              <span>
+                <div class="login-container">
+                  <p style="color:black;">OR</p>
+                  <button type="button" class="login-button google">
+                    <img src="/vmi/images/Gmail_icon.png" alt="Google Icon"> Continue with Google
+                  </button>
+                  <!-- <button type="button" class="login-button microsoft">
+                    <img src="/vmi/images/Outlook_icon.png" alt="Microsoft Icon"> Continue with Microsoft Account
+                  </button> -->
+                </div>
+                <p class="signin">Forgot password? <a href="recover.php">Recover</a></p>
+                <p class="signin">New User? <a href="verification">Create Account</a></p>
+              </span>
+            </form>
+          </div>
+        </div>
+      </main>
+      <div class="error-message">
+        Invalid password!
+      </div>
+    </div>
+  </div>
+
+  <!-- EXTERNAL SCRIPT FILE (unified) -->
+  <script src="script.js"></script>
+</body>
+</html>

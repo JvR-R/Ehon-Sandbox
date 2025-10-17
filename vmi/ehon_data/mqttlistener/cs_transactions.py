@@ -1,0 +1,138 @@
+import sys
+import json
+import mysql.connector
+from mysql.connector import Error
+import os
+import configparser
+import argparse
+import logging
+from logging.handlers import RotatingFileHandler
+from datetime import datetime
+
+# Set up logging
+log_file = "cs_transactions.log"  # You can change the path as needed
+
+# Configure the logger
+logger = logging.getLogger("cs_transactions_logger")
+logger.setLevel(logging.DEBUG)
+
+# Create a rotating file handler
+handler = RotatingFileHandler(log_file, maxBytes=10000000, backupCount=5)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
+def load_configuration(config_file_path):
+    if not os.path.isfile(config_file_path):
+        logger.error(f"Config file not found at: {config_file_path}")
+        raise Exception(f"Config file not found at: {config_file_path}")
+    config = configparser.ConfigParser()
+    config.read(config_file_path)
+    return config
+
+def main():
+    # Parse command-line arguments
+    parser = argparse.ArgumentParser(description='CS Transactions Processor')
+    parser.add_argument('--data', help='Transaction data in JSON format')
+    parser.add_argument('--config', required=True, help='Path to configuration file')
+    args = parser.parse_args()
+
+    # Load configuration
+    try:
+        config = load_configuration(args.config)
+    except Exception as e:
+        logger.error(f"Error loading configuration: {e}")
+        sys.exit(1)
+
+    # Read data from --data argument or stdin
+    if args.data:
+        data_json = args.data
+    else:
+        # Read JSON data from stdin
+        data_json = sys.stdin.read()
+
+    # Parse the JSON string into a dictionary
+    try:
+        datajson = json.loads(data_json)
+        data = datajson.get('data', {})
+        uid = datajson.get('uid')
+    
+    except json.JSONDecodeError as e:
+        logger.error(f"Error decoding JSON data: {e}")
+        sys.exit(1)
+
+    # Extract database configuration
+    db_config = config['database']
+    db_host = db_config.get('host')
+    db_name = db_config.get('database')
+    db_user = db_config.get('user')
+    db_password = db_config.get('password')
+
+    # Insert the data into the database
+    try:
+        # Establish a database connection
+        connection = mysql.connector.connect(
+            host=db_host,
+            database=db_name,
+            user=db_user,
+            password=db_password
+        )
+
+        if connection.is_connected():
+            cursor = connection.cursor()
+
+            # Create an INSERT statement
+            insert_query = """
+            INSERT INTO client_transaction (
+                uid, transaction_date, transaction_time, card_number,
+                card_holder_name, odometer, registration, tank_id, pump_id, dispensed_volume,
+                Stop_method, pulses, startDateTime, endDateTime, startDip, endDip
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """
+            start_datetime_str = data['startDateTime']
+            dt = datetime.strptime(start_datetime_str, '%Y-%m-%d %H:%M:%S')
+            transaction_date = dt.strftime('%Y-%m-%d')
+           # transaction_date = '2024-10-03'
+            transaction_time = dt.strftime('%H:%M:%S')
+
+            # Prepare the data tuple, handling missing keys
+            data_tuple = (
+                uid,
+                transaction_date,
+                transaction_time,
+                data.get('driverID'),
+                data.get('driverName'),
+                data.get('odo'),
+                data.get('rego'),
+                '1',
+                data.get('pump_num'),
+                data.get('volume'),
+                data.get('Stop_method'),
+                data.get('pulses'),
+                data.get('startDateTime'),
+                data.get('endDateTime'),
+                data.get('startDip'),
+                data.get('endDip')
+            )
+
+            # Execute the INSERT statement
+            cursor.execute(insert_query, data_tuple)
+
+            # Commit the transaction
+            connection.commit()
+
+            logger.info("Transaction data inserted successfully.")
+
+    except Error as e:
+        logger.error(f"Error while connecting to database: {e}")
+    except Exception as e:
+        logger.error(f"An error occurred: {e}")
+    finally:
+        if 'connection' in locals() and connection.is_connected():
+            cursor.close()
+            connection.close()
+            logger.info("Database connection closed.")
+
+if __name__ == "__main__":
+    main()

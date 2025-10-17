@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Existing meta tags and titles -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Volume Display</title>
+    <!-- Include Paho MQTT JavaScript client -->
+    <!-- It's recommended to use a local copy to avoid any CDN issues -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/paho-mqtt.min.js" integrity="sha512-Y5n0fbohPllOQ21fTwM/h9sQQ/1a1h5KhweGhu2zwD8lAoJnTgVa7NIrFa1bRDIMQHixtyuRV2ubIx+qWbGdDA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        /* Optional: Add some styling for the Stop buttons */
+        .stop-button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .stop-button:hover {
+            background-color: #ff1a1a;
+        }
+        .pump-container {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body style="border-style: solid;">
+    <h1>Real-Time Pump Volume Display</h1>
+
+    <!-- Display areas for each pump with Stop buttons -->
+    <div id="pump1" class="pump-container">
+        <h2>Pump 1</h2>
+        <div id="volume-display-1" style="font-size: 48px; font-weight: bold;">0</div>
+        <button class="stop-button" data-pump-num="1">Stop Pump 1</button>
+    </div>
+
+    <div id="pump2" class="pump-container">
+        <h2>Pump 2</h2>
+        <div id="volume-display-2" style="font-size: 48px; font-weight: bold;">0</div>
+        <button class="stop-button" data-pump-num="2">Stop Pump 2</button>
+    </div>
+
+    <div id="pump3" class="pump-container">
+        <h2>Pump 3</h2>
+        <div id="volume-display-3" style="font-size: 48px; font-weight: bold;">0</div>
+        <button class="stop-button" data-pump-num="3">Stop Pump 3</button>
+    </div>
+
+    <div id="pump4" class="pump-container">
+        <h2>Pump 4</h2>
+        <div id="volume-display-4" style="font-size: 48px; font-weight: bold;">0</div>
+        <button class="stop-button" data-pump-num="4">Stop Pump 4</button>
+    </div>
+
+
+    <script>
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Retrieve uid from URL
+        const uid = getQueryParam('uid');
+        if (!uid) {
+            alert('UID not provided in the URL.');
+            console.error('UID is missing.');
+            // Optionally, disable Stop buttons or redirect the user
+        }
+
+        // Define the broker's WebSocket URL
+        var brokerURL = "wss://ehonenergytech.com.au:9001/"; // Ensure this matches your Mosquitto listener path
+
+        // Generate a unique client ID
+        var clientId = 'web_client_' + Math.random().toString(16).substr(2, 8);
+
+        // Create a client instance using the WebSocket URL
+        var client = new Paho.Client(brokerURL, clientId);
+
+        // Set callback handlers
+        client.onConnectionLost = onConnectionLost;
+        client.onMessageArrived = onMessageArrived;
+
+        // Connect the client with SSL enabled
+        client.connect({
+            onSuccess: onConnect,
+            onFailure: onFailure,
+            userName: 'ehon_fms', // Replace with your MQTT username
+            password: '6MrQludp]EfY', // Replace with your MQTT password
+            useSSL: true              // Enable SSL for secure connection
+            // Optional: Set cleanSession to true or false based on your requirements
+            // cleanSession: true
+        });
+
+        // Called when the client connects
+        function onConnect() {
+            console.log("Connected to MQTT broker via WSS");
+            // Subscribe to the topic
+            client.subscribe('fms_server');
+        }
+
+        function onFailure(responseObject) {
+            console.error("Connection failed: " + responseObject.errorMessage);
+        }
+
+        // Called when the client loses its connection
+        function onConnectionLost(responseObject) {
+            if (responseObject.errorCode !== 0) {
+                console.log("Connection lost: " + responseObject.errorMessage);
+            }
+        }
+
+        // Called when a message arrives
+        function onMessageArrived(message) {
+            console.log("Message arrived: " + message.payloadString);
+            try {
+                var data = JSON.parse(message.payloadString);
+
+                // Check if the message type is "pump_trans"
+                if (data.type === "pump_trans") {
+                    var volume = data.data.volume;
+                    var pumpNum = data.data.pump_num;
+
+                    var displayElement = document.getElementById('volume-display-' + pumpNum);
+
+                    if (displayElement) {
+                        // Update the volume display for the corresponding pump
+                        displayElement.innerText = volume;
+                    } else {
+                        console.warn('Received data for unknown pump number:', pumpNum);
+                    }
+                } else {
+                    // Optionally handle other message types or ignore them
+                    console.log('Received message of type:', data.type);
+                }
+            } catch (e) {
+                console.error("Error parsing message: " + e);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var stopButtons = document.querySelectorAll('.stop-button');
+            stopButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var pumpNum = this.getAttribute('data-pump-num');
+                    if (pumpNum) {
+                        sendStopCommand(pumpNum);
+                    } else {
+                        alert('Pump number not found.');
+                    }
+                });
+            });
+        });
+
+        // Function to send stop command via MQTT
+        function sendStopCommand(pumpNum) {
+            if (!uid) {
+                alert('UID is not available. Cannot send stop command.');
+                console.error('UID is missing. Stop command not sent.');
+                return;
+            }
+
+            // Construct the stop command JSON
+            var stopCommand = {
+                "stop": 1, 
+                "pump_num": parseInt(pumpNum)
+            };
+
+            // Convert JSON to string
+            var message = new Paho.Message(JSON.stringify(stopCommand));
+            // Specify the topic to publish to
+            message.destinationName = `fms/${uid}`; // Publish to fms/{uid}
+            // Publish the message
+            client.send(message);
+            console.log(`Stop command sent for Pump ${pumpNum} to topic fms/${uid}:`, JSON.stringify(stopCommand));
+            alert(`Stop command sent for Pump ${pumpNum}.`);
+        }
+
+    </script>
+</body>
+</html>

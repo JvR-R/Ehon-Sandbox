@@ -1,0 +1,146 @@
+* {
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+    font-family: Arial;
+}
+body {
+    min-height: auto;
+    background: white center / cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+section.topborder{
+    position:absolute;
+    width: 100%;
+    left: 0vw;
+    top: 0px;
+    height: 64px;
+    background-color: #e8e8e84f;
+    text-align: left;
+  }
+.home{
+    position: absolute;
+    top: 50%;
+    left: 36.5px;
+    transform: translate(-50%, -50%);
+  }
+  .border{
+    width: 76px;
+    height: calc(100% - 64px);
+    background-color: #e8e8e84f;
+    position: absolute;
+    left: 0%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow-y: hidden;
+    top: 64px;
+  }
+.button-link {
+    text-decoration: none;
+    margin: 5px;
+    color: #e2e1e1;
+    transition: background-color 0.3s;
+    background-color: transparent;
+    border: none;
+    margin-top:25px;
+}
+.button-link:hover {
+    width: 80%;
+    color: #F7901E;
+    box-shadow: 0 .1rem .4rem #0002;
+    border-radius: 0.8rem;
+}
+main.table {
+    width: calc(100% - 71px);
+    height: 94%;
+    background:url(/images/SL.112119.25250.30-p-3200.jpg);
+    position: absolute;
+    left: 71px;
+    top: 61px;
+    backdrop-filter: blur(7px);
+    box-shadow: 0 .4rem .8rem #0005;
+    overflow: hidden;
+    border-start-start-radius: .8rem;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10rem;
+    height: auto;
+    z-index: 1;
+  }
+table {
+    width: 100%;
+}
+
+h1{
+    color: #EC1C1C;
+    font-weight: bold;
+    font-size: 1.7vw;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); 
+}
+.Title{
+    position: relative;
+    width: 100;
+    height: 12vh;
+    background-color: #0362bb23;
+}
+h2{
+    position: relative;
+    left: 37%;
+    top: 1vh;
+    color: #ff0000;
+    font-weight: bold;
+    font-size: 60px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); 
+}
+.search-container{
+    position: absolute;
+    left: 38vw;
+    top: 18vh;
+    margin: 10px;
+    font-weight: bold;
+    font-size: 48px;
+    text-align: center;
+}
+.search-input{
+    font-size: 30px;
+}
+/* CSS for the search button */
+.search-button {
+    padding: 10px 20px;
+    font-size: 24px;
+    margin-top: 10px; /* Added margin-top */
+    background-color: #002F60; /* Button background color */
+    color: white; /* Button text color */
+    border: none;
+    cursor: pointer;
+    border-radius: 10%;
+}
+
+.search-button:hover {
+    background-color: #F7901E; /* Button background color on hover */
+    color: #fff; /* Button text color on hover */
+}
+.search-input {
+    width: 300px; /* Set the desired width */
+    height: 40px; /* Set the desired height */
+    font-size: 24px; /* Set the desired font size */
+    text-align: center;
+}
+.sign svg {
+    width: 32px;
+  }
+  
+  .sign svg path {
+    fill: white;
+  }

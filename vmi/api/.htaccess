@@ -1,0 +1,44 @@
+# /home/ehon/public_html/vmi/api/.htaccess
+# ----------------------------------------
+
+# 1) Disable directory indexing/browsing
+Options -Indexes
+
+# 2) Allow only the verbs the API actually needs
+<LimitExcept POST GET OPTIONS HEAD>
+  Require all denied
+</LimitExcept>
+
+# 2a) Return 204 to CORS pre-flight requests
+RewriteEngine On
+RewriteCond %{REQUEST_METHOD} =OPTIONS
+RewriteRule ^ - [R=204,L]
+
+# 3) Security headers
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "same-origin"
+  Header always set Content-Security-Policy "default-src 'none'; frame-ancestors 'none';"
+</IfModule>
+
+# 4) Force JSON MIME type and caching hints
+<FilesMatch "\.php$">
+  Header set Content-Type "application/json; charset=utf-8"
+  Header set Cache-Control "private, max-age=30, must-revalidate"
+</FilesMatch>
+
+# 5) CORS (adjust origins/methods for dev vs prod)
+<IfModule mod_headers.c>
+  # Production
+  Header always set Access-Control-Allow-Origin "https://ehon.com.au"
+  Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS"
+  Header always set Access-Control-Allow-Headers "Content-Type"
+  # Uncomment for local testing:
+  # Header always set Access-Control-Allow-Origin "http://localhost"
+</IfModule>
+
+# 6) Pretty-URL rewrites (future)
+# RewriteEngine On
+# RewriteRule ^transactions/?$  transactions.php [L,NC]

@@ -1,0 +1,111 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial;
+  }
+  .nav-w{
+    opacity: 1;
+    color: #000;
+    -webkit-text-fill-color: inherit;
+    mix-blend-mode: normal;
+    background-color: #eaeefc;
+    background-clip: border-box;
+    flex-wrap: nowrap;
+    align-items: center;
+    padding: 30px 50px;
+    display: flex;
+  }
+  .nav-wrap{
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+    position: relative;
+  }
+  .menu{
+    z-index: 20;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    position: absolute;
+    top: 0%;
+    bottom: 0%;
+    left: 0%;
+    right: 0%;
+  }
+  .nav-items{
+    flex: none;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    position: relative;
+    float: right;
+  }
+  .navigation-item{
+    opacity: .6;
+  color: #000;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 20px;
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  text-decoration: none;
+  color: #222222;
+  padding: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+  }
+  .navigation-item:hover{
+    color: red;
+  }
+  /* Existing styles... */
+  
+  .dropdown-content, .lateral-dropdown, .lateral-dropdown-edit {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-item {
+    position: relative;
+}
+
+.dropdown-item:hover .lateral-dropdown, 
+.dropdown-item:hover .lateral-dropdown-edit {
+    display: block;
+    left: 100%;
+    top: 0;
+}
+
+.navigation-item {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.navigation-item:hover {
+    background-color: #ddd;
+}
+
+  .space{
+    height: 30px;
+    max-height: 30px;
+  }

@@ -1,0 +1,40 @@
+.details-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 3fr);
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+}
+.mg-top-16px{
+    margin-top: 32px;
+}
+.display-64{
+    color: #fff;
+    font-size: 80px;
+    font-weight: 600;
+    line-height: 1.333em;
+}
+.fqcard {
+    background-color: #002F60;
+    border: .6px solid #343b4f;
+    border-radius: 12px;
+    box-shadow: 0 2px 7px rgba(20, 20, 43, .06);
+}
+.fqcard.top-details {
+    z-index: 1;
+    grid-row-gap: 16px;
+    border-radius: 8px;
+    flex-direction: column;
+    padding: 20px;
+    display: flex;
+    position: relative;
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out; /* Add transition for smooth effect */
+}
+
+.fqcard:hover {
+    background-color: #02233b;
+}
+
+.fqcard:active {
+    transform: translateY(4px); /* Increase the downward movement */
+    box-shadow: 0 7px 12px rgba(0, 0, 0, 0.692); /* Increase the shadow for a more pronounced effect */
+}

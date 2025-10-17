@@ -1,0 +1,189 @@
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial;
+}
+.page-wrapper {
+    margin-left: 56px;
+    padding: 3rem;
+    padding-inline: 5rem;
+}
+@media(min-width: 1920px) {
+    .page-wrapper {
+        margin-left: 185px;
+        padding: 3rem;
+         padding-inline: 8rem;
+    }
+  }
+  @media (max-width: 1024px) {
+    .page-wrapper {
+        margin-left: 56px;
+        padding: 3rem;
+    }
+    
+  }
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 180px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 5;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -90px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+.toast {
+    position: fixed; left: 50%; bottom: 1.5rem;
+    transform: translateX(-50%) translateY(100%);
+    padding:.6rem 1rem; border-radius:.25rem; color:#fff;
+    background:#333; opacity:0; transition:opacity .3s,transform .3s;
+    z-index:9999; pointer-events:none;
+  }
+  .toast--success { background:#2e7d32; }
+  .toast--error   { background:#c62828; }
+  .toast.show     { opacity:1; transform:translateX(-50%) translateY(0); }
+
+  .inline-error {
+    color: #b00;
+    font-size: .9rem;
+    margin-top: .25rem;
+  }
+.chart-details-card-grid{
+    display:grid;
+    gap:1rem;
+    grid-template-columns:repeat(auto-fit,minmax(min(350px,100%),1fr));
+    align-items:start;
+}
+
+/* make sure any wrapper card isn’t hard-fixed */
+.chart-wrapper, .card.chart-wrapper{
+    max-width:100%;
+    width:auto;
+}
+
+/* optional: canvases expand to card width */
+.card canvas{
+  width:100%!important;
+  height:auto;
+}
+.report-card {
+  background-color: #002F60;
+  border: .6px solid #343b4f;
+  border-radius: 12px;
+  box-shadow: 0 2px 7px rgba(20, 20, 43, .06);
+  padding: 1rem;
+}
+.text-100{
+    color: white;
+}
+.text-200{
+    color: white;
+}
+td, th{
+    color: white;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+    width: 100%;
+}
+table, th, td {
+    border-collapse: collapse;
+    padding: 1rem;
+    text-align: center;
+    font-size: 14px;
+}
+
+thead th {
+    position: sticky;
+    top: 0;
+    left: 0;
+    background-color: #002e60;
+    color: white;
+    cursor: pointer;
+    text-transform: capitalize;
+    z-index: 2
+    ;
+}
+thead th {
+    position: sticky;
+    top: 0;
+    left: 0;
+    background-color: #002e60;
+    color: white;
+    cursor: pointer;
+    text-transform: capitalize;
+    z-index: 2;
+}
+
+tbody tr:nth-child(even):not(.expanded-details) {
+    background-color: #0000000b;
+}
+
+tbody tr {
+    animation-delay: 0.1s;
+    transition: .5s ease-in-out var(--delay), background-color 0s;
+}
+
+tbody tr.hide {
+    transform: translateX(100%);
+    display:none;
+    opacity: 0;
+}
+
+tbody tr:not(.expanded-details):hover {
+    /*background-color: #fff6 !important;*/
+    background-color: #bbc7ff65 !important;
+}
+
+tbody tr td,
+tbody tr td p,
+tbody tr td img {
+    transition: .2s ease-in-out;
+}
+td img{
+    height: 32px;
+    width: 32px;
+}
+
+tbody tr.hide td,
+tbody tr.hide td p {
+    padding: 0;
+    font: 0 / 0 sans-serif;
+    transition: .2s ease-in-out .5s;
+}
+.leaflet-popup-content table{
+  border-collapse:collapse;font-size:.85rem
+}
+.leaflet-popup-content td{
+  padding:2px 4px;color:#222
+}
+.pin {
+  width:26px;height:41px;background:url('https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png') no-repeat;
+}
+/* explicit colours for map pins */
+.pin--ok   { background-image:url('https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-green.png'); }
+.pin--warn { background-image:url('https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-gold.png'); }
+.pin--crit { background-image:url('https://cdn.jsdelivr.net/gh/pointhi/leaflet-color-markers@master/img/marker-icon-red.png'); }

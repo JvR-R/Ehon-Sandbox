@@ -1,0 +1,24 @@
+# Disable script execution
+AddHandler cgi-script .php .pl .jsp .asp .sh .cgi
+Options -ExecCGI
+
+# Prevent directory listings
+Options -Indexes
+
+# Optionally restrict file uploads to certain file types
+<Files *.*>
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+<Files ~ "\.(png|jpe?g|gif|svg)$">
+    Order Allow,Deny
+    Allow from all
+</Files>
+
+# Secure files by disabling server side scripting within uploaded files
+SetHandler none
+SetHandler default-handler
+Options -ExecCGI
+RemoveHandler .php .phtml .php3 .php5
+RemoveType .php .phtml .php3 .php5

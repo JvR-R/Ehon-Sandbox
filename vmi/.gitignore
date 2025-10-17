@@ -1,0 +1,23 @@
+db/dbh2.php
+db/dbh.php
+db/
+# crjob/
+# ehon_data/
+*.log
+*.txt
+ehon_data/Logs/
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+.vscode/settings.json
+ehon_data/Firmware/
+crjob/dipread_lite.php
+crjob/dipread_lite.log
+
+ehon_data/Link-logs/chunks/
+
+ehon_data/Link-logs/reassembled/
+cs_fms/.htaccess
+ehon_data/mqttlistener/import binascii.py
+ehon_data/mqttlistener/import binascii.py
+ipetropay/logs/
+

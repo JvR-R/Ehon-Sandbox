@@ -1,0 +1,17 @@
+.my-button {
+    background-color: #3B5998;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.my-button:hover {
+    background-color: #2A4887 !important;
+}
+.card-list-btn:hover {
+    background-color: #3366CC;
+    transition: background-color 0.5s ease;
+}

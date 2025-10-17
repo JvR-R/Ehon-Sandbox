@@ -1,0 +1,5 @@
+---
+deployment:
+ tasks:
+ - export DEPLOYPATH=/home/ehonener/ehon.com.au/vmi
+ - rsync -av --exclude='db' ./ $DEPLOYPATH

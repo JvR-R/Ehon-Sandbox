@@ -1,0 +1,343 @@
+section.topborder {
+  position: fixed;
+  width: 100%;
+  left: 0vw;
+  top: 0px;
+  height: 64px;
+  background-color: white;
+  text-align: left;
+  z-index: 501;
+}
+
+.border {
+  width: 56px;
+  height: 100vh;
+  background-color: white;
+  left: 0%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  z-index: 502;
+  position: fixed;
+  transition: width 0.3s ease;
+  top: 0%;
+}
+
+.button-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  margin: 25px auto;
+  color: #e2e1e1;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  width: 100%; /* Take full width of the parent */
+}
+
+.button-content {
+  display: flex;
+  align-items: center;
+}
+
+.button-link img {
+  width: 48px;
+  height: 48px;
+}
+
+.button-link span {
+  visibility: hidden; /* Hide text initially */
+  font-weight: bold;
+  font-size: 12px; /* Adjust based on your preference */
+  color: #676767;
+  margin-left: 10px; /* Space between icon and text */
+  white-space: nowrap; /* Ensure the text doesn't wrap */
+  transition: visibility 0.3s linear;
+}
+
+.border:hover {
+  width: 185px; /* Increase width to accommodate text */
+}
+
+.border:hover .button-link span {
+  visibility: visible; /* Show text on hover */
+}
+
+/* Media Query for larger screens */
+@media (min-width: 1920px) {
+  .border {
+      width: 185px; /* Always expanded for large screens */
+  }
+
+  .button-link span {
+      visibility: visible; /* Text always visible on large screens */
+  }
+  .logo-dist {
+    left: 17rem !important;
+  }
+.dist-logo {
+  width: auto; /* or a larger width as needed */
+}
+}
+.button-text {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 48px;
+  top: 70%;
+}
+
+.button-text2 {
+  display: inline-block;
+  font-size: 60px;
+  top: 70%;
+}
+
+.top-config{
+  width: 100%;
+  height: 80%;
+  min-width: 300px;
+  overflow:auto;
+  justify-content: center;
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 5px;
+} 
+.bot-config{
+  display: none;
+  width: 100%;
+  min-height: 600px;
+  min-width: 300px;
+  background-color: white;
+  overflow:auto;
+  overflow-x: auto;
+  position: relative;
+  top: 0%;
+  justify-content: center;
+  } 
+.logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10rem;
+  height: auto;
+  z-index: 1;
+}
+.logo-dist {
+  position: absolute;
+  top: 50%;
+  left: 10rem;
+  transform: translate(-50%, -50%);
+  width: 10rem;
+  height: auto;
+  z-index: 1;
+}
+.card-link {
+  text-decoration: none; /* This ensures there is no underline by default */
+  transition: background-color 0.3s ease; /* Optional: for smooth color transition */
+  /* Add other default styles if needed */
+}
+
+.card-link:hover {
+  background-color: #f0f0f0; /* Example: Changes background color on hover */
+  text-decoration: underline; /* Example: Adds an underline on hover */
+  /* Add other hover styles if needed */
+}
+.table__filters{
+  padding: 0.5rem 1rem 0rem;
+}
+.btn-primary {
+  color: #fff;
+  text-align: center;
+  background-color: #6c72ff;
+  border-radius: 4px;
+  justify-content: center;
+  padding: 8px;
+  font-weight: 500;
+  line-height: 1.167em;
+  text-decoration: none;
+  transition: background-color .3s, color .3s;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #212c4d;
+}
+
+.btn-primary.small {
+  font-size: 10px;
+  line-height: 1.4em;
+}
+
+.btn-primary.large {
+  padding: 14px;
+  font-size: 16px;
+  line-height: 1.125em;
+}
+
+.btn-primary.large.white {
+  color: #493aff;
+  background-color: #fff;
+  transition: transform .3s, background-color .3s, color .3s;
+}
+
+.btn-primary.large.white:hover {
+  transform: scale(.98);
+}
+
+.btn-primary.bg-neutral-800 {
+  background-color: #080f25;
+}
+
+.btn-primary.bg-neutral-800:hover {
+  background-color: #343b4f;
+}
+.btn-secondary {
+  color: #fff;
+  text-align: center;
+  background-color: #212c4d;
+  border-radius: 4px;
+  padding: 8px;
+  line-height: 1.167em;
+  text-decoration: none;
+  transition: background-color .3s, color .3s;
+}
+
+.btn-secondary:hover {
+  color: #fff;
+  background-color: #6c72ff;
+  cursor: pointer;
+}
+
+.btn-secondary.large {
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.125em;
+}
+
+.btn-secondary.bg-neutral-600 {
+  background-color: #37446b;
+}
+
+.btn-secondary.bg-neutral-600:hover {
+  background-color: #6c72ff;
+}
+.filter__div{
+  padding: 0.5rem 1rem 0rem 2rem;
+  display: none;
+}
+
+.tab-content{
+  padding: 1rem 0rem 1rem 1rem;
+  min-height: 18rem;
+  border-bottom-left-radius: 10px;  /* Adjust the radius as needed */
+  border-bottom-right-radius: 10px;
+  background-color: #0000000b;
+}
+.form-select.form-select-lg {
+  background: #011a37;;
+  color: white;
+  border-radius: 0.5rem;
+  overflow: auto;
+  padding: 0.8rem;
+  cursor: pointer;
+}
+/* For WebKit browsers (Chrome, Safari, etc.) */
+.form-select.form-select-lg::-webkit-scrollbar {
+  width: 5px; /* or any preferred width */
+}
+
+.form-select.form-select-lg::-webkit-scrollbar-track {
+  background: transparent; /* optional: change to any color */
+}
+
+.form-select.form-select-lg::-webkit-scrollbar-thumb {
+  background: black; /* Scroll thumb color */
+  border-radius: 10px;
+}
+
+/* For Firefox */
+.form-select.form-select-lg {
+  scrollbar-width: thin; /* "auto" or "thin" */
+  scrollbar-color: black transparent; /* thumb and track color */
+}
+input[type="date"]{
+  background-color: #011a37;
+  padding: 0.5rem;
+  font-family: "Roboto Mono",monospace;
+  color: #ffffff;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+}
+::-webkit-calendar-picker-indicator{
+  background-color: #ffffff;
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+/* Targets the scrollbar track */
+::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
+
+/* Targets the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+
+/* Targets the scrollbar width and height */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+html {
+  scroll-behavior: smooth;
+}
+.upload-container {
+  background: #002F60;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 20rem;
+}
+
+input[type="file"] {
+  margin-bottom: 10px;
+}
+/* Acknowledge Button CSS */
+.acknowledge-btn {
+  background-color: #1a73e8; /* Blue background */
+  color: white; /* White text */
+  border: none;
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.3s, transform 0.3s;
+  cursor: pointer;
+}
+
+.acknowledge-btn:hover {
+  background-color: #0c57b5; /* Darker blue on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.acknowledge-btn:active {
+  background-color: #094297; /* Even darker blue on click */
+  transform: scale(1); /* Reset scale on click */
+}
+
+.acknowledge-btn:focus {
+  outline: none; /* Remove default outline */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}

@@ -1,0 +1,183 @@
+* {
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+    font-family: Arial;
+}
+body {
+    min-height: auto;
+    background: white center / cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+section.topborder{
+    position:absolute;
+    width: 100%;
+    left: 0vw;
+    top: 0px;
+    height: 64px;
+    background-color: #e8e8e84f;
+    text-align: left;
+  }
+.home{
+    position: absolute;
+    top: 50%;
+    left: 36.5px;
+    transform: translate(-50%, -50%);
+  }
+  .border{
+    width: 76px;
+    height: calc(100% - 64px);
+    background-color: #e8e8e84f;
+    position: absolute;
+    left: 0%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow-y: hidden;
+    top: 64px;
+  }
+.button-link {
+    text-decoration: none;
+    margin: 5px;
+    color: #e2e1e1;
+    transition: background-color 0.3s;
+    background-color: transparent;
+    border: none;
+    margin-top:25px;
+}
+.button-link:hover {
+    width: 80%;
+    color: #F7901E;
+    box-shadow: 0 .1rem .4rem #0002;
+    border-radius: 0.8rem;
+}
+main.table {
+    width: calc(100% - 71px);
+    height: 94%;
+    background:url(/vmi/images/SL.112119.25250.30-p-3200.jpg);
+    position: absolute;
+    left: 71px;
+    top: 61px;
+    backdrop-filter: blur(7px);
+    box-shadow: 0 .4rem .8rem #0005;
+    overflow: hidden;
+    border-start-start-radius: .8rem;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10rem;
+    height: auto;
+    z-index: 1;
+  }
+table {
+    width: 100%;
+}
+
+h1{
+    color: #EC1C1C;
+    font-weight: bold;
+    font-size: 1.7vw;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); 
+}
+h2 {
+    position: absolute;
+    text-align: justify;
+    color: #ffffff;
+    top: 0px;
+    margin: 0;
+    padding: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(255, 94, 0, 0.61);
+}
+.uploadfiles{
+    position: relative;
+    top: 8rem;
+    justify-self: center;
+    width: 19rem;
+    height: 10rem;
+    background-color: rgb(20 21 79 / 50%);
+    border-radius: 0.8rem;
+    border: 1px solid #ccc;
+  }
+  .refresh_token{
+    justify-self: center;
+    position: relative;
+    top: 8rem;
+  }
+.buttonupd{
+    padding: 3px 6px;
+    font-size: 20px;
+    margin-top: 50px; /* Added margin-top */
+    background-color: #002F60; /* Button background color */
+    color: white; /* Button text color */
+    border: none;
+    cursor: pointer;
+    border-radius: 7%;
+    padding: 8px;
+}
+.formc{
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+input[type="file"] {
+    background-color: rgb(142 156 255 / 39%);
+    /*border: 1px solid #ccc;*/
+    padding: 5px;
+    margin-bottom: 10px;
+    width: 100%;
+    border-radius: 0.8rem;
+    color: white;
+  }
+  input::file-selector-button {
+    padding: 3px 6px;
+    font-size: 14px;
+    margin-top: 10px; /* Added margin-top */
+    background-color: #002F60; /* Button background color */
+    color: white; /* Button text color */
+    border: none;
+    border-radius: 0.4rem;
+    cursor: pointer;
+  }
+    .missingt-cont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: rgb(93 105 195 / 10%); /* Slight white background to make it pop, but keeping the transparency */
+}
+
+.missing-transactions {
+    list-style-type: none; /* Removes the bullet points */
+    padding: 0;
+    text-align: center;
+    max-width: 80%;
+}
+
+.missing-transactions li {
+    margin-bottom: 10px;
+    color: #fff; /* White color for the text */
+    border-bottom: 1px solid #fff; /* White border at the bottom of each item */
+    padding: 5px 0;
+}
+
+.missing-transactions li:last-child {
+    border-bottom: none; /* Removes the border for the last item */
+}
+button:disabled {
+    background-color: #ccc;  /* or any gray color */
+    cursor: not-allowed;
+    opacity: 0.6;
+}

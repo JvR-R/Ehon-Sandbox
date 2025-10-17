@@ -1,0 +1,29 @@
+RewriteEngine On
+
+# Internally rewrite requests without extension to .php files if they exist
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+# Internally rewrite requests without extension to .html files if they exist
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^([^\.]+)$ $1.html [NC,L]
+
+# Allow direct POST requests to .php files
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\s/+(.*?/)?(.*?)\.php[\s?/] [NC]
+RewriteCond %{REQUEST_METHOD} =POST
+RewriteRule ^ - [L]
+
+# Redirect GET requests for .php files to no extension URL
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\s/+(.*?/)?(.*?)\.php[\s?/] [NC]
+RewriteCond %{REQUEST_METHOD} =GET
+RewriteRule ^ /%1%2 [R=302,L,NE]
+
+# Redirect direct requests for .html files to no extension URL
+RewriteCond %{THE_REQUEST} \s/+(.*?/)?(?:index)?(.*?)\.html[\s?/] [NC]
+RewriteRule ^ /%1%2 [R=302,L,NE]
+
+# Block direct access to .html files
+RewriteCond %{THE_REQUEST} \s.+?\.html[\s?] [NC]
+RewriteRule ^ - [F]
