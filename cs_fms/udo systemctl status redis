@@ -1,0 +1,15 @@
+[0;1;32m●[0m celery.service - Celery Service
+     Loaded: loaded (]8;;file://v116806.dpvps.com.au/etc/systemd/system/celery.service/etc/systemd/system/celery.service]8;;; [0;1;38;5;185mdisabled[0m; preset: [0;1;38;5;185mdisabled[0m)
+     Active: [0;1;32mactive (running)[0m since Tue 2024-12-10 11:57:16 AEDT; 60ms ago
+    Process: 1282070 ExecStart=/home/ehon/virtualenv/public_html/cs_fms/3.11/bin/celery -A cs_fms multi start worker --loglevel=info --concurrency=10 --pidfile=/home/ehon/public_html/cs_fms/celery.pid (code=exited, status=0/SUCCESS)
+   Main PID: 1282074 (python3.11_bin)
+      Tasks: 1 (limit: 24738)
+     Memory: 9.8M
+     CGroup: /system.slice/celery.service
+             └─[0;38;5;245m1282074 /home/ehon/virtualenv/public_html/cs_fms/3.11/bin/python3.11_bin -m celery -A cs_fms worker --loglevel=info --concurrency=10 --pidfile=/home/ehon/public_html/cs_fms/celery.pid -n worker@v116806.dpvps.com.au --logfile=/var/log/celery/worker%I.log --executable=/home/ehon/virtualenv/public_html/cs_fms/3.11/bin/python3.11_bin[0m
+
+Dec 10 11:57:15 v116806.dpvps.com.au systemd[1]: Starting Celery Service...
+Dec 10 11:57:16 v116806.dpvps.com.au celery[1282070]: celery multi v5.4.0 (opalescent)
+Dec 10 11:57:16 v116806.dpvps.com.au celery[1282070]: > Starting nodes...
+Dec 10 11:57:16 v116806.dpvps.com.au celery[1282070]:         > worker@v116806.dpvps.com.au: OK
+Dec 10 11:57:16 v116806.dpvps.com.au systemd[1]: Started Celery Service.

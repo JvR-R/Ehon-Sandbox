@@ -1,0 +1,101 @@
+DEBUG 2025-10-09 05:45:47,702 utils (0.003) 
+                SELECT VERSION(),
+                       @@sql_mode,
+                       @@default_storage_engine,
+                       @@sql_auto_is_null,
+                       @@lower_case_table_names,
+                       CONVERT_TZ('2001-01-01 01:00:00', 'UTC', 'UTC') IS NOT NULL
+            ; args=None; alias=default
+DEBUG 2025-10-09 05:45:47,703 utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None; alias=default
+DEBUG 2025-10-09 05:45:47,705 utils (0.002) SELECT `oauth2_provider_accesstoken`.`id`, `oauth2_provider_accesstoken`.`user_id`, `oauth2_provider_accesstoken`.`source_refresh_token_id`, `oauth2_provider_accesstoken`.`token`, `oauth2_provider_accesstoken`.`token_checksum`, `oauth2_provider_accesstoken`.`id_token_id`, `oauth2_provider_accesstoken`.`application_id`, `oauth2_provider_accesstoken`.`expires`, `oauth2_provider_accesstoken`.`scope`, `oauth2_provider_accesstoken`.`created`, `oauth2_provider_accesstoken`.`updated`, `auth_user`.`id`, `auth_user`.`password`, `auth_user`.`last_login`, `auth_user`.`is_superuser`, `auth_user`.`username`, `auth_user`.`first_name`, `auth_user`.`last_name`, `auth_user`.`email`, `auth_user`.`is_staff`, `auth_user`.`is_active`, `auth_user`.`date_joined`, `oauth2_provider_application`.`id`, `oauth2_provider_application`.`client_id`, `oauth2_provider_application`.`user_id`, `oauth2_provider_application`.`redirect_uris`, `oauth2_provider_application`.`post_logout_redirect_uris`, `oauth2_provider_application`.`client_type`, `oauth2_provider_application`.`authorization_grant_type`, `oauth2_provider_application`.`client_secret`, `oauth2_provider_application`.`hash_client_secret`, `oauth2_provider_application`.`name`, `oauth2_provider_application`.`skip_authorization`, `oauth2_provider_application`.`created`, `oauth2_provider_application`.`updated`, `oauth2_provider_application`.`algorithm`, `oauth2_provider_application`.`allowed_origins` FROM `oauth2_provider_accesstoken` LEFT OUTER JOIN `auth_user` ON (`oauth2_provider_accesstoken`.`user_id` = `auth_user`.`id`) LEFT OUTER JOIN `oauth2_provider_application` ON (`oauth2_provider_accesstoken`.`application_id` = `oauth2_provider_application`.`id`) WHERE `oauth2_provider_accesstoken`.`token_checksum` = '49056d55b022fb46864c8ee9f671e2c3dabc48382f78a2a7577b003eafcf8fd8' ORDER BY `oauth2_provider_accesstoken`.`id` ASC LIMIT 1; args=('49056d55b022fb46864c8ee9f671e2c3dabc48382f78a2a7577b003eafcf8fd8',); alias=default
+DEBUG 2025-10-09 05:45:47,713 utils (0.001) SELECT `user_scope`.`id`, `user_scope`.`user_id`, `user_scope`.`role`, `user_scope`.`company_id` FROM `user_scope` WHERE `user_scope`.`user_id` = 5 LIMIT 21; args=(5,); alias=default
+DEBUG 2025-10-09 05:45:47,715 views Filtered transactions for admin@boral (role: CLIENT)
+WARNING 2025-10-09 05:45:47,722 warnings /home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/rest_framework/pagination.py:207: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'app.models.ClientTransaction'> QuerySet.
+  paginator = self.django_paginator_class(queryset, page_size)
+
+DEBUG 2025-10-09 05:45:47,730 utils (0.004) SELECT COUNT(*) AS `__count` FROM `client_transaction` WHERE `client_transaction`.`uid` IN (SELECT U0.`uid` FROM `Console_Asociation` U0 WHERE U0.`Client_id` = 35019); args=(35019,); alias=default
+DEBUG 2025-10-09 05:45:47,767 utils (0.035) SELECT `client_transaction`.`transaction_id`, `client_transaction`.`uid`, `client_transaction`.`piusi_transaction_id`, `client_transaction`.`fms_id`, `client_transaction`.`transaction_date`, `client_transaction`.`transaction_time`, `client_transaction`.`transaction_date_utc0`, `client_transaction`.`transaction_time_utc0`, `client_transaction`.`card_number`, `client_transaction`.`card_holder_name`, `client_transaction`.`customer_name`, `client_transaction`.`odometer`, `client_transaction`.`registration`, `client_transaction`.`tank_id`, `client_transaction`.`tank_name`, `client_transaction`.`site_id`, `client_transaction`.`pump_id`, `client_transaction`.`dispensed_volume`, `client_transaction`.`actions`, `client_transaction`.`product`, `client_transaction`.`mcs_transaction_id`, `client_transaction`.`stop_method`, `client_transaction`.`pulses`, `client_transaction`.`startDateTime`, `client_transaction`.`endDateTime`, `client_transaction`.`startDip`, `client_transaction`.`endDip`, COALESCE((SELECT U0.`Site_name` FROM `Sites` U0 WHERE (U0.`Site_id` = (`client_transaction`.`site_id`) AND U0.`uid` = (`client_transaction`.`uid`)) LIMIT 1), '') AS `site_name`, `console`.`uid`, `console`.`device_id`, `console`.`device_type`, `console`.`man_data`, `console`.`console_status`, `console`.`firmware`, `console`.`UART1`, `console`.`UART1_ID`, `console`.`UART3`, `console`.`UART3_fms`, `console`.`UART5`, `console`.`UART5_fms`, `console`.`UART6`, `console`.`CAN1`, `console`.`fw_flag`, `console`.`cfg_flag`, `console`.`restart_flag`, `console`.`logs_flag`, `console`.`last_conndate`, `console`.`last_conntime`, `console`.`console_ip`, `console`.`console_imei`, `console`.`console_coordinates`, `console`.`cs_signal`, `console`.`dv_flag`, `console`.`bootup`, `console`.`service_flag`, `console`.`crc_auth`, `console`.`crc_tank`, `console`.`crc_pumps`, `console`.`crc_vehicle`, `console`.`crc_driver`, `console`.`internalslave`, `console`.`flag_oldfw` FROM `client_transaction` INNER JOIN `console` ON (`client_transaction`.`uid` = `console`.`uid`) WHERE `client_transaction`.`uid` IN (SELECT U0.`uid` FROM `Console_Asociation` U0 WHERE U0.`Client_id` = 35019) LIMIT 100; args=('', 35019); alias=default
+WARNING 2025-10-09 05:53:01,165 log Not Found: /api/ClientTransactionList
+DEBUG 2025-10-09 06:00:02,900 utils (0.003) 
+                SELECT VERSION(),
+                       @@sql_mode,
+                       @@default_storage_engine,
+                       @@sql_auto_is_null,
+                       @@lower_case_table_names,
+                       CONVERT_TZ('2001-01-01 01:00:00', 'UTC', 'UTC') IS NOT NULL
+            ; args=None; alias=default
+DEBUG 2025-10-09 06:00:02,903 utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None; alias=default
+DEBUG 2025-10-09 06:00:02,915 utils (0.007) SELECT `oauth2_provider_accesstoken`.`id`, `oauth2_provider_accesstoken`.`user_id`, `oauth2_provider_accesstoken`.`source_refresh_token_id`, `oauth2_provider_accesstoken`.`token`, `oauth2_provider_accesstoken`.`token_checksum`, `oauth2_provider_accesstoken`.`id_token_id`, `oauth2_provider_accesstoken`.`application_id`, `oauth2_provider_accesstoken`.`expires`, `oauth2_provider_accesstoken`.`scope`, `oauth2_provider_accesstoken`.`created`, `oauth2_provider_accesstoken`.`updated`, `auth_user`.`id`, `auth_user`.`password`, `auth_user`.`last_login`, `auth_user`.`is_superuser`, `auth_user`.`username`, `auth_user`.`first_name`, `auth_user`.`last_name`, `auth_user`.`email`, `auth_user`.`is_staff`, `auth_user`.`is_active`, `auth_user`.`date_joined`, `oauth2_provider_application`.`id`, `oauth2_provider_application`.`client_id`, `oauth2_provider_application`.`user_id`, `oauth2_provider_application`.`redirect_uris`, `oauth2_provider_application`.`post_logout_redirect_uris`, `oauth2_provider_application`.`client_type`, `oauth2_provider_application`.`authorization_grant_type`, `oauth2_provider_application`.`client_secret`, `oauth2_provider_application`.`hash_client_secret`, `oauth2_provider_application`.`name`, `oauth2_provider_application`.`skip_authorization`, `oauth2_provider_application`.`created`, `oauth2_provider_application`.`updated`, `oauth2_provider_application`.`algorithm`, `oauth2_provider_application`.`allowed_origins` FROM `oauth2_provider_accesstoken` LEFT OUTER JOIN `auth_user` ON (`oauth2_provider_accesstoken`.`user_id` = `auth_user`.`id`) LEFT OUTER JOIN `oauth2_provider_application` ON (`oauth2_provider_accesstoken`.`application_id` = `oauth2_provider_application`.`id`) WHERE `oauth2_provider_accesstoken`.`token_checksum` = '49056d55b022fb46864c8ee9f671e2c3dabc48382f78a2a7577b003eafcf8fd8' ORDER BY `oauth2_provider_accesstoken`.`id` ASC LIMIT 1; args=('49056d55b022fb46864c8ee9f671e2c3dabc48382f78a2a7577b003eafcf8fd8',); alias=default
+ERROR 2025-10-09 06:00:02,920 views Error in DipreadHistoricList.get_queryset: Cannot resolve keyword 'tank_id' into field. Choices are: product_basetemp, product_colour, product_cte, product_density, product_id, product_name
+Traceback (most recent call last):
+  File "/home/ehon/public_html/api/app/views.py", line 632, in get_queryset
+    .filter(product_id=Subquery(
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/db/models/query.py", line 1476, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/db/models/query.py", line 1494, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/db/models/query.py", line 1501, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1609, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1641, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1500, in build_filter
+    value = self.resolve_lookup_value(value, can_reuse, allow_joins, summarize)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1270, in resolve_lookup_value
+    value = value.resolve_expression(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/db/models/expressions.py", line 292, in resolve_expression
+    [
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/db/models/expressions.py", line 294, in <listcomp>
+    expr.resolve_expression(query, allow_joins, reuse, summarize)
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1211, in resolve_expression
+    clone.where.resolve_expression(query, *args, **kwargs)
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/db/models/sql/where.py", line 288, in resolve_expression
+    clone._resolve_node(clone, *args, **kwargs)
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/db/models/sql/where.py", line 280, in _resolve_node
+    cls._resolve_node(child, query, *args, **kwargs)
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/db/models/sql/where.py", line 284, in _resolve_node
+    node.rhs = cls._resolve_leaf(node.rhs, query, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/db/models/sql/where.py", line 273, in _resolve_leaf
+    expr = expr.resolve_expression(query, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/db/models/expressions.py", line 934, in resolve_expression
+    col = super().resolve_expression(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/db/models/expressions.py", line 895, in resolve_expression
+    return query.resolve_ref(self.name, allow_joins, reuse, summarize)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/db/models/sql/query.py", line 2010, in resolve_ref
+    join_info = self.setup_joins(
+                ^^^^^^^^^^^^^^^^^
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1863, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+                                       ^^^^^^^^^^^^^^^^^^^
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1768, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'tank_id' into field. Choices are: product_basetemp, product_colour, product_cte, product_density, product_id, product_name
+ERROR 2025-10-10 06:06:31,298 exception Invalid HTTP_HOST header: 'mail.ehon.com.au'. You may need to add 'mail.ehon.com.au' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/utils/deprecation.py", line 128, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/ehon/virtualenv/public_html/api/3.11/lib/python3.11/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'mail.ehon.com.au'. You may need to add 'mail.ehon.com.au' to ALLOWED_HOSTS.
+WARNING 2025-10-10 06:06:31,397 log Bad Request: /api/.env

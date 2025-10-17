@@ -1,0 +1,15 @@
+.DS_Store
+logs/
+tmp/
+run/
+host/
+vendor/
+node_modules/
+dist/
+__pycache__/
+*.py[cod]
+.env
+*.pem
+*.key
+*.zip
+*.tar.gz

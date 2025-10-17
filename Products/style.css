@@ -1,0 +1,193 @@
+/* theme variables */
+:root {
+    --bg-color: #eaeefc;
+    --text-color: #000;
+    --card-bg: #fff;
+    --card-border: rgba(0,0,0,0.2);
+  }
+  :root.dark {
+    --bg-color: #000529;
+    --text-color: #e0e0e0;
+    --card-bg: #12121a;
+    --card-border: rgba(255,255,255,0.2);
+  }
+  
+  /* page & layout */
+  body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  /* logo & toggle */
+  .logo {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    max-height: 40px;
+    width: auto;
+  }
+  .theme-switch {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    width: 50px;
+    height: 26px;
+    display: inline-block;
+  }
+  .theme-switch input {
+    opacity: 0; width: 0; height: 0;
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: #ccc;
+    border-radius: 34px;
+    transition: background 0.3s;
+  }
+  .slider:before {
+    content: "";
+    position: absolute;
+    left: 4px; top: 4px;
+    width: 18px; height: 18px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.3s;
+  }
+  input:checked + .slider { background: #4a4a4a; }
+  input:checked + .slider:before { transform: translateX(24px); }
+  
+  /* device grid */
+  .devices {
+    display: flex;
+    /* grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); */
+    gap: 1rem;
+    width: 100%;
+    max-width: 600px;
+    padding: 1rem;
+    margin-top: 5rem; /* push below toggle/logo */
+    box-sizing: border-box;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* each “button” */
+  .device {
+    text-decoration: none;
+    color: var(--text-color);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    width: 15rem;
+    height: 10rem;
+  }
+  .device:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+  
+  .device img {
+    width: 15rem;
+    height: 9rem;
+    object-fit: fill;
+    border-radius: 4px;
+  }
+  
+  .device .label {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    text-align: center;
+    line-height: 1.2;
+  }
+/* ──────────────────────────────────────────────────────────────── */
+/* Mobile: vertical carousel with bigger images (up to 480px wide) */
+@media (max-width: 480px) {
+    .devices {
+      display: block;
+      height: calc(100vh - 5rem);    /* leave room for header area */
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding: 1rem 0;
+      margin-top: 4rem;              /* push below logo/toggle */
+    }
+  
+    .device {
+      scroll-snap-align: start;
+      width: 90%;
+      max-width: 15rem;
+      margin: 0 auto 1.5rem;
+      padding: 1rem;
+      flex-direction: column;
+    }
+  
+    .device img {
+      width: 14rem;
+      height: 9rem;
+      border-radius: 6px;
+    }
+  
+    .device .label {
+      margin-top: 0.75rem;
+      font-size: 1rem;
+    }
+  
+    /* Optional: hide the scrollbar on WebKit */
+    .devices::-webkit-scrollbar {
+      width: 0;
+      background: transparent;
+    }
+  }
+  
+  /* ──────────────────────────────────────────────────────────────── */
+  /* Desktop/tablet above 480px remains the same grid-layout */
+    
+/* ─── modal overlay ─────────────────────────────────────── */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.75);
+  padding: 1rem;
+  z-index: 1000;
+}
+.modal.active { display: flex; }
+
+/* iframe scales responsively (16:9) */
+.modal iframe {
+  width: 90vw;
+  max-width: 560px;
+  aspect-ratio: 16 / 9;
+  border: none;
+  border-radius: 8px;
+  background: #000;       /* prevents flash of white */
+}
+
+/* close button */
+.modal .close {
+  position: absolute;
+  top: 0.75rem;
+  right: 1rem;
+  font-size: 2rem;
+  color: #fff;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+/* dark-mode overlay already looks fine, no extra vars needed */

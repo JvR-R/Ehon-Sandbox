@@ -1,0 +1,6 @@
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION BEGIN
+PassengerAppRoot "/home/ehon/public_html/api"
+PassengerBaseURI "/api"
+PassengerPython "/home/ehon/virtualenv/public_html/api/3.11/bin/python"
+PassengerAppLogFile "/home/ehon/logs/api.log"
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION END

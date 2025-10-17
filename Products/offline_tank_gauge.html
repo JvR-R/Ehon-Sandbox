@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Offline Tank Gauge Manuals</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- logo + toggle -->
+  <img src="company_15100.png" class="logo" alt="Company Logo">
+  <label class="theme-switch">
+    <input type="checkbox" id="theme-toggle">
+    <span class="slider"></span>
+  </label>
+
+  <!-- manuals grid (unchanged) -->
+  <div class="devices">
+    <a href="manuals/offline_tank_quick_setup.pdf" class="device">
+      <img src="Images/ehon-quick-setup-icon.png" alt="Quick Setup">
+      <div class="label">Quick Setup</div>
+    </a>
+    <a href="manuals/product_brochure.pdf" class="device">
+      <img src="Images/ehon-user-manual-icon.png" alt="User Manual">
+      <div class="label">Brochure</div>
+    </a>
+    <a href="manuals/solus_datasheet.pdf" class="device">
+      <img src="Images/ehon-DataSheet-icon.png" alt="Data Sheet">
+      <div class="label">Data Sheet</div>
+    </a>
+    <a href="#" class="device video-trigger" data-video="#">
+      <img src="Images/ehon-video-icon.png" alt="Video Instructions">
+      <div class="label">Video Instructions</div>
+    </a>
+  </div>
+
+  <!-- modal must come BEFORE the single script include -->
+  <div id="videoModal" class="modal" role="dialog" aria-modal="true" aria-label="Video player">
+    <button class="close" aria-label="Close video">&times;</button>
+    <iframe id="videoFrame" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  </div>
+
+  <!-- keep ONE script include, LAST in <body> -->
+  <script src="script.js"></script>
+</body>
+</html>
+

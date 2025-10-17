@@ -1,0 +1,19 @@
+# Disable MultiViews – stops content negotiation from grabbing the request
+Options -MultiViews
+
+# Turn the rewrite engine on (local to this dir)
+RewriteEngine On
+
+# Force HTTPS for all requests to this API
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Match /api-v1/download/<anything>   (relative path seen in this dir: "download/..."):
+RewriteRule ^download/(.+)$ download.php?f=$1 [L,QSA]
+
+# Clean URL:  POST /api-v1/upload
+RewriteEngine On
+RewriteRule ^upload$ upload.php [L]
+# Pass Authorization header to PHP
+RewriteCond %{HTTP:Authorization} .
+RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

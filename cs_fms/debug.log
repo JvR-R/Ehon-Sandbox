@@ -1,0 +1,47 @@
+[2025-09-23 05:20:39,375] DEBUG utils (0.003) 
+                SELECT VERSION(),
+                       @@sql_mode,
+                       @@default_storage_engine,
+                       @@sql_auto_is_null,
+                       @@lower_case_table_names,
+                       CONVERT_TZ('2001-01-01 01:00:00', 'UTC', 'UTC') IS NOT NULL
+            ; args=None; alias=default
+[2025-09-23 05:20:39,377] DEBUG utils (0.001) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None; alias=default
+[2025-09-23 05:20:39,379] DEBUG utils (0.002) SELECT `console`.`uid`, `console`.`crc_auth`, `console`.`crc_driver`, `console`.`crc_vehicle`, `console`.`crc_tank`, `console`.`crc_pumps` FROM `console` WHERE `console`.`uid` = '398648' LIMIT 21; args=('398648',); alias=default
+[2025-09-23 05:20:39,383] DEBUG utils (0.001) SELECT 1 AS `a` FROM `Tanks` WHERE `Tanks`.`uid` = '398648' LIMIT 1; args=(1, '398648'); alias=default
+[2025-09-23 05:20:39,388] DEBUG utils (0.002) SELECT `Tanks`.`uid`, `Tanks`.`tank_gauge_id`, `Tanks`.`tank_id`, `Tanks`.`capacity`, `Tanks`.`product_id`, `Tanks`.`chart_id`, `Tanks`.`offset_tank`, `Tanks`.`current_volume`, `Tanks`.`dipr_date`, `Tanks`.`dipr_time`, `Tanks`.`recon_time`, `Products`.`product_id`, `Products`.`product_name`, `Products`.`product_density` FROM `Tanks` INNER JOIN `Products` ON (`Tanks`.`product_id` = `Products`.`product_id`) WHERE `Tanks`.`uid` = '398648'; args=('398648',); alias=default
+[2025-09-23 05:20:39,394] INFO views ensure_manager_running called for UID 398648
+[2025-09-23 05:20:39,394] INFO views manager_running=None for UID 398648 before updating
+[2025-09-23 05:20:39,394] INFO views manager_running is not '1', so we'll queue the manager task for UID 398648
+[2025-09-23 05:21:11,321] DEBUG utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None; alias=default
+[2025-09-23 05:21:11,322] DEBUG utils (0.001) SELECT `console`.`uid`, `console`.`crc_auth`, `console`.`crc_driver`, `console`.`crc_vehicle`, `console`.`crc_tank`, `console`.`crc_pumps` FROM `console` WHERE `console`.`uid` = '398648' LIMIT 21; args=('398648',); alias=default
+[2025-09-23 05:21:11,328] DEBUG utils (0.003) SELECT 1 AS `a` FROM `pumps` WHERE `pumps`.`uid` = '398648' LIMIT 1; args=(1, '398648'); alias=default
+[2025-09-23 05:21:11,330] DEBUG utils (0.001) SELECT `pumps`.`uid`, `pumps`.`Pulse_rate`, `pumps`.`tank_id`, `pumps`.`Nozzle_number` FROM `pumps` WHERE `pumps`.`uid` = '398648'; args=('398648',); alias=default
+[2025-09-23 05:21:11,331] INFO views ensure_manager_running called for UID 398648
+[2025-09-23 05:21:11,332] INFO views manager_running=0 for UID 398648 before updating
+[2025-09-23 05:21:11,332] INFO views manager_running is not '1', so we'll queue the manager task for UID 398648
+[2025-09-23 05:21:17,707] DEBUG utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None; alias=default
+[2025-09-23 05:21:17,708] DEBUG utils (0.001) SELECT `console`.`uid`, `console`.`crc_auth`, `console`.`crc_driver`, `console`.`crc_vehicle`, `console`.`crc_tank`, `console`.`crc_pumps` FROM `console` WHERE `console`.`uid` = '398648' LIMIT 21; args=('398648',); alias=default
+[2025-09-23 05:21:17,715] DEBUG utils (0.004) SELECT 1 AS `a` FROM `client_tags` WHERE `client_tags`.`client_id` = 15100 LIMIT 1; args=(1, 15100); alias=default
+[2025-09-23 05:21:17,720] DEBUG utils (0.004) SELECT `client_tags`.`id`, `client_tags`.`client_id`, `client_tags`.`customer_id`, `client_tags`.`card_name`, `client_tags`.`card_number`, `client_tags`.`card_type`, `client_tags`.`list_driver`, `client_tags`.`list_vehicle`, `client_tags`.`expiry_date`, `client_tags`.`enabled_prompt`, `client_tags`.`pin_number`, `client_tags`.`pin_prompt`, `client_tags`.`prompt_vehicle`, `client_tags`.`driver_prompt`, `client_tags`.`projectnum_prompt`, `client_tags`.`odo_prompt`, `client_tags`.`additional_info`, `client_tags`.`created_at`, `client_tags`.`updated_at` FROM `client_tags` WHERE `client_tags`.`client_id` = 15100; args=(15100,); alias=default
+[2025-09-23 05:21:17,725] INFO views ensure_manager_running called for UID 398648
+[2025-09-23 05:21:17,726] INFO views manager_running=0 for UID 398648 before updating
+[2025-09-23 05:21:17,726] INFO views manager_running is not '1', so we'll queue the manager task for UID 398648
+[2025-09-23 05:21:17,735] INFO views Tags update enqueued for UID 398648.
+[2025-09-23 05:21:24,312] DEBUG utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None; alias=default
+[2025-09-23 05:21:24,313] DEBUG utils (0.000) SELECT `console`.`uid`, `console`.`crc_auth`, `console`.`crc_driver`, `console`.`crc_vehicle`, `console`.`crc_tank`, `console`.`crc_pumps` FROM `console` WHERE `console`.`uid` = '398648' LIMIT 21; args=('398648',); alias=default
+[2025-09-23 05:21:24,316] DEBUG utils (0.002) SELECT 1 AS `a` FROM `vehicles` WHERE `vehicles`.`client_id` = 15100 LIMIT 1; args=(1, 15100); alias=default
+[2025-09-23 05:21:24,319] DEBUG utils (0.001) SELECT `vehicles`.`vehicle_id`, `vehicles`.`client_id`, `vehicles`.`vehicle_name`, `vehicles`.`vehicle_rego` FROM `vehicles` WHERE `vehicles`.`client_id` = 15100; args=(15100,); alias=default
+[2025-09-23 05:21:24,320] INFO views ensure_manager_running called for UID 398648
+[2025-09-23 05:21:24,321] INFO views manager_running=0 for UID 398648 before updating
+[2025-09-23 05:21:24,321] INFO views manager_running is not '1', so we'll queue the manager task for UID 398648
+[2025-09-23 05:21:24,324] INFO views Vehicles update enqueued for UID 398648.
+[2025-09-23 05:21:35,254] DEBUG utils (0.000) SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED; args=None; alias=default
+[2025-09-23 05:21:35,255] DEBUG utils (0.001) SELECT `console`.`uid`, `console`.`crc_auth`, `console`.`crc_driver`, `console`.`crc_vehicle`, `console`.`crc_tank`, `console`.`crc_pumps` FROM `console` WHERE `console`.`uid` = '398648' LIMIT 21; args=('398648',); alias=default
+[2025-09-23 05:21:35,257] DEBUG utils (0.000) SELECT 1 AS `a` FROM `Tanks` WHERE `Tanks`.`uid` = '398648' LIMIT 1; args=(1, '398648'); alias=default
+[2025-09-23 05:21:35,259] DEBUG utils (0.001) SELECT `Tanks`.`uid`, `Tanks`.`tank_gauge_id`, `Tanks`.`tank_id`, `Tanks`.`capacity`, `Tanks`.`product_id`, `Tanks`.`chart_id`, `Tanks`.`offset_tank`, `Tanks`.`current_volume`, `Tanks`.`dipr_date`, `Tanks`.`dipr_time`, `Tanks`.`recon_time`, `Products`.`product_id`, `Products`.`product_name`, `Products`.`product_density` FROM `Tanks` INNER JOIN `Products` ON (`Tanks`.`product_id` = `Products`.`product_id`) WHERE `Tanks`.`uid` = '398648'; args=('398648',); alias=default
+[2025-09-23 05:21:35,263] DEBUG utils (0.002) SELECT `alarms_config`.`alarm_id`, `alarms_config`.`uid`, `alarms_config`.`tank_id`, `alarms_config`.`crithigh_alarm`, `alarms_config`.`high_alarm`, `alarms_config`.`low_alarm`, `alarms_config`.`critlow_alarm` FROM `alarms_config` WHERE (`alarms_config`.`tank_id` = 1 AND `alarms_config`.`uid` = '398648') LIMIT 21; args=(1, '398648'); alias=default
+[2025-09-23 05:21:35,264] WARNING log Bad Request: /vmi/cs_fms/update_tg/
+[2025-09-23 05:21:46,712] INFO views ensure_manager_running called for UID 398648
+[2025-09-23 05:21:46,713] INFO views manager_running=0 for UID 398648 before updating
+[2025-09-23 05:21:46,713] INFO views manager_running is not '1', so we'll queue the manager task for UID 398648
