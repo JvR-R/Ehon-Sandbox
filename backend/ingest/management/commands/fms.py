@@ -188,6 +188,17 @@ def _normalize_device_id(s: str | None) -> str | None:
     return str(s).strip().replace(":", "").replace("-", "").upper() or None
 
 
+def new_mqtt_client(client_id: str, clean_session: bool = False) -> mqtt.Client:
+    """
+    Create an MQTT client compatible with paho-mqtt v1.x and v2.x.
+    """
+    kwargs = {"client_id": client_id, "clean_session": clean_session, "protocol": mqtt.MQTTv311}
+    # In paho-mqtt >= 2.0, use the classic callback API.
+    if hasattr(mqtt, "CallbackAPIVersion"):
+        kwargs["callback_api_version"] = mqtt.CallbackAPIVersion.VERSION1
+    return mqtt.Client(**kwargs)
+
+
 def configure_client(cli: mqtt.Client, cfg: dict, host: str) -> None:
     """
     Apply auth and TLS settings to an already-created client.
@@ -305,10 +316,9 @@ class Command(BaseCommand):
 
         use_tls = should_use_tls(cfg, port, scheme)
 
-        cli = mqtt.Client(
+        cli = new_mqtt_client(
             client_id=cfg.get("client_name", "backend_fms_listener"),
             clean_session=False,          # keep queued QoS1/2 while offline
-            protocol=mqtt.MQTTv311,
         )
         cli.enable_logger(LOG)
 
