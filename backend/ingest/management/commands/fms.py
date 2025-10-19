@@ -334,6 +334,8 @@ class Command(BaseCommand):
             # ignore empty messages (including retained messages we cleared)
             if not msg.payload:
                 return
+            # Log ALL received messages for debugging
+            LOG.info("Received message on topic: %s", msg.topic)
             try:
                 parts = msg.topic.split("/")
                 if len(parts) >= 2 and parts[0] == "fms":
