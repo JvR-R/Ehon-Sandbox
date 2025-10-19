@@ -222,10 +222,6 @@ def dispatch(topic: str, payload: dict, client: mqtt.Client) -> None:
     Clear the retained copy ONLY AFTER the handler succeeds.
     """
     db.close_old_connections()
-    # Ignore bare device root topics like "fms/<id>" (no subtopic)
-    parts_for_root_check = topic.split("/")
-    if len(parts_for_root_check) == 2 and parts_for_root_check[0] == "fms":
-        return
     for flt, func in HANDLERS.items():
         if mqtt.topic_matches_sub(flt, topic):
             parts  = topic.split("/")
