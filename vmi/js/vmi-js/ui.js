@@ -42,8 +42,12 @@ export function buildStatusIcon(d) {
     `<div class="tooltip"><img src="/vmi/images/${f}" alt=""><span class="tooltiptext">${a}</span></div>`;
 
   if (d.flagdv == 1) return icon('flag_dv_icon.png', 'A device has been disconnected');
-  if ((!d.last_conndate && d.device_type != 999) ||
-      (d.last_conndate && Date.parse(d.last_conndate) < Date.now() - 27 * 36e5))
+  // Combine date and time for accurate last connection comparison
+  const lastConn = d.last_conndate && d.last_conntime 
+                   ? Date.parse(`${d.last_conndate} ${d.last_conntime}`)
+                   : (d.last_conndate ? Date.parse(d.last_conndate) : null);
+  if ((!lastConn && d.device_type != 999) ||
+      (lastConn && lastConn < Date.now() - 27 * 36e5))
                      return icon('console_offline.png', 'Console Offline');
   if (!d.dipr_date ||
       (Date.parse(d.dipr_date) <= Date.now() - 3 * 864e5)) {

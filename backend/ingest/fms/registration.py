@@ -42,7 +42,7 @@ def _perform_registration(serial: str, date, time, fw) -> tuple[Console, bool]:
         console, created = Console.objects.get_or_create(
             device_id=serial,
             defaults={
-                "device_type":    30,
+                "device_type":    10,
                 "console_status": "In Stock",
                 "firmware":     fw,
                 "man_data": date,
