@@ -3,6 +3,12 @@ include('../../db/dbh2.php');
 include('../../db/log.php');
 include('../../db/email_conf.php');
 
+// Check if user has admin access level (1, 4, 6, or 8)
+if (!in_array($accessLevel, [1, 4, 6, 8])) {
+    echo json_encode(['status' => 'error', 'message' => 'Unauthorized: Admin access required']);
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     $email = $data['email'];

@@ -1,7 +1,13 @@
 <?php
     include('../../db/dbh2.php');
     include('../../db/log.php');  
-    include('../../db/border.php');  
+    include('../../db/border.php');
+    
+    // Check if user has admin access level (1, 4, 6, or 8)
+    if (!in_array($accessLevel, [1, 4, 6, 8])) {
+        header("Location: /vmi/login/?restricted=1");
+        exit;
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en" title="">

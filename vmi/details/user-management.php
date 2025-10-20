@@ -11,11 +11,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Vendor Managed Inventory</title>
 
-    <!-- Your own script (if it doesn’t depend on DataTables) -->
-    <script src="script.js"></script>
-
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Toastr for notifications -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <!-- DataTables -->
     <link  rel="stylesheet"
@@ -29,6 +30,15 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="/vmi/css/style_rep.css">
     <link rel="stylesheet" href="menu.css">
+
+    <!-- Your own script (loaded after dependencies) -->
+    <script src="script.js"></script>
+    
+    <!-- Pass user access level to JavaScript -->
+    <script>
+        const USER_ACCESS_LEVEL = <?php echo isset($_SESSION['accessLevel']) ? intval($_SESSION['accessLevel']) : 0; ?>;
+        const ADMIN_LEVELS = [1, 2, 3, 4, 6, 8];
+    </script>
 </head>
 
 <body>

@@ -201,11 +201,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 usersTable.column(3).search(val ? '^'+val+'$' : '', true, false).draw();
             });
 
+        /* Check if user has admin permissions and disable submit buttons if not */
+        const isAdmin = typeof ADMIN_LEVELS !== 'undefined' && 
+                        typeof USER_ACCESS_LEVEL !== 'undefined' && 
+                        ADMIN_LEVELS.includes(USER_ACCESS_LEVEL);
+        
+        if (!isAdmin) {
+            $('.submit_delete').prop('disabled', true).css('opacity', '0.5').attr('title', 'Admin access required');
+        }
+
         /* row-level "Submit" button (class .submit_delete) */
         $(document)
             .off('click.submitDelete')
             .on('click.submitDelete', '.submit_delete', function(e){
             e.preventDefault();
+
+            // Check admin permissions
+            if (!isAdmin) {
+                toastr.error('You do not have permission to perform this action. Admin access required.');
+                return;
+            }
 
             const $row       = $(this).closest('tr');
             const username   = $row.find('input[name="edit_username"]').val();
