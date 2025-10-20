@@ -106,10 +106,7 @@ def load_cfg(path: str) -> dict:
     # Try [mqttfms] first, fall back to [mqttgateway] or [mqttbe] for shared configs
     if "mqttfms" in cfg:
         return cfg["mqttfms"]
-    elif "mqttgateway" in cfg:
-        return cfg["mqttgateway"]
-    elif "mqttbe" in cfg:
-        return cfg["mqttbe"]
+
     else:
         raise KeyError("Config file must contain either [mqttfms], [mqttgateway], or [mqttbe] section")
 
