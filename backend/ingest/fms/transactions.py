@@ -47,7 +47,7 @@ def handle(serial: str | None, payload: dict) -> None:
         with db_tx.atomic():
             Tx.objects.create(
                 uid_id            = uid,
-                fms_id            = serial,  # Use device_id as fms_id
+                fms_id            = uid,  # Use device_id as fms_id
                 transaction_date  = ts.date(),
                 transaction_time  = ts.time(),
                 card_holder_name  = data.get("driverName", ""),
