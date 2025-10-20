@@ -307,7 +307,7 @@ class Command(BaseCommand):
         cfg = load_cfg(opts["config"])
 
         raw_host = cfg.get("broker_host", "127.0.0.1")
-        raw_port = cfg.get("broker_port", 1883)
+        raw_port = cfg.get("broker_port", 8885)
         host, port, scheme = normalize_endpoint(raw_host, raw_port)
 
         use_tls = should_use_tls(cfg, port, scheme)
