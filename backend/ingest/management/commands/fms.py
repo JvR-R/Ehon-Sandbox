@@ -99,16 +99,14 @@ def get_device_logger(device_id: str) -> logging.Logger | None:
 
 
 def load_cfg(path: str) -> dict:
-    """Read [mqttfms], [mqttgateway], or [mqttbe] keys from an INI file."""
+    """Read [mqttfms] section from an INI file."""
     cfg = configparser.ConfigParser()
     if not cfg.read(path):
         raise FileNotFoundError(f"Cannot read config {path}")
-    # Try [mqttfms] first, fall back to [mqttgateway] or [mqttbe] for shared configs
     if "mqttfms" in cfg:
         return cfg["mqttfms"]
-
     else:
-        raise KeyError("Config file must contain either [mqttfms], [mqttgateway], or [mqttbe] section")
+        raise KeyError("Config file must contain [mqttfms] section")
 
 
 def normalize_endpoint(raw_host: str, raw_port) -> tuple[str, int, str | None]:

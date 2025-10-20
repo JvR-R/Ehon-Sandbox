@@ -41,13 +41,11 @@ CFG = configparser.ConfigParser()
 if not CFG.read(CONFIG_PATH):
     raise CommandError(f"Cannot read {CONFIG_PATH}")
 
-# Prefer [mqttbe]; fall back to [mqttgateway] if present.
-if "mqttbe" in CFG:
-    MQ = CFG["mqttbe"]
-elif "mqttgateway" in CFG:
-    MQ = CFG["mqttgateway"]
+# Read [mqttfms] section
+if "mqttfms" in CFG:
+    MQ = CFG["mqttfms"]
 else:
-    raise CommandError("Config must contain [mqttbe] or [mqttgateway]")
+    raise CommandError("Config must contain [mqttfms] section")
 
 # ────────────────────────────────────────────────────────────────────────────
 # Helpers: endpoint normalization + TLS setup
