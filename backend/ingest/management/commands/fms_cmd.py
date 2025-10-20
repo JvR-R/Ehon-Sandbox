@@ -149,7 +149,7 @@ def mqtt_publish(
     qos: int = 1,
     retain: bool = True,
 ) -> None:
-    """Publish a single JSON payload {cmd: value} to ``gateway/<device_id>``."""
+    """Publish a single JSON payload {cmd: value} to ``fms/<device_id>``."""
     payload = json.dumps({cmd: value})
     cli = _new_client("svc_sender")
 
@@ -160,7 +160,7 @@ def mqtt_publish(
 
     cli.loop_start()
     try:
-        info = cli.publish(f"gateway/{device_id}", payload, qos=qos, retain=retain)
+        info = cli.publish(f"fms/{device_id}", payload, qos=qos, retain=retain)
         if qos:
             info.wait_for_publish(timeout=5)
     finally:
@@ -178,7 +178,7 @@ def mqtt_publish_raw(device_id: str, payload_str: str, qos: int = 1, retain: boo
     cli.connect(host, int(port), 60)
     cli.loop_start()
     try:
-        info = cli.publish(f"gateway/{device_id}", payload_str, qos=qos, retain=retain)
+        info = cli.publish(f"fms/{device_id}", payload_str, qos=qos, retain=retain)
         if qos:
             info.wait_for_publish(timeout=5)
     finally:
@@ -198,8 +198,8 @@ def mqtt_publish_raw_and_wait(
     retain: bool = False,
 ) -> dict:
     """
-    Publish payload_str to gateway/<device_id>, then wait up to `timeout` seconds
-    for a reply on gateway/<device_id>/<resp_suffix>.
+    Publish payload_str to fms/<device_id>, then wait up to `timeout` seconds
+    for a reply on fms/<device_id>/<resp_suffix>.
 
     Returns:
       {
@@ -215,7 +215,7 @@ def mqtt_publish_raw_and_wait(
     host, port, scheme = _normalize_endpoint(MQ.get("broker_host"), MQ.get("broker_port"))
     _apply_auth_and_tls(cli, MQ, host, port, scheme)
 
-    target_topic = f"gateway/{device_id}/{resp_suffix}"
+    target_topic = f"fms/{device_id}/{resp_suffix}"
     got_evt = threading.Event()
     reply: Dict[str, Optional[str]] = {"topic": None, "payload": None}
     t0 = time.time()
@@ -238,7 +238,7 @@ def mqtt_publish_raw_and_wait(
         cli.subscribe(target_topic, qos=qos)
 
         # Publish the command
-        info = cli.publish(f"gateway/{device_id}", payload_str, qos=qos, retain=retain)
+        info = cli.publish(f"fms/{device_id}", payload_str, qos=qos, retain=retain)
         if qos:
             info.wait_for_publish(timeout=5)
 
@@ -278,7 +278,7 @@ def mqtt_publish_raw_and_wait(
 class Command(BaseCommand):
     """Django management command wrapper around :pyfunc:`mqtt_publish`."""
 
-    help = "Publish a command to gateway/<device_id> (single top-level key)."
+    help = "Publish a command to fms/<device_id> (single top-level key)."
 
     def add_arguments(self, parser):
         parser.add_argument("--device", required=True, help="Console UID, e.g. 34742A")
@@ -298,6 +298,6 @@ class Command(BaseCommand):
         self.stdout.write(
             self.style.SUCCESS(
                 f"Sent {{{opts['cmd']}:{opts['value']}}} "
-                f"to gateway/{opts['device']} (qos={opts['qos']}, retain={opts['retain']})"
+                f"to fms/{opts['device']} (qos={opts['qos']}, retain={opts['retain']})"
             )
         )
