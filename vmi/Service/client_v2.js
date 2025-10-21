@@ -418,7 +418,7 @@ $(document).ready(function () {
             <h3>Device Logs</h3>
             <div class="logs-header">
                 <p>Last 25 log entries for device: ${mac}</p>
-                <button class="button-js btn-refresh-logs" data-mac="${mac}" data-cs-type="${cs_type}">Refresh</button>
+                <button class="button-js btn-refresh-logs" data-mac="${mac}">Refresh</button>
             </div>
             <div class="logs-display" id="logs_display_${mac}" style="
                 background: #f5f5f5; 
@@ -429,7 +429,7 @@ $(document).ready(function () {
                 font-family: 'Courier New', monospace; 
                 font-size: 12px;
                 white-space: pre-wrap;
-            " data-cs-type="${cs_type}">
+            ">
                 <div class="loading">Loading logs...</div>
             </div>
         </div>
@@ -476,9 +476,8 @@ $(document).ready(function () {
         
         // Trigger logs loading when the tab is shown
         var mac = $(this).closest('tr').data('device_id') || $(this).closest('.child_details').find('.btn-refresh-logs').data('mac');
-        var cs_type = $(this).closest('tr').data('cs_type') || $(this).closest('.child_details').find('.btn-refresh-logs').data('cs-type');
         if (mac) {
-            loadDeviceLogs(mac, cs_type);
+            loadDeviceLogs(mac);
         }
     });
     
@@ -980,7 +979,7 @@ $(document).ready(function () {
         });
     }
      // Function to load device logs
-    function loadDeviceLogs(device_id, cs_type) {
+    function loadDeviceLogs(device_id) {
         var $logsDisplay = $('#logs_display_' + device_id);
         
         if ($logsDisplay.length === 0) {
@@ -988,23 +987,12 @@ $(document).ready(function () {
             return;
         }
         
-        // Determine device type based on cs_type
-        var device_type = '';
-        if (cs_type == 10) {
-            device_type = 'fms';
-        } else if (cs_type == 30) {
-            device_type = 'gateway';
-        }
-        
         $logsDisplay.html('<div class="loading">Loading logs...</div>');
         
         $.ajax({
             url: 'get_device_logs.php',
             method: 'GET',
-            data: { 
-                device_id: device_id,
-                device_type: device_type
-            },
+            data: { device_id: device_id },
             dataType: 'json',
             success: function(response) {
                 if (response.success && response.logs) {
@@ -1030,9 +1018,8 @@ $(document).ready(function () {
     // Event handler for refresh logs button
     $(document).on('click', '.btn-refresh-logs', function() {
         var device_id = $(this).data('mac');
-        var cs_type = $(this).data('cs-type');
         if (device_id) {
-            loadDeviceLogs(device_id, cs_type);
+            loadDeviceLogs(device_id);
         }
     });
 });
