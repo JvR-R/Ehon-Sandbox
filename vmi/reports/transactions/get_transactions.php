@@ -17,6 +17,9 @@ ini_set('log_errors', 1);
 // Calculate the date 30 days ago
 $time30days = date("Y-m-d", strtotime("-1 Year"));
 
+// Calculate the date 1 week in the future
+$timeOneWeekFuture = date("Y-m-d", strtotime("+1 week"));
+
 // Get page number from AJAX request
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $perPage = 100; // Number of records per page
@@ -31,7 +34,7 @@ $sql = "SELECT st.Client_id, ct.*, st.site_name, ss.description FROM `client_tra
         JOIN console cos on cos.uid = st.uid 
         JOIN stop_methods ss on ct.stop_method = ss.id
         JOIN Clients cs ON cs.client_id = st.client_id
-        WHERE device_type != 999 AND transaction_date >= '$time30days'";
+        WHERE device_type != 999 AND transaction_date >= '$time30days' AND transaction_date <= '$timeOneWeekFuture'";
 
 // Apply filters
 if (!empty($filters)) {
