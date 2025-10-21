@@ -4,7 +4,7 @@
 
 import { on, qs, postJSON, fetchJSON, allowedAcl } from './api.js';
 import { toast }                                   from './ui.js';
-import { generateFMSSections }                     from './childRow.js';
+import { generateFMSSections, invalidateRowCache } from './childRow.js';
 
 /* helper: turn “…-row-idx” id into idx number */
 const splitIdx = (elId, pos = 1) => elId.split('-')[pos];
@@ -30,6 +30,7 @@ on('click', '.button-js', async function () {
 
   try {
     await postJSON('/vmi/clients/update', data);
+    invalidateRowCache(rowIndex); // Clear cache so reopening shows fresh data
     toast('Update successful', 'success');
   } catch (e) {
     console.error(e); toast('Update failed', 'error');
@@ -78,7 +79,7 @@ on('click', '.button-js2', async function () {
         });
       });
 
-  /* port “1_1 / 1_2” alias handling */
+  /* port "1_1 / 1_2" alias handling */
   if (data.tg_port === '1_1') { data.tg_port = 1; data.tg_id = 1; }
   if (data.tg_port === '1_2') { data.tg_port = 1; data.tg_id = 2; }
 
@@ -86,7 +87,10 @@ on('click', '.button-js2', async function () {
     const r = await postJSON('/vmi/clients/update', data);
     if (r.idduplicate)      toast('Error: duplicate ID', 'error');
     else if (r.dvduplicate) toast('Port is associated to a different tank!', 'error');
-    else                    toast('Update successful!', 'success');
+    else {
+      invalidateRowCache(rowIdx); // Clear cache so reopening shows fresh data
+      toast('Update successful!', 'success');
+    }
   } catch (e) {
     console.error(e); toast('Update failed', 'error');
   }
@@ -135,6 +139,7 @@ on('click', '.button-js3', async function () {
 
   try {
     await postJSON('/vmi/clients/update', data);
+    invalidateRowCache(rowIndex); // Clear cache so reopening shows fresh data
     toast('Update successful', 'success');
   } catch (e) {
     console.error(e); toast('Update failed', 'error');

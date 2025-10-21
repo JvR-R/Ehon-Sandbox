@@ -26,6 +26,40 @@ const txCache      = Object.create(null);   // last transactions for MCS/GW
 const loaderPromise = Object.create(null);
 const ddCache = Object.create(null);  // dropdowns_config cache (by case)
 
+/* Helper function to generate unique cache key for a tank */
+function getCacheKey(nav) {
+  const uid = nav.dataset.uid;
+  const tankNo = nav.dataset.tankNo;
+  const tankDeviceId = nav.dataset.tankDeviceId;
+  const csType = nav.dataset.csType;
+  
+  let cacheKey;
+  if (csType === 'EHON_GATEWAY' && tankDeviceId) {
+    cacheKey = `${uid}-${tankDeviceId}`;
+  } else {
+    cacheKey = `${uid}-${tankNo}`;
+  }
+  
+  // console.log(`[Cache Debug] Generated cache key: ${cacheKey} for UID: ${uid}, Tank: ${tankNo}, DeviceId: ${tankDeviceId}, Type: ${csType}`);
+  return cacheKey;
+}
+
+/* Invalidate cache for a specific row */
+export function invalidateRowCache(row) {
+  const firstNavItem = document.querySelector(`.navigation-item1${row}`);
+  const nav = firstNavItem ? firstNavItem.closest('nav') : null;
+  if (!nav) return;
+  
+  const cacheKey = getCacheKey(nav);
+  // console.log(`[Cache] Invalidating cache for row ${row}, key: ${cacheKey}`);
+  
+  delete gwCfgCache[cacheKey];
+  delete chartCache[cacheKey];
+  delete tempCache[cacheKey];
+  delete txCache[cacheKey];
+  delete loaderPromise[cacheKey];
+}
+
 /* Syncing state management */
 const syncingState = Object.create(null); // Track syncing state per row
 
@@ -876,24 +910,6 @@ export function showTab(row, n) {
 /*───────────────────────────────────────────────────────────────────
   4) ONE unified loader per row
 ───────────────────────────────────────────────────────────────────*/
-
-// Helper function to generate unique cache key for a tank
-function getCacheKey(nav) {
-  const uid = nav.dataset.uid;
-  const tankNo = nav.dataset.tankNo;
-  const tankDeviceId = nav.dataset.tankDeviceId;
-  const csType = nav.dataset.csType;
-  
-  let cacheKey;
-  if (csType === 'EHON_GATEWAY' && tankDeviceId) {
-    cacheKey = `${uid}-${tankDeviceId}`;
-  } else {
-    cacheKey = `${uid}-${tankNo}`;
-  }
-  
-  // console.log(`[Cache Debug] Generated cache key: ${cacheKey} for UID: ${uid}, Tank: ${tankNo}, DeviceId: ${tankDeviceId}, Type: ${csType}`);
-  return cacheKey;
-}
 
 async function unifiedLoadOnce(row) {
   const firstNavItem = $one(`.navigation-item1${row}`);

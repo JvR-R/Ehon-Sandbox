@@ -5,7 +5,7 @@
 
 import { byId } from './api.js';
 import { toast } from './ui.js';
-import { afterTanksSaved, afterPortsSaved, setSyncingState, clearSyncingState } from './childRow.js';
+import { afterTanksSaved, afterPortsSaved, setSyncingState, clearSyncingState, invalidateRowCache } from './childRow.js';
 
 const wiredRoots = new WeakSet();
 
@@ -152,6 +152,7 @@ export function initGatewayCfg(row) {
         setSyncingState(row, true, 'Saving tank details...');
         try {
           await post('basic', { tank_number, tank_name, capacity, product_id }, btnBasic);
+          invalidateRowCache(row); // Clear cache so reopening shows fresh data
         } finally {
           clearSyncingState(row);
         }
@@ -177,9 +178,10 @@ export function initGatewayCfg(row) {
         try {
           // DB save first…
           await onClickSaveTanks(row, body);
+          invalidateRowCache(row); // Clear cache so reopening shows fresh data
           // …then console sync feedback
           // toast('Syncing console…', 'info');
-          // afterTanksSaved() already ran inside onClickSaveTanks; if no exception, we’re done
+          // afterTanksSaved() already ran inside onClickSaveTanks; if no exception, we're done
           // toast('Saved.', 'success');
         } catch (err) {
           console.error(err);
@@ -208,6 +210,7 @@ export function initGatewayCfg(row) {
 
           // 2) After save OK: poll PORTS.json and send one JSON to device
           await afterPortsSaved(row);
+          invalidateRowCache(row); // Clear cache so reopening shows fresh data
           // afterPortsSaved() handles syncing state management
 
         } catch (err) {
@@ -258,6 +261,7 @@ export function initGatewayCfg(row) {
           await post('alerts', payload, btnAlerts, { toastOnSuccess: false });
           // 2) Send only TANKS.json via MQTT (manages overlay messages/clear)
           await sendTanksOnly(row);
+          invalidateRowCache(row); // Clear cache so reopening shows fresh data
           toast('Alerts updated and sent', 'success');
         } catch (err) {
           console.error(err);
@@ -286,12 +290,13 @@ export function initGatewayCfg(row) {
       const chartEl = byId(`stchart-${row}`) || byId(`stchart_id-${row}`);
       const chart_id = chartEl ? Number(chartEl.value || 0) : 0;
 
-      // 1) Save basic WITHOUT toasting “Saved.”
+      // 1) Save basic WITHOUT toasting "Saved."
       try {
         // 1) Save basic WITHOUT toasting "Saved."
         await post('basic', { tank_number, tank_name, capacity, product_id, chart_id }, btnMerged, { toastOnSuccess: false });
         // 2) Save tanks + send command, with the new toast sequence handled in afterTanksSaved
         await onClickSaveTanks(row, { uid, tank_device_id: td, site_id: site, shape, height, width, depth, offset, chart_id });
+        invalidateRowCache(row); // Clear cache so reopening shows fresh data
       } catch (err) {
         console.error(err);
         toast(`Save/send failed: ${err.message}`, 'error');
