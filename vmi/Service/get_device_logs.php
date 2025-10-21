@@ -10,12 +10,32 @@ if (!isset($_GET['device_id']) || empty($_GET['device_id'])) {
 }
 
 $device_id = $_GET['device_id'];
-$log_dir = '/home/ehon/public_html/backend/ingest/management/logs';
-$log_file = $log_dir . '/' . $device_id . '.log';
+$device_type = isset($_GET['device_type']) ? $_GET['device_type'] : '';
+
+// Determine the correct log directory based on device type
+$base_log_dir = '/home/ehon/public_html/backend/ingest/management/logs';
+if ($device_type === 'fms') {
+    $log_file = $base_log_dir . '/fms/' . $device_id . '.log';
+} elseif ($device_type === 'gateway') {
+    $log_file = $base_log_dir . '/gateway/' . $device_id . '.log';
+} else {
+    // Fallback: try both locations
+    $fms_log = $base_log_dir . '/fms/' . $device_id . '.log';
+    $gateway_log = $base_log_dir . '/gateway/' . $device_id . '.log';
+    
+    if (file_exists($fms_log)) {
+        $log_file = $fms_log;
+    } elseif (file_exists($gateway_log)) {
+        $log_file = $gateway_log;
+    } else {
+        echo json_encode(['error' => 'Log file not found for device: ' . $device_id, 'debug' => 'Checked both fms and gateway directories']);
+        exit;
+    }
+}
 
 // Check if log file exists
 if (!file_exists($log_file)) {
-    echo json_encode(['error' => 'Log file not found for device: ' . $device_id]);
+    echo json_encode(['error' => 'Log file not found for device: ' . $device_id, 'path' => $log_file]);
     exit;
 }
 
