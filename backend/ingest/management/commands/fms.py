@@ -57,8 +57,8 @@ for lg in (LOG, ERR, TXLOG):
 EXEC = ThreadPoolExecutor(max_workers=10)
 
 
-# Per-device rotating logs under management/logs/<MAC>.log (2MB per file)
-LOG_DIR = (Path(__file__).resolve().parent.parent / "logs")
+# Per-device rotating logs under management/logs/fms/<MAC>.log (2MB per file)
+LOG_DIR = (Path(__file__).resolve().parent.parent / "logs" / "fms")
 _DEVICE_LOGGERS: dict[str, logging.Logger] = {}
 _DEVICE_LOGGERS_LOCK = threading.Lock()
 
@@ -66,7 +66,7 @@ _DEVICE_LOGGERS_LOCK = threading.Lock()
 def get_device_logger(device_id: str) -> logging.Logger | None:
     """
     Return a logger for the given device id (MAC/serial) that writes to
-    management/logs/<ID>.log with size-based rotation (2MB, 5 backups).
+    management/logs/fms/<ID>.log with size-based rotation (1MB, 5 backups).
     Colons and dashes are removed; ID is uppercased.
     """
     if not device_id:
