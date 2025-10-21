@@ -33,7 +33,7 @@ SELECT
     CASE
         WHEN cos.dv_flag = 1 THEN 1
         WHEN ((cos.last_conndate IS NULL AND cos.device_type <> 999)
-              OR (cos.last_conndate IS NOT NULL AND TIMESTAMP(cos.last_conndate, cos.last_conntime) <= NOW() - INTERVAL 2 DAY)) THEN 2
+              OR (cos.last_conndate IS NOT NULL AND TIMESTAMP(cos.last_conndate, cos.last_conntime) <= NOW() - INTERVAL 27 HOUR)) THEN 2
         -- Skipped devices: make sure they sort after all real statuses
         WHEN ((cos.device_type = 30 AND COALESCE(ceg.probe_conn, 0) = 0)
               OR (cos.device_type = 20 AND (cos.UART1 IS NULL OR cos.UART1 = '0' OR cos.UART1 = 0))) THEN 99

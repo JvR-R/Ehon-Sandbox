@@ -216,10 +216,10 @@ $(document).ready(function () {
             '<nav class="nav-items" role="navigation">' +
             '<button class="navigation-item1' + rowIndex + '">Information</button>' +
             '<button class="navigation-item4' + rowIndex + '">Flags</button>' +
-            '<button class="navigation-item2' + rowIndex + '">FMS</button>' +
+            (cs_type == 10 ? '<button class="navigation-item2' + rowIndex + '">FMS</button>' : '') +
             '<button class="navigation-item3' + rowIndex + '">Transaction</button>' +
-            '<button class="navigation-item5' + rowIndex + '">Gateway</button>' +
-            (cs_type == 30 ? '<button class="navigation-item6' + rowIndex + '">Logs</button>' : '') +
+            (cs_type == 30 ? '<button class="navigation-item5' + rowIndex + '">Gateway</button>' : '') +
+            (cs_type == 30 || cs_type == 10 ? '<button class="navigation-item6' + rowIndex + '">Logs</button>' : '') +
             '</nav>'
         );
 
