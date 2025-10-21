@@ -1339,6 +1339,14 @@ function applyGatewayConfig(api, row, nav) {
     if (dl) dl.innerHTML = `Estimated days left: <strong>${rem}</strong>`;
   }
 
+  // Populate Information tab fields (email, vol_alert, alert_type)
+  if (api.mail != null) setVal(`email-${row}`, api.mail);
+  if (api.volal != null) setVal(`vol_alert-${row}`, api.volal);
+  if (api.volal_type != null) {
+    const alertTypeSel = byId(`alert_type-${row}`);
+    if (alertTypeSel) alertTypeSel.value = api.volal_type;
+  }
+
   ['.button-gwsave', '.button-gwports'].forEach(sel => {
     const btn = document.querySelector(`.tank_info${row} ${sel}`);
     if (btn) btn.disabled = false;

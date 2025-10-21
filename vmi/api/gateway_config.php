@@ -35,6 +35,20 @@ try {
   // Ports (device-level from console)
   $ports = get_ports($pdo, $uid);
 
+  // Fetch site-level info (email, alert settings)
+  $siteInfo = ['mail' => '', 'volal' => 0, 'volal_type' => 0];
+  try {
+    $stSite = $pdo->prepare("SELECT Email, level_alert, alert_type FROM Sites WHERE uid = :uid AND Site_id = :site_id LIMIT 1");
+    $stSite->execute([':uid' => $uid, ':site_id' => $site_id]);
+    if ($siteRow = $stSite->fetch(PDO::FETCH_ASSOC)) {
+      $siteInfo = [
+        'mail' => $siteRow['Email'] ?? '',
+        'volal' => isset($siteRow['level_alert']) ? (int)$siteRow['level_alert'] : 0,
+        'volal_type' => isset($siteRow['alert_type']) ? (int)$siteRow['alert_type'] : 0,
+      ];
+    }
+  } catch (Throwable $e) { /* continue with defaults */ }
+
   // Optional product names
   $productMap = [];
   try {
@@ -199,6 +213,9 @@ try {
     'tanks'   => $tanks,           // 4-slot array with basics + geometry + alarms
     'last_tx' => $last_tx,
     'schart'  => $schart,
+    'mail'    => $siteInfo['mail'],
+    'volal'   => $siteInfo['volal'],
+    'volal_type' => $siteInfo['volal_type'],
   ]);
   exit;
 
