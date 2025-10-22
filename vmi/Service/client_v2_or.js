@@ -122,8 +122,30 @@ $(document).ready(function () {
         alert("Error: " + (xhr.responseText || xhr.statusText)));
     });
 
+    /* Gateway Custom Command button */
+    $(document).on("click", ".btn-gw-command-custom", function () {
+    const mac = $(this).data("mac");
+    const cmmd = $("#custom_cmd_" + mac).val()?.trim();
+    
+    if (!cmmd) return alert("Enter a command");
 
-    /* helper for Django’s CSRF cookie (only needed for session auth) */
+    $.ajax({
+        url:  "/backend/gateway/command/",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+        device_id: mac,
+        payload_raw: cmmd   // Send custom command from input
+        }),
+        headers: { "X-CSRFToken": getCookie("csrftoken") }
+    })
+    .done(() => alert(cmmd + " Command sent"))
+    .fail(xhr =>
+        alert("Error: " + (xhr.responseText || xhr.statusText)));
+    });
+
+
+    /* helper for Django's CSRF cookie (only needed for session auth) */
     function getCookie(name) {
     const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
     return match ? decodeURIComponent(match[2]) : null;
@@ -161,6 +183,17 @@ $(document).ready(function () {
 
 
 
+    // Helper function to get CS Type friendly name
+    function getCSTypeName(cs_type) {
+        const csTypeMap = {
+            20: 'Ehon - Link',
+            30: 'Ehon - Gateway',
+            200: 'MCS - Lite',
+            201: 'MCS - PRO'
+        };
+        return csTypeMap[cs_type] || cs_type; // Return the friendly name or the number if not found
+    }
+
     // Format the row details content
     function format(data, uid, cs_type, site_id, client_id, rowIndex, dbdata) {
         var menuContainer = $('<div class="menu_items"></div>'); // Create a container to hold the details
@@ -183,10 +216,10 @@ $(document).ready(function () {
             '<nav class="nav-items" role="navigation">' +
             '<button class="navigation-item1' + rowIndex + '">Information</button>' +
             '<button class="navigation-item4' + rowIndex + '">Flags</button>' +
-            '<button class="navigation-item2' + rowIndex + '">FMS</button>' +
+            (cs_type == 10 ? '<button class="navigation-item2' + rowIndex + '">FMS</button>' : '') +
             '<button class="navigation-item3' + rowIndex + '">Transaction</button>' +
-            '<button class="navigation-item5' + rowIndex + '">Gateway</button>' +
-            (cs_type == 30 ? '<button class="navigation-item6' + rowIndex + '">Logs</button>' : '') +
+            (cs_type == 30 ? '<button class="navigation-item5' + rowIndex + '">Gateway</button>' : '') +
+            (cs_type == 30 || cs_type == 10 ? '<button class="navigation-item6' + rowIndex + '">Logs</button>' : '') +
             '</nav>'
         );
 
@@ -202,7 +235,7 @@ $(document).ready(function () {
                 <div class="existing-info" style="margin-right: 5rem;">
                     <div class="info_text">
                         <div><p><strong>Serial:</strong> ${uid}${mac}</p></div>  
-                        <div><p><strong>CS Type:</strong> ${cs_type}</p></div>
+                        <div><p><strong>CS Type:</strong> ${getCSTypeName(cs_type)}</p></div>
                         <div><p><strong>Site ID:</strong> ${site_id}</p></div>          
                         <div><p><strong>Firmware:</strong> ${firmware}</p></div>      
                         <div><p><strong>IMEI:</strong> ${console_imei}</p></div>      
@@ -244,7 +277,7 @@ $(document).ready(function () {
         const existingInfoDivhtml = `
             <div class="existing-info">
                 <div class="info_text">
-                    <div><p><strong>CS Type:</strong> ${cs_type}</p></div>
+                    <div><p><strong>CS Type:</strong> ${getCSTypeName(cs_type)}</p></div>
                     <div><p><strong>Site ID:</strong> ${site_id}</p></div>            
                 </div>
                 <button class="button-js btn-lock" data-uid="${uid}">Lock</button>
@@ -345,22 +378,33 @@ $(document).ready(function () {
         var gatewayContainer = $('<div class="gwinfo"></div>');
         var logsContainer = $('<div class="logsinfo" style="display:none;"></div>');
         var gwHtml = `
-        <div class="gw-actions">
-            <h3>Gateway actions</h3>
-            <label><strong>Firmware file:</strong></label>
-            <input type="text" id="fw_file_${mac}" placeholder="gw_v2.3.bin">
-            <button class="button-js btn-fw-upgrade" data-mac="${mac}">Send</button>
-        </div>
-        <div class="sc-actions">
-            <h3>Chart actions</h3>
-            <label><strong>Chart file:</strong></label>
-            <input type="text" id="sc_file_${mac}" placeholder="sc_v2.3.json">
-            <button class="button-js btn-SC-upgrade" data-mac="${mac}">Send</button>
+        <div class="gw-actions-container" style="display: flex; gap: 20px;">
+            <div class="gw-actions-left" style="flex: 1; display: flex; flex-direction: column;">
+                <div class="gw-actions" style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
+                    <h3 style="margin-top: 0;">Gateway actions</h3>
+                    <label><strong>Firmware file:</strong></label>
+                    <input type="text" id="fw_file_${mac}" placeholder="gw_v2.3.bin" style="width: 100%; padding: 5px; margin: 5px 0;">
+                    <button class="button-js btn-fw-upgrade" data-mac="${mac}">Send</button>
+                </div>
+                <div class="sc-actions" style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
+                    <h3 style="margin-top: 0;">Chart actions</h3>
+                    <label><strong>Chart file:</strong></label>
+                    <input type="text" id="sc_file_${mac}" placeholder="sc_v2.3.json" style="width: 100%; padding: 5px; margin: 5px 0;">
+                    <button class="button-js btn-SC-upgrade" data-mac="${mac}">Send</button>
+                </div>
+            </div>
+            <div class="custom-cmd-actions" style="flex: 1; background: #e8f5e9; padding: 15px; border-radius: 5px; max-height: 10rem;">
+                <h3 style="margin-top: 0;">Custom Command</h3>
+                <label><strong>Command:</strong></label>
+                <input type="text" id="custom_cmd_${mac}" placeholder="Enter command" style="width: 100%; padding: 5px; margin: 5px 0;">
+                <button class="button-js btn-gw-command-custom" data-mac="${mac}">Send</button>
+            </div>
         </div>
         <div class="cmd-buttons">
             <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'RESTART'}">Restart</button>
             <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'PING'}">Ping</button>
-            <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'DIP'}">DIP</button>
+            <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'DIPS'}">DIPS</button>
+            <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'STATUS'}">STATUS</button>
             <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'FORMAT'}">Format</button>
             <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'ROLLBACKFW'}">ROLLBACKFW</button>
             <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'UPDATEFW'}">UPDATEFW</button>
@@ -373,8 +417,8 @@ $(document).ready(function () {
         <div class="logs-content">
             <h3>Device Logs</h3>
             <div class="logs-header">
-                <p>Last 15 log entries for device: ${mac}</p>
-                <button class="button-js btn-refresh-logs" data-mac="${mac}">Refresh</button>
+                <p>Last 25 log entries for device: ${mac}</p>
+                <button class="button-js btn-refresh-logs" data-mac="${mac}" data-cs-type="${cs_type}">Refresh</button>
             </div>
             <div class="logs-display" id="logs_display_${mac}" style="
                 background: #f5f5f5; 
@@ -385,7 +429,7 @@ $(document).ready(function () {
                 font-family: 'Courier New', monospace; 
                 font-size: 12px;
                 white-space: pre-wrap;
-            ">
+            " data-cs-type="${cs_type}">
                 <div class="loading">Loading logs...</div>
             </div>
         </div>
@@ -432,8 +476,9 @@ $(document).ready(function () {
         
         // Trigger logs loading when the tab is shown
         var mac = $(this).closest('tr').data('device_id') || $(this).closest('.child_details').find('.btn-refresh-logs').data('mac');
+        var cs_type = $(this).closest('tr').data('cs_type') || $(this).closest('.child_details').find('.btn-refresh-logs').data('cs-type');
         if (mac) {
-            loadDeviceLogs(mac);
+            loadDeviceLogs(mac, cs_type);
         }
     });
     
@@ -934,4 +979,60 @@ $(document).ready(function () {
             data: { uid: uid }
         });
     }
+     // Function to load device logs
+    function loadDeviceLogs(device_id, cs_type) {
+        var $logsDisplay = $('#logs_display_' + device_id);
+        
+        if ($logsDisplay.length === 0) {
+            console.error('Logs display element not found for device:', device_id);
+            return;
+        }
+        
+        // Determine device type based on cs_type
+        var device_type = '';
+        if (cs_type == 10) {
+            device_type = 'fms';
+        } else if (cs_type == 30) {
+            device_type = 'gateway';
+        }
+        
+        $logsDisplay.html('<div class="loading">Loading logs...</div>');
+        
+        $.ajax({
+            url: 'get_device_logs.php',
+            method: 'GET',
+            data: { 
+                device_id: device_id,
+                device_type: device_type
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success && response.logs) {
+                    if (response.logs.length === 0) {
+                        $logsDisplay.html('<div class="no-logs">No logs found for this device.</div>');
+                    } else {
+                        var logsText = response.logs.join('\n');
+                        $logsDisplay.html(logsText);
+                        // Scroll to bottom to show most recent logs
+                        $logsDisplay.scrollTop($logsDisplay[0].scrollHeight);
+                    }
+                } else {
+                    $logsDisplay.html('<div class="error">Error: ' + (response.error || 'Failed to load logs') + '</div>');
+                }
+            },
+            error: function(xhr, status, error) {
+                $logsDisplay.html('<div class="error">Error loading logs: ' + error + '</div>');
+                console.error('AJAX Error:', xhr.responseText);
+            }
+        });
+    }
+
+    // Event handler for refresh logs button
+    $(document).on('click', '.btn-refresh-logs', function() {
+        var device_id = $(this).data('mac');
+        var cs_type = $(this).data('cs-type');
+        if (device_id) {
+            loadDeviceLogs(device_id, cs_type);
+        }
+    });
 });
