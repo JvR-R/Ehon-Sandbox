@@ -280,12 +280,6 @@ $(document).ready(function () {
                     <input type="text" id="fms_fw_file_${uid}" placeholder="fms_v2.3.bin" style="width: 100%; padding: 5px; margin: 5px 0;">
                     <button class="button-js btn-fms-fw-upgrade" data-uid="${uid}">Send</button>
                 </div>
-                <div class="fms-chart-actions" style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
-                    <h3 style="margin-top: 0;">FMS Chart</h3>
-                    <label><strong>Chart file:</strong></label>
-                    <input type="text" id="fms_chart_file_${uid}" placeholder="fms_chart_v2.3.json" style="width: 100%; padding: 5px; margin: 5px 0;">
-                    <button class="button-js btn-fms-chart-upgrade" data-uid="${uid}">Send</button>
-                </div>
             </div>
             <div class="fms-custom-cmd-actions" style="flex: 1; background: #e8f5e9; padding: 15px; border-radius: 5px; max-height: 10rem;">
                 <h3 style="margin-top: 0;">Custom Command</h3>
@@ -297,7 +291,7 @@ $(document).ready(function () {
         <div class="fms-cmd-buttons">
             <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'RESTART'}">Restart</button>
             <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'PING'}">Ping</button>
-            <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'STATUS'}">STATUS</button>
+            <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'STATE'}">STATUS</button>
             <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'LOCK'}">Lock</button>
             <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'UNLOCK'}">Unlock</button>
         </div>
@@ -1035,29 +1029,6 @@ $(document).ready(function () {
             alert("Error: " + (xhr.responseText || xhr.statusText)));
     });
 
-    /* FMS Chart upgrade button */
-    $(document).on("click", ".btn-fms-chart-upgrade", function () {
-        const uid = $(this).data("uid");
-        const file = $("#fms_chart_file_" + uid).val()?.trim();
-        if (!file) return alert("Enter a file name");
-
-        const url = `https://ehon.com.au/api-v1/download.php?f=Charts/${encodeURI(file)}`;
-
-        $.ajax({
-            url: "/backend/fms/command/",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-                uid: uid,
-                cmd: "chart",
-                value: url
-            }),
-            headers: { "X-CSRFToken": getCookie("csrftoken") }
-        })
-        .done(() => alert("FMS Chart command sent"))
-        .fail(xhr =>
-            alert("Error: " + (xhr.responseText || xhr.statusText)));
-    });
 
     /* FMS Command button */
     $(document).on("click", ".btn-fms-command", function () {
