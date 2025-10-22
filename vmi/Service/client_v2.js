@@ -270,7 +270,7 @@ $(document).ready(function () {
 
 
         // FMS Tab Content - Similar to Gateway Tab ***********************************************
-        var fmsContainer = $('<div class="fmsinfo" style="display:none;"></div>');
+        var fmsContainer = $('<div class="fmsinfo"></div>');
         var fmsHtml = `
         <div class="fms-actions-container" style="display: flex; gap: 20px;">
             <div class="fms-actions-left" style="flex: 1; display: flex; flex-direction: column;">
