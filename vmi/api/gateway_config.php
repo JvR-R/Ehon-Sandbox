@@ -65,8 +65,8 @@ try {
       a.critlow_alarm,
       IFNULL(a.alarm_enable,0)        AS alarm_enable,
       s.Email                         AS mail,
-      s.level_alert                   AS volal,
-      s.alert_type                    AS volal_type
+      t.level_alert                   AS volal,
+      t.alert_type                    AS volal_type
     FROM tanks t
     LEFT JOIN config_ehon_gateway g
       ON g.uid = t.uid AND g.tank_id = t.tank_id
