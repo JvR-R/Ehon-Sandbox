@@ -289,11 +289,12 @@ export function initGatewayCfg(row) {
       const offset = Number(byId(`offsetgw-${row}`)?.value || 0);
       const chartEl = byId(`stchart-${row}`) || byId(`stchart_id-${row}`);
       const chart_id = chartEl ? Number(chartEl.value || 0) : 0;
+      const no_tg = byId(`no_tg-${row}`)?.checked ? 1 : 0;
 
       // 1) Save basic WITHOUT toasting "Saved."
       try {
         // 1) Save basic WITHOUT toasting "Saved."
-        await post('basic', { tank_number, tank_name, capacity, product_id, chart_id }, btnMerged, { toastOnSuccess: false });
+        await post('basic', { tank_number, tank_name, capacity, product_id, chart_id, no_tg }, btnMerged, { toastOnSuccess: false });
         // 2) Save tanks + send command, with the new toast sequence handled in afterTanksSaved
         await onClickSaveTanks(row, { uid, tank_device_id: td, site_id: site, shape, height, width, depth, offset, chart_id });
         invalidateRowCache(row); // Clear cache so reopening shows fresh data

@@ -73,7 +73,7 @@ include('../../db/border.php');
                                 <select class="small-dropdown-toggle" name="timezone" id="timezone" required>
                                     <option value="0">Select your Timezone</option>
                                     <?php
-                                            $timez = "SELECT id, time_zone, utc_offset FROM `timezones` ORDER BY time_zone ASC";                                           
+                                            $timez = "SELECT id, time_zone, example_city, utc_offset FROM `timezones` ORDER BY utc_offset ASC";                                           
                                             $stmt = $conn->prepare($timez);
                                             $stmt->execute();
                                         
@@ -81,10 +81,11 @@ include('../../db/border.php');
                                             $bound_uid = null;
                                             $bound_deviceid = null;
                                             $bound_console_status = null;
-                                            $stmt->bind_result($id, $city, $utc); 
+                                            $bound_example_city = null;
+                                            $stmt->bind_result($id, $timezone_name, $example_city, $utc); 
                                         
                                             while ($stmt->fetch()) {                                             
-                                                echo '<option value="' . htmlspecialchars($id) . '" ' . $selected . '>' . htmlspecialchars($city) . ' ( ' . htmlspecialchars($utc) . ' )</option>';                                    
+                                                echo '<option value="' . htmlspecialchars($id) . '" ' . $selected . '>' . htmlspecialchars($timezone_name) . ' - ' . htmlspecialchars($example_city) . ' ( ' . htmlspecialchars($utc) . ' )</option>';                                    
                                             }
                                             echo '<option value="add">Add a console</option>';
                                             $stmt->close();

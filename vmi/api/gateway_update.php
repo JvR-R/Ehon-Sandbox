@@ -93,6 +93,7 @@ function write_tanks_json(PDO $pdo, int $uid, int $site_id): void {
       IFNULL(t.enabled, 0)            AS enabled,
       IFNULL(t.product_id, 0)         AS product_id,
       IFNULL(t.chart_id, 0)           AS chart_id,
+      IFNULL(t.tank_gauge_type, 0)    AS tank_gauge_type,
       g.shape,
       g.height,
       g.width,
@@ -120,6 +121,7 @@ function write_tanks_json(PDO $pdo, int $uid, int $site_id): void {
       1                               AS enabled,   -- default to enabled when column absent
       IFNULL(t.product_id, 0)         AS product_id,
       IFNULL(t.chart_id, 0)           AS chart_id,
+      IFNULL(t.tank_gauge_type, 0)    AS tank_gauge_type,
       g.shape,
       g.height,
       g.width,
@@ -181,7 +183,13 @@ function write_tanks_json(PDO $pdo, int $uid, int $site_id): void {
     $depth   = isset($r['depth'])  ? (float)$r['depth']  : 0.0;
     $offset  = isset($r['offset']) ? (float)$r['offset'] : 0.0;
     $rawBias = isset($r['raw_bias_counts']) ? (float)$r['raw_bias_counts'] : 0.0;
+    $tankGaugeType = isset($r['tank_gauge_type']) ? (int)$r['tank_gauge_type'] : 0;
+    
+    // If tank_gauge_type is 999 (No TG), override enabled to false
     $enabled = !empty($r) ? ((int)$r['enabled'] === 1) : false;
+    if ($tankGaugeType === 999) {
+      $enabled = false;
+    }
 
     $prodId  = isset($r['product_id']) ? (int)$r['product_id'] : 0;
     $product = $pmap[$prodId] ?? 'UNKNOWN';
@@ -322,16 +330,21 @@ try {
       $capacity   = (float)($body['capacity']  ?? 0);
       $product_id = (int)($body['product_id']  ?? 0);
       $chart_id   = isset($body['chart_id']) ? (int)$body['chart_id'] : 0; // 0 => NULL
+      $no_tg      = isset($body['no_tg']) ? (int)$body['no_tg'] : 0;
 
       if (!$uid || !$site_id || !$tank_no) {
         throw new RuntimeException('uid, site_id and tank_no are required');
       }
 
+      // If no_tg is checked, set tank_gauge_type to 999, otherwise set to NULL
+      $tank_gauge_type = $no_tg ? 999 : null;
+
       $sql = "UPDATE tanks
                  SET Tank_name = :name,
                      capacity  = :cap,
                      product_id= :pid,
-                     chart_id  = :chart_id
+                     chart_id  = :chart_id,
+                     tank_gauge_type = :tank_gauge_type
                WHERE uid      = :uid
                  AND Site_id  = :site_id
                  AND tank_id  = :tank_no";
@@ -342,6 +355,7 @@ try {
         ':cap'     => $capacity,
         ':pid'     => $product_id,
         ':chart_id'=> ($chart_id ?: null),
+        ':tank_gauge_type' => $tank_gauge_type,
         ':uid'     => $uid,
         ':site_id' => $site_id,
         ':tank_no' => $tank_no

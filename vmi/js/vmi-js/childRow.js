@@ -714,6 +714,8 @@ export function buildChild(d, ctx) {
                   <label>Strapping Chart:</label>
                   <select class="recip" id="stchart-${row}" name="chart">
                   </select>
+                  <label>No TG:</label>
+                  <input type="checkbox" id="no_tg-${row}" name="no_tg" style="width:auto;margin-top:5px;">
                 </div>
                 <div style="display: grid; grid-template-columns: 0.82fr 1fr;">
                   <label>Tank Shape:</label>
@@ -1318,6 +1320,13 @@ function applyGatewayConfig(api, row, nav) {
 
   const chartSel = byId(`stchart-${row}`) || byId(`stchart_id-${row}`);
   if (chartSel && t.chart_id != null) chartSel.value = String(t.chart_id);
+  
+  // Set No TG checkbox based on tank_gauge_type
+  const noTgCheckbox = byId(`no_tg-${row}`);
+  if (noTgCheckbox && t.tank_gauge_type != null) {
+    noTgCheckbox.checked = (Number(t.tank_gauge_type) === 999);
+  }
+  
   wireChartDisable(row);  // disable/enable geometry based on chart selection
 
   if (r.mindex_0    != null) setVal(`mindex_0-${row}`,   r.mindex_0);

@@ -292,6 +292,7 @@ $(document).ready(function () {
             <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'RESTART'}">Restart</button>
             <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'PING'}">Ping</button>
             <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'STATE'}">STATE</button>
+            <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'ENV'}">ENV</button>
             <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'LOCK'}">Lock</button>
             <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'UNLOCK'}">Unlock</button>
         </div>
@@ -374,6 +375,7 @@ $(document).ready(function () {
             <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'PING'}">Ping</button>
             <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'DIPS'}">DIPS</button>
             <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'STATUS'}">STATUS</button>
+            <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'ENV'}">ENV</button>
             <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'FORMAT'}">Format</button>
             <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'ROLLBACKFW'}">ROLLBACKFW</button>
             <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'UPDATEFW'}">UPDATEFW</button>

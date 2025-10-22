@@ -54,6 +54,7 @@ try {
       IFNULL(t.product_id,0)          AS product_id,
       IFNULL(t.enabled,1)             AS enabled,       -- default enabled if column missing
       IFNULL(t.chart_id,0)            AS chart_id,
+      IFNULL(t.tank_gauge_type,0)     AS tank_gauge_type,
       g.shape,
       g.height,
       g.width,
@@ -120,6 +121,7 @@ try {
       'product'   => $product,
       'enabled'   => !empty($r) ? ((int)$r['enabled'] === 1) : false,
       'chart_id'   => isset($r['chart_id']) ? (int)$r['chart_id'] : 0,
+      'tank_gauge_type' => isset($r['tank_gauge_type']) ? (int)$r['tank_gauge_type'] : 0,
       'geometry'  => [
         'shape'   => isset($r['shape']) ? (int)$r['shape'] : 2,  // 0=Vert,1=Horiz,2=Rect default
         'height'  => isset($r['height']) ? (float)$r['height'] : 0,
