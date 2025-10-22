@@ -23,7 +23,7 @@ if($accessLevel !== 1){
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="datatables.min.js"></script>
-  <script src="client_v2.js"></script>
+  <script src="client_v2.js?v=<?php echo time(); ?>"></script>
 </head>
 <body>
   <main class="table">
