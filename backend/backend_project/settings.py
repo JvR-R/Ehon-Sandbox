@@ -28,6 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "ehon.com.au",
     "www.ehon.com.au",   # if you serve both
+    "ehonenergy.com.au",
+    "www.ehonenergy.com.au",
 ]
 
 
