@@ -291,7 +291,7 @@ $(document).ready(function () {
         <div class="fms-cmd-buttons">
             <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'RESTART'}">Restart</button>
             <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'PING'}">Ping</button>
-            <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'STATE'}">STATUS</button>
+            <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'STATE'}">STATE</button>
             <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'LOCK'}">Lock</button>
             <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'UNLOCK'}">Unlock</button>
         </div>
