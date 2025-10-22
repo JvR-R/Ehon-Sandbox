@@ -269,66 +269,41 @@ $(document).ready(function () {
         infoContainer.append(infoDiv);
 
 
-        // Info HTML Display ***********************************************
-        var fmsinfodiv = document.createElement('div');
-        fmsinfodiv.className = 'left-info';
-
-        // First Division: Existing Info and Lock/Unlock Buttons
-        const existingInfoDivhtml = `
-            <div class="existing-info">
-                <div class="info_text">
-                    <div><p><strong>CS Type:</strong> ${getCSTypeName(cs_type)}</p></div>
-                    <div><p><strong>Site ID:</strong> ${site_id}</p></div>            
+        // FMS Tab Content - Similar to Gateway Tab ***********************************************
+        var fmsContainer = $('<div class="fmsinfo"></div>');
+        var fmsHtml = `
+        <div class="fms-actions-container" style="display: flex; gap: 20px;">
+            <div class="fms-actions-left" style="flex: 1; display: flex; flex-direction: column;">
+                <div class="fms-actions" style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
+                    <h3 style="margin-top: 0;">FMS Firmware</h3>
+                    <label><strong>Firmware file:</strong></label>
+                    <input type="text" id="fms_fw_file_${uid}" placeholder="fms_v2.3.bin" style="width: 100%; padding: 5px; margin: 5px 0;">
+                    <button class="button-js btn-fms-fw-upgrade" data-uid="${uid}">Send</button>
                 </div>
-                <button class="button-js btn-lock" data-uid="${uid}">Lock</button>
-                <button class="button-js btn-unlock" data-uid="${uid}">Unlock</button>
-                <button class="button-js btn-tanks" data-uid="${uid}">Tanks</button>
-            </div>
-            <div>
-                <button class="button-js btn-tag-update" data-uid="${uid}" data-client_id="${client_id}" data-site_id="${site_id}">Tags</button>
-                <button class="button-js btn-vehicle-update" data-uid="${uid}" data-client_id="${client_id}" data-site_id="${site_id}">Vehicles</button>
-                <button class="button-js btn-driver-update" data-uid="${uid}" data-client_id="${client_id}" data-site_id="${site_id}">Drivers</button>
-            </div>
-            <button class="button-js btn-tg-update" data-uid="${uid}" data-client_id="${client_id}" data-site_id="${site_id}">Tank Gauge</button>
-            <button class="button-js btn-pumps" data-uid="${uid}">Pumps</button>
-            <button class="button-js btn-state" data-uid="${uid}">State</button>
-        `;
-
-        // Create a div for the existing information
-        var existinginfo = document.createElement('div');
-        existinginfo.className = 'existing-info';
-        existinginfo.innerHTML = existingInfoDivhtml;
-        // Append both divisions to the infoDiv
-        fmsinfodiv.append(existinginfo);
-
-        // Append the entire infoDiv to the detailsContainer
-        detailsContainer.append(fmsinfodiv);
-
-        var infoChart = document.createElement('div');
-        infoChart.className = 'right-info';
-         // Second Division: Inputs for Tank and Pulse Rate, and Update Button
-        const additionalInfoDivhtml = `
-            <div class="additional-info">
-                <div class="info_text">
-                    <div>
-                        <label for="tank_input_${uid}"><strong>Pump:</strong></label>
-                        <input class="input" type="text" id="tank_input_${uid}" name="tank" value="">
-                    </div>
-                    <div>
-                        <label for="pulse_rate_input_${uid}"><strong>Pulse Rate:</strong></label>
-                        <input class="input" type="text" id="pulse_rate_input_${uid}" name="pulse_rate" value="">
-                    </div>
+                <div class="fms-chart-actions" style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
+                    <h3 style="margin-top: 0;">FMS Chart</h3>
+                    <label><strong>Chart file:</strong></label>
+                    <input type="text" id="fms_chart_file_${uid}" placeholder="fms_chart_v2.3.json" style="width: 100%; padding: 5px; margin: 5px 0;">
+                    <button class="button-js btn-fms-chart-upgrade" data-uid="${uid}">Send</button>
                 </div>
-                <button class="button-js btn-pulse-update" id="pulse_upd" data-uid="${uid}">Update</button>
             </div>
+            <div class="fms-custom-cmd-actions" style="flex: 1; background: #e8f5e9; padding: 15px; border-radius: 5px; max-height: 10rem;">
+                <h3 style="margin-top: 0;">Custom Command</h3>
+                <label><strong>Command:</strong></label>
+                <input type="text" id="fms_custom_cmd_${uid}" placeholder="Enter command" style="width: 100%; padding: 5px; margin: 5px 0;">
+                <button class="button-js btn-fms-command-custom" data-uid="${uid}">Send</button>
+            </div>
+        </div>
+        <div class="fms-cmd-buttons">
+            <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'RESTART'}">Restart</button>
+            <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'PING'}">Ping</button>
+            <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'STATUS'}">STATUS</button>
+            <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'LOCK'}">Lock</button>
+            <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'UNLOCK'}">Unlock</button>
+        </div>
         `;
-
-        // Create a div for the additional information
-        var additionalInfoDiv = document.createElement('div');
-        additionalInfoDiv.className = 'additional-info';
-        additionalInfoDiv.innerHTML = additionalInfoDivhtml;
-        infoChart.append(additionalInfoDiv);
-        detailsContainer.append(infoChart);
+        fmsContainer.html(fmsHtml);
+        detailsContainer.append(fmsContainer);
 
         // Build contents of tinfo (Transaction tab)
         var transactionContent = document.createElement('div');
@@ -437,7 +412,7 @@ $(document).ready(function () {
         logsContainer.html(logsHtml);
 
         // Append all elements to child_details
-        child_details.append(menuContainer, infoContainer, detailsContainer, transactionContainer, controlContainer, gatewayContainer, logsContainer);
+        child_details.append(menuContainer, infoContainer, fmsContainer, transactionContainer, controlContainer, gatewayContainer, logsContainer);
         return child_details;
     }
 
@@ -445,33 +420,33 @@ $(document).ready(function () {
     $(document).on('click', 'button[class^="navigation-item1"]', function () {
         var $childDetails = $(this).closest('.child_details');
         $childDetails.find('.binfo').show();
-        $childDetails.find('.minfo, .tinfo, .ctrlinfo, .gwinfo, .logsinfo').hide();
+        $childDetails.find('.fmsinfo, .tinfo, .ctrlinfo, .gwinfo, .logsinfo').hide();
     });
     $(document).on('click', 'button[class^="navigation-item2"]', function () {
         var $childDetails = $(this).closest('.child_details');
-        $childDetails.find('.minfo').show();
+        $childDetails.find('.fmsinfo').show();
         $childDetails.find('.binfo, .tinfo, .ctrlinfo, .gwinfo, .logsinfo').hide();
     });
 
     $(document).on('click', 'button[class^="navigation-item3"]', function () {
         var $childDetails = $(this).closest('.child_details');
         $childDetails.find('.tinfo').show();
-        $childDetails.find('.binfo, .minfo, .ctrlinfo, .gwinfo, .logsinfo').hide();
+        $childDetails.find('.binfo, .fmsinfo, .ctrlinfo, .gwinfo, .logsinfo').hide();
     });
     $(document).on('click', 'button[class^="navigation-item4"]', function () {
         var $childDetails = $(this).closest('.child_details');
         $childDetails.find('.ctrlinfo').show();
-        $childDetails.find('.binfo, .minfo, .tinfo, .gwinfo, .logsinfo').hide();
+        $childDetails.find('.binfo, .fmsinfo, .tinfo, .gwinfo, .logsinfo').hide();
     });
     $(document).on('click', 'button[class^="navigation-item5"]', function () {
         var $child = $(this).closest('.child_details');
-        $child.find('.binfo, .minfo, .tinfo, .ctrlinfo, .logsinfo').hide();
+        $child.find('.binfo, .fmsinfo, .tinfo, .ctrlinfo, .logsinfo').hide();
         $child.find('.gwinfo').show();
     });
 
      $(document).on('click', 'button[class^="navigation-item6"]', function () {
         var $child = $(this).closest('.child_details');
-        $child.find('.binfo, .minfo, .tinfo, .ctrlinfo, .gwinfo').hide();
+        $child.find('.binfo, .fmsinfo, .tinfo, .ctrlinfo, .gwinfo').hide();
         $child.find('.logsinfo').show();
         
         // Trigger logs loading when the tab is shown
@@ -1034,5 +1009,95 @@ $(document).ready(function () {
         if (device_id) {
             loadDeviceLogs(device_id, cs_type);
         }
+    });
+
+    /* FMS Firmware upgrade button */
+    $(document).on("click", ".btn-fms-fw-upgrade", function () {
+        const uid = $(this).data("uid");
+        const file = $("#fms_fw_file_" + uid).val()?.trim();
+        if (!file) return alert("Enter a file name");
+
+        const url = `https://ehon.com.au/api-v1/download/${encodeURIComponent(file)}`;
+
+        $.ajax({
+            url: "/backend/fms/command/",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                uid: uid,
+                cmd: "fw",
+                value: url
+            }),
+            headers: { "X-CSRFToken": getCookie("csrftoken") }
+        })
+        .done(() => alert("FMS Firmware command sent"))
+        .fail(xhr =>
+            alert("Error: " + (xhr.responseText || xhr.statusText)));
+    });
+
+    /* FMS Chart upgrade button */
+    $(document).on("click", ".btn-fms-chart-upgrade", function () {
+        const uid = $(this).data("uid");
+        const file = $("#fms_chart_file_" + uid).val()?.trim();
+        if (!file) return alert("Enter a file name");
+
+        const url = `https://ehon.com.au/api-v1/download.php?f=Charts/${encodeURI(file)}`;
+
+        $.ajax({
+            url: "/backend/fms/command/",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                uid: uid,
+                cmd: "chart",
+                value: url
+            }),
+            headers: { "X-CSRFToken": getCookie("csrftoken") }
+        })
+        .done(() => alert("FMS Chart command sent"))
+        .fail(xhr =>
+            alert("Error: " + (xhr.responseText || xhr.statusText)));
+    });
+
+    /* FMS Command button */
+    $(document).on("click", ".btn-fms-command", function () {
+        const uid = $(this).data("uid");
+        const cmmd = $(this).data("cmmd");
+
+        $.ajax({
+            url: "/backend/fms/command/",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                uid: uid,
+                payload_raw: cmmd
+            }),
+            headers: { "X-CSRFToken": getCookie("csrftoken") }
+        })
+        .done(() => alert(cmmd + " Command sent"))
+        .fail(xhr =>
+            alert("Error: " + (xhr.responseText || xhr.statusText)));
+    });
+
+    /* FMS Custom Command button */
+    $(document).on("click", ".btn-fms-command-custom", function () {
+        const uid = $(this).data("uid");
+        const cmmd = $("#fms_custom_cmd_" + uid).val()?.trim();
+        
+        if (!cmmd) return alert("Enter a command");
+
+        $.ajax({
+            url: "/backend/fms/command/",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                uid: uid,
+                payload_raw: cmmd
+            }),
+            headers: { "X-CSRFToken": getCookie("csrftoken") }
+        })
+        .done(() => alert(cmmd + " Command sent"))
+        .fail(xhr =>
+            alert("Error: " + (xhr.responseText || xhr.statusText)));
     });
 });
