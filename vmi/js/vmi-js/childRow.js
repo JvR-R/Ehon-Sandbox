@@ -1339,12 +1339,12 @@ function applyGatewayConfig(api, row, nav) {
     if (dl) dl.innerHTML = `Estimated days left: <strong>${rem}</strong>`;
   }
 
-  // Populate Information tab fields (email, vol_alert, alert_type)
-  if (api.mail != null) setVal(`email-${row}`, api.mail);
-  if (api.volal != null) setVal(`vol_alert-${row}`, api.volal);
-  if (api.volal_type != null) {
+  // Populate Information tab fields (email, vol_alert, alert_type) from tank data
+  if (t.mail != null) setVal(`email-${row}`, t.mail);
+  if (t.volal != null) setVal(`vol_alert-${row}`, t.volal);
+  if (t.volal_type != null) {
     const alertTypeSel = byId(`alert_type-${row}`);
-    if (alertTypeSel) alertTypeSel.value = api.volal_type;
+    if (alertTypeSel) alertTypeSel.value = t.volal_type;
   }
 
   ['.button-gwsave', '.button-gwports'].forEach(sel => {

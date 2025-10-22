@@ -35,20 +35,6 @@ try {
   // Ports (device-level from console)
   $ports = get_ports($pdo, $uid);
 
-  // Fetch site-level info (email, alert settings)
-  $siteInfo = ['mail' => '', 'volal' => 0, 'volal_type' => 0];
-  try {
-    $stSite = $pdo->prepare("SELECT Email, level_alert, alert_type FROM Sites WHERE uid = :uid AND Site_id = :site_id LIMIT 1");
-    $stSite->execute([':uid' => $uid, ':site_id' => $site_id]);
-    if ($siteRow = $stSite->fetch(PDO::FETCH_ASSOC)) {
-      $siteInfo = [
-        'mail' => $siteRow['Email'] ?? '',
-        'volal' => isset($siteRow['level_alert']) ? (int)$siteRow['level_alert'] : 0,
-        'volal_type' => isset($siteRow['alert_type']) ? (int)$siteRow['alert_type'] : 0,
-      ];
-    }
-  } catch (Throwable $e) { /* continue with defaults */ }
-
   // Optional product names
   $productMap = [];
   try {
@@ -67,7 +53,7 @@ try {
       t.current_volume,
       IFNULL(t.product_id,0)          AS product_id,
       IFNULL(t.enabled,1)             AS enabled,       -- default enabled if column missing
-      IFNULL(t.chart_id,0)    AS chart_id,
+      IFNULL(t.chart_id,0)            AS chart_id,
       g.shape,
       g.height,
       g.width,
@@ -77,12 +63,17 @@ try {
       a.low_alarm,
       a.crithigh_alarm,
       a.critlow_alarm,
-      IFNULL(a.alarm_enable,0)        AS alarm_enable
+      IFNULL(a.alarm_enable,0)        AS alarm_enable,
+      s.Email                         AS mail,
+      s.level_alert                   AS volal,
+      s.alert_type                    AS volal_type
     FROM tanks t
     LEFT JOIN config_ehon_gateway g
       ON g.uid = t.uid AND g.tank_id = t.tank_id
     LEFT JOIN alarms_config a
       ON a.uid = t.uid AND a.Site_id = t.Site_id AND a.tank_id = t.tank_id
+    LEFT JOIN Sites s
+      ON s.uid = t.uid AND s.Site_id = t.Site_id
     WHERE t.uid = :uid AND t.Site_id = :site_id AND t.tank_id BETWEEN 1 AND 4
     ORDER BY t.tank_id
   ";
@@ -143,6 +134,9 @@ try {
         'low_low'   => isset($r['critlow_alarm'])  ? (int)$r['critlow_alarm']  : 0,
         'enabled'   => isset($r['alarm_enable'])   ? (int)$r['alarm_enable']   : 0,
       ],
+      'mail'      => isset($r['mail']) ? $r['mail'] : '',
+      'volal'     => isset($r['volal']) ? (int)$r['volal'] : 0,
+      'volal_type'=> isset($r['volal_type']) ? (int)$r['volal_type'] : 0,
     ];
   }
 
@@ -210,12 +204,9 @@ try {
     'uid'     => $uid,
     'site_id' => $site_id,
     'ports'   => $ports,          // { mindex_0, fmsindex_0, mindex_1, fmsindex_1 }
-    'tanks'   => $tanks,           // 4-slot array with basics + geometry + alarms
+    'tanks'   => $tanks,           // 4-slot array with basics + geometry + alarms + alert settings
     'last_tx' => $last_tx,
     'schart'  => $schart,
-    'mail'    => $siteInfo['mail'],
-    'volal'   => $siteInfo['volal'],
-    'volal_type' => $siteInfo['volal_type'],
   ]);
   exit;
 
