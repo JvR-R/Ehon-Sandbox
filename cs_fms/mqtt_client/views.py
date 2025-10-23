@@ -273,8 +273,9 @@ def update_tags_view(request):
                 if tags.exists():
                     authenticators_data = "\n".join([
                         ",".join([
-                            str(tag.id or 0),
                             str(tag.card_number or '0'),
+                            str(tag.pin_number or '0'),
+                            str(tag.id or 0),
                             str(tag.card_type or '0'),
                             str(int(tag.list_driver) if tag.list_driver is not None else 0),
                             str(int(tag.list_vehicle) if tag.list_vehicle is not None else 0),
@@ -282,7 +283,6 @@ def update_tags_view(request):
                             str(0 if tag.prompt_vehicle is None or int(tag.prompt_vehicle) == 999 else int(tag.prompt_vehicle)),
                             str(int(tag.projectnum_prompt) if tag.projectnum_prompt else 0),
                             str(int(tag.odo_prompt) if tag.odo_prompt else 0),
-                            str(tag.pin_number or '0'),
                             str(int(tag.enabled_prompt) if tag.enabled_prompt else 0)
                         ]) for tag in tags
                     ]) + "\n"
