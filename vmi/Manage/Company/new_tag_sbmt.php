@@ -15,7 +15,7 @@ include('../../db/crc.php');   // Logging utility
 // Function to generate AUTH.TXT file
 function generateAuthFile($conn, $companyId) {
     // Get the UID for this company
-    $uidStmt = $conn->prepare("SELECT uid FROM client WHERE id = ?");
+    $uidStmt = $conn->prepare("SELECT uid FROM console_asociation WHERE client_id = ?");
     $uidStmt->bind_param("i", $companyId);
     $uidStmt->execute();
     $uidResult = $uidStmt->get_result();
