@@ -115,6 +115,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: /vmi/Manage/Edit/edit_tags?error=validation_failed");
         exit;
     }
+    
+    // Validate PIN if provided and it's a new 4-digit PIN
+    if (!empty($pin_number) && strlen($pin_number) <= 4) {
+        // Only validate format if it's a new PIN (4 or fewer characters)
+        if (!preg_match('/^\d{4}$/', $pin_number)) {
+            header("Location: /vmi/Manage/Edit/edit_tags?error=invalid_pin");
+            exit;
+        }
+    }
+    // If PIN is longer than 4 digits, it's the existing value from DB, keep it as is
+    
     if(!empty($pin_number) && $card_type == 1) {
         $card_type = 2;
     }

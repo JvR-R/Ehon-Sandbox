@@ -152,7 +152,7 @@ if (!$tagData) {
                                         <div style="display:flex;">
                                             <div class="prompt" style="margin-top: 15px; text-align: center; display: flex; justify-content: center; align-items: center;">
                                                 <label for="pin_number" style="justify-self: end; width: 6rem; margin-right: 1rem;">PIN Number:</label>
-                                                <input class="input" type="password" id="pin_number" name="pin_number" value="<?php echo htmlspecialchars($tagData['pin_number']); ?>" placeholder="Enter PIN" style="max-width: 150px;" autocomplete="new-password" pattern="\d{4}" maxlength="4" inputmode="numeric" title="Please enter exactly 4 digits." oninput="validatePin(this)">
+                                                <input class="input" type="password" id="pin_number" name="pin_number" value="<?php echo htmlspecialchars($tagData['pin_number']); ?>" placeholder="Enter new 4-digit PIN or leave unchanged" style="max-width: 150px;" autocomplete="new-password" inputmode="numeric" title="Enter a new 4-digit PIN or leave unchanged" oninput="validatePin(this)">
 
                                                 <div id="pin_error" style="color: red; margin-left: 10px; display: none;">PIN must be exactly 4 digits.</div>
                                             </div>
@@ -228,27 +228,54 @@ if (!$tagData) {
     <!-- JavaScript Code -->
     <script>
     // PIN Validation Script
+    var originalPinValue = document.getElementById('pin_number').value;
+    var pinChanged = false;
+    
     function validatePin(input) {
         const errorDiv = document.getElementById('pin_error');
         const pinPattern = /^\d{4}$/;
 
-        // Remove any non-digit characters
-        input.value = input.value.replace(/\D/g, '');
+        // Check if the PIN has been modified from the original
+        if (input.value !== originalPinValue) {
+            pinChanged = true;
+            
+            // Remove any non-digit characters only for new input
+            input.value = input.value.replace(/\D/g, '');
 
-        // Trim the input to 4 digits
-        if (input.value.length > 4) {
-            input.value = input.value.slice(0, 4);
-        }
+            // Trim the input to 4 digits
+            if (input.value.length > 4) {
+                input.value = input.value.slice(0, 4);
+            }
 
-        // Validate the PIN
-        if (pinPattern.test(input.value)) {
-            errorDiv.style.display = 'none';
-            input.style.borderColor = 'initial'; // Reset border color if needed
+            // Validate the PIN only if changed and not empty
+            if (input.value === '' || pinPattern.test(input.value)) {
+                errorDiv.style.display = 'none';
+                input.style.borderColor = 'initial';
+            } else {
+                errorDiv.style.display = 'block';
+                input.style.borderColor = 'red';
+            }
         } else {
-            errorDiv.style.display = 'block';
-            input.style.borderColor = 'red'; // Highlight the input field
+            // Original value, no validation needed
+            errorDiv.style.display = 'none';
+            input.style.borderColor = 'initial';
         }
     }
+    
+    // Add form validation before submit
+    document.getElementById('company_info').addEventListener('submit', function(e) {
+        const pinInput = document.getElementById('pin_number');
+        const pinPattern = /^\d{4}$/;
+        
+        // Only validate if PIN was changed and is not empty
+        if (pinChanged && pinInput.value !== '' && !pinPattern.test(pinInput.value)) {
+            e.preventDefault();
+            document.getElementById('pin_error').style.display = 'block';
+            pinInput.style.borderColor = 'red';
+            toastr.error('PIN must be exactly 4 digits.');
+            return false;
+        }
+    });
 
     // Define selectedCustomerId globally (already set from PHP)
     // var selectedCustomerId = null; // Already set from PHP
