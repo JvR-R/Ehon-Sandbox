@@ -12,24 +12,8 @@ include('../../db/dbh2.php'); // Database connection
 include('../../db/log.php');   // Logging utility
 include('../../db/crc.php');   // Logging utility
 
-// Function to generate AUTH.TXT file
-function generateAuthFile($conn, $companyId) {
-    // Get the UID for this company
-    $uidStmt = $conn->prepare("SELECT uid FROM console_asociation WHERE client_id = ?");
-    $uidStmt->bind_param("i", $companyId);
-    $uidStmt->execute();
-    $uidResult = $uidStmt->get_result();
-    
-    if ($uidResult->num_rows === 0) {
-        error_log("No UID found for company ID: " . $companyId);
-        $uidStmt->close();
-        return;
-    }
-    
-    $uidRow = $uidResult->fetch_assoc();
-    $uid = $uidRow['uid'];
-    $uidStmt->close();
-    
+// Function to generate AUTH.TXT file for a single UID
+function generateAuthFileForUID($conn, $companyId, $uid) {
     // Create directory if it doesn't exist
     $directory = "/home/ehon/files/fms/cfg/" . $uid;
     if (!is_dir($directory)) {
@@ -96,6 +80,35 @@ function generateAuthFile($conn, $companyId) {
     file_put_contents($filePath, $authContent);
     
     error_log("AUTH.TXT file generated for UID: " . $uid . " at " . $filePath);
+}
+
+// Function to generate AUTH.TXT files for all UIDs under a client
+function generateAuthFile($conn, $companyId) {
+    // Get all UIDs for this company that have device_type = 10
+    $uidStmt = $conn->prepare("SELECT DISTINCT ca.uid 
+                               FROM Sites ca
+                               INNER JOIN console c ON ca.uid = c.uid
+                               WHERE ca.client_id = ? AND c.device_type = 10");
+    $uidStmt->bind_param("i", $companyId);
+    $uidStmt->execute();
+    $uidResult = $uidStmt->get_result();
+    
+    if ($uidResult->num_rows === 0) {
+        error_log("No UIDs found for company ID: " . $companyId . " with device_type = 10");
+        $uidStmt->close();
+        return;
+    }
+    
+    $uids = [];
+    while ($row = $uidResult->fetch_assoc()) {
+        $uids[] = $row['uid'];
+    }
+    $uidStmt->close();
+    
+    // Generate AUTH.TXT for each UID
+    foreach ($uids as $uid) {
+        generateAuthFileForUID($conn, $companyId, $uid);
+    }
 }
 
 // Initialize response
