@@ -460,11 +460,11 @@ try {
     $st = $pdo->prepare($sql);
     $st->execute([':m0'=>$m0, ':fi0'=>$fi0, ':m1'=>$m1, ':fi1'=>$fi1, ':uid'=>$uid]);
 
-    // Use tank_no from frontend when mode index (mindex) == 1 or 4
+    // Use tank_no from frontend when mode index (mindex) == 1, 4, or 5
     $tank_no = (int)($body['tank_no'] ?? 0);
     $ports = [
-      ['index'=>0, 'mode'=>$m0, 'tankNum'=>(($m0 === 1 || $m0 === 4) ? $tank_no : 0), 'fms'=>$fi0],
-      ['index'=>1, 'mode'=>$m1, 'tankNum'=>(($m1 === 1 || $m1 === 4) ? $tank_no : 0), 'fms'=>$fi1],
+      ['index'=>0, 'mode'=>$m0, 'tankNum'=>(($m0 === 1 || $m0 === 4 || $m0 === 5) ? $tank_no : 0), 'fms'=>$fi0],
+      ['index'=>1, 'mode'=>$m1, 'tankNum'=>(($m1 === 1 || $m1 === 4 || $m1 === 5) ? $tank_no : 0), 'fms'=>$fi1],
     ];
     atomic_write_json("/home/ehon/files/gateway/cfg/{$uid}/ports.json", $ports);
 

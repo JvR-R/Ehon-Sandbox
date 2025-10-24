@@ -748,6 +748,7 @@ export function buildChild(d, ctx) {
                   <option value="2">MODBUS</option>
                   <option value="3">PIUSI</option>
                   <option value="4">Relay</option>
+                  <option value="5">CC</option>
                 </select>
                 <label>PIUSI ID:</label>
                 <input class="recip" id="fms_index0-${row}" name="fms_index0"   type="number"   value="">
@@ -757,7 +758,7 @@ export function buildChild(d, ctx) {
                   <option value="1">OCIO</option>
                   <option value="2">MODBUS</option>
                   <option value="3">PIUSI</option>
-                  <option value="4">Relay</option>
+                  <option value="5">CC</option>
                 </select>
                 <label>PIUSI ID:</label>
                 <input class="recip" id="fms_index1-${row}" name="fms_index1" type="number" value="">
