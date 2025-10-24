@@ -105,7 +105,7 @@ function generateAuthFile($conn, $companyId) {
     // Get all UIDs for this company that have device_type = 10
     // Join console_asociation with console table to filter by device_type
     $uidStmt = $conn->prepare("SELECT DISTINCT ca.uid 
-                               FROM console_asociation ca
+                               FROM Sites ca
                                INNER JOIN console c ON ca.uid = c.uid
                                WHERE ca.client_id = ? AND c.device_type = 10");
     $uidStmt->bind_param("i", $companyId);
