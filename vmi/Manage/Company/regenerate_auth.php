@@ -16,7 +16,7 @@ include('../../db/dbh2.php'); // Database connection
 // Function to generate AUTH.TXT file for a single UID
 function generateAuthFileForUID($conn, $companyId, $uid) {
     // Create directory if it doesn't exist
-    $directory = "/home/ehon/files/cfg/fms/" . $uid;
+    $directory = "/home/ehon/files/fms/cfg/" . $uid;
     if (!is_dir($directory)) {
         if (!mkdir($directory, 0755, true)) {
             error_log("Failed to create directory for UID: " . $uid);
