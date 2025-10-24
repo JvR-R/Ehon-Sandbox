@@ -13,29 +13,14 @@ header('Content-Type: application/json');
 // Include necessary files
 include('../../db/dbh2.php'); // Database connection
 
-// Function to generate AUTH.TXT file
-function generateAuthFile($conn, $companyId) {
-    // Get the UID for this company
-    $uidStmt = $conn->prepare("SELECT uid FROM console_asociation WHERE client_id = ?");
-    $uidStmt->bind_param("i", $companyId);
-    $uidStmt->execute();
-    $uidResult = $uidStmt->get_result();
-    
-    if ($uidResult->num_rows === 0) {
-        error_log("No UID found for company ID: " . $companyId);
-        $uidStmt->close();
-        return ['success' => false, 'message' => 'No UID found for this client'];
-    }
-    
-    $uidRow = $uidResult->fetch_assoc();
-    $uid = $uidRow['uid'];
-    $uidStmt->close();
-    
+// Function to generate AUTH.TXT file for a single UID
+function generateAuthFileForUID($conn, $companyId, $uid) {
     // Create directory if it doesn't exist
     $directory = "/home/ehon/files/cfg/fms/" . $uid;
     if (!is_dir($directory)) {
         if (!mkdir($directory, 0755, true)) {
-            return ['success' => false, 'message' => 'Failed to create directory'];
+            error_log("Failed to create directory for UID: " . $uid);
+            return ['success' => false, 'message' => 'Failed to create directory for UID: ' . $uid];
         }
     }
     
@@ -107,11 +92,65 @@ function generateAuthFile($conn, $companyId) {
     // Write to AUTH.TXT
     $filePath = $directory . "/AUTH.TXT";
     if (file_put_contents($filePath, $authContent) === false) {
-        return ['success' => false, 'message' => 'Failed to write AUTH.TXT file'];
+        error_log("Failed to write AUTH.TXT for UID: " . $uid);
+        return ['success' => false, 'message' => 'Failed to write AUTH.TXT file for UID: ' . $uid];
     }
     
     error_log("AUTH.TXT file generated for UID: " . $uid . " at " . $filePath);
     return ['success' => true, 'message' => "AUTH.TXT generated successfully with $tagCount tags", 'uid' => $uid, 'file_path' => $filePath, 'tag_count' => $tagCount];
+}
+
+// Function to generate AUTH.TXT files for all UIDs under a client
+function generateAuthFile($conn, $companyId) {
+    // Get all UIDs for this company that have device_type = 10
+    // Join console_asociation with console table to filter by device_type
+    $uidStmt = $conn->prepare("SELECT DISTINCT ca.uid 
+                               FROM console_asociation ca
+                               INNER JOIN console c ON ca.uid = c.uid
+                               WHERE ca.client_id = ? AND c.device_type = 10");
+    $uidStmt->bind_param("i", $companyId);
+    $uidStmt->execute();
+    $uidResult = $uidStmt->get_result();
+    
+    if ($uidResult->num_rows === 0) {
+        error_log("No UIDs found for company ID: " . $companyId . " with device_type = 10");
+        $uidStmt->close();
+        return ['success' => false, 'message' => 'No UIDs found for this client with device_type = 10'];
+    }
+    
+    $uids = [];
+    while ($row = $uidResult->fetch_assoc()) {
+        $uids[] = $row['uid'];
+    }
+    $uidStmt->close();
+    
+    // Generate AUTH.TXT for each UID
+    $results = [];
+    $successCount = 0;
+    $failCount = 0;
+    
+    foreach ($uids as $uid) {
+        $result = generateAuthFileForUID($conn, $companyId, $uid);
+        $results[] = $result;
+        if ($result['success']) {
+            $successCount++;
+        } else {
+            $failCount++;
+        }
+    }
+    
+    $totalUIDs = count($uids);
+    $message = "Processed $totalUIDs UID(s): $successCount successful, $failCount failed";
+    
+    return [
+        'success' => ($failCount === 0),
+        'message' => $message,
+        'total_uids' => $totalUIDs,
+        'successful' => $successCount,
+        'failed' => $failCount,
+        'details' => $results,
+        'uids' => $uids
+    ];
 }
 
 // Initialize response
