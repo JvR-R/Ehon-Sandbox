@@ -23,7 +23,7 @@ function generateAuthFile($conn, $companyId) {
     $uidStmt->close();
     
     // Create directory if it doesn't exist
-    $directory = "/home/ehon/files/fms/" . $uid;
+    $directory = "/home/ehon/files/fms/cfg/" . $uid;
     if (!is_dir($directory)) {
         mkdir($directory, 0755, true);
     }
