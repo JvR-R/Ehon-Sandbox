@@ -91,8 +91,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $vehicle_type           = $_POST['vehicle_type'];
     $vehicle_tanksize       = $_POST['vehicle_tanksize'];
     $vehicle_rego           = $_POST['vehicle_rego'];
-    $registration_date      = $_POST['registration_date'];
-    $service_date           = $_POST['service_date'];
+    
+    // Handle date fields - convert empty strings to NULL
+    $registration_date      = (!empty($_POST['registration_date'])) ? $_POST['registration_date'] : null;
+    $service_date           = (!empty($_POST['service_date'])) ? $_POST['service_date'] : null;
+    
     $vehicle_servicekm      = $_POST['vehicle_servicekm'];
     $vehicle_reqservicekm   = $_POST['vehicle_reqservicekm'];
     $additional_info        = $_POST['additional_info'];
