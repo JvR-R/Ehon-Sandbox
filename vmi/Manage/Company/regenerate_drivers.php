@@ -127,27 +127,30 @@ function generateDriversFile($conn, $companyId) {
     ];
 }
 
-// Initialize response
-$response = [
-    'success' => false,
-    'message' => ''
-];
+// Only execute POST handling if this file is called directly (not included)
+if (basename(__FILE__) == basename($_SERVER['SCRIPT_FILENAME'])) {
+    // Initialize response
+    $response = [
+        'success' => false,
+        'message' => ''
+    ];
 
-// Check if the request method is POST
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $client_id = isset($_POST['client_id']) ? intval($_POST['client_id']) : 0;
-    
-    if ($client_id <= 0) {
-        $response['message'] = 'Invalid Client ID.';
+    // Check if the request method is POST
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $client_id = isset($_POST['client_id']) ? intval($_POST['client_id']) : 0;
+        
+        if ($client_id <= 0) {
+            $response['message'] = 'Invalid Client ID.';
+            echo json_encode($response);
+            exit;
+        }
+        
+        $result = generateDriversFile($conn, $client_id);
+        echo json_encode($result);
+    } else {
+        $response['message'] = 'Invalid request method. Use POST with client_id parameter.';
         echo json_encode($response);
-        exit;
     }
-    
-    $result = generateDriversFile($conn, $client_id);
-    echo json_encode($result);
-} else {
-    $response['message'] = 'Invalid request method. Use POST with client_id parameter.';
-    echo json_encode($response);
 }
 
 ?>

@@ -5,77 +5,8 @@ include('../../db/crc.php');
 
 ob_start(); // Begin output buffering
 
-// Function to generate VEHICLES.TXT file for a single UID
-function generateVehiclesFileForUID($conn, $companyId, $uid) {
-    // Create directory if it doesn't exist
-    $directory = "/home/ehon/files/fms/cfg/" . $uid;
-    if (!is_dir($directory)) {
-        mkdir($directory, 0755, true);
-    }
-    
-    // Get all vehicles for this client
-    $vehiclesStmt = $conn->prepare("SELECT vehicle_id, vehicle_name, vehicle_rego 
-                                    FROM vehicles 
-                                    WHERE Client_id = ? 
-                                    ORDER BY vehicle_id");
-    $vehiclesStmt->bind_param("i", $companyId);
-    $vehiclesStmt->execute();
-    $vehiclesResult = $vehiclesStmt->get_result();
-    
-    // Build VEHICLES.TXT content
-    $vehiclesContent = "";
-    while ($vehicle = $vehiclesResult->fetch_assoc()) {
-        $line = [];
-        
-        // Field 1: vehicle_id
-        $line[] = $vehicle['vehicle_id'] !== null ? $vehicle['vehicle_id'] : 0;
-        
-        // Field 2: vehicle_name
-        $line[] = $vehicle['vehicle_name'] !== null ? $vehicle['vehicle_name'] : '';
-        
-        // Field 3: vehicle_rego
-        $line[] = $vehicle['vehicle_rego'] !== null ? $vehicle['vehicle_rego'] : '';
-        
-        $vehiclesContent .= implode(',', $line) . "\n";
-    }
-    
-    $vehiclesStmt->close();
-    
-    // Write to VEHICLES.TXT
-    $filePath = $directory . "/VEHICLES.TXT";
-    file_put_contents($filePath, $vehiclesContent);
-    
-    error_log("VEHICLES.TXT file generated for UID: " . $uid . " at " . $filePath);
-}
-
-// Function to generate VEHICLES.TXT files for all UIDs under a client
-function generateVehiclesFile($conn, $companyId) {
-    // Get all UIDs for this company that have device_type = 10
-    $uidStmt = $conn->prepare("SELECT DISTINCT ca.uid 
-                               FROM Sites ca
-                               INNER JOIN console c ON ca.uid = c.uid
-                               WHERE ca.client_id = ? AND c.device_type = 10");
-    $uidStmt->bind_param("i", $companyId);
-    $uidStmt->execute();
-    $uidResult = $uidStmt->get_result();
-    
-    if ($uidResult->num_rows === 0) {
-        error_log("No UIDs found for company ID: " . $companyId . " with device_type = 10");
-        $uidStmt->close();
-        return;
-    }
-    
-    $uids = [];
-    while ($row = $uidResult->fetch_assoc()) {
-        $uids[] = $row['uid'];
-    }
-    $uidStmt->close();
-    
-    // Generate VEHICLES.TXT for each UID
-    foreach ($uids as $uid) {
-        generateVehiclesFileForUID($conn, $companyId, $uid);
-    }
-}
+// Include regenerate_vehicles.php to reuse file generation functions
+require_once('regenerate_vehicles.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve data from POST
