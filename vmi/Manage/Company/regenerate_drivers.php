@@ -2,16 +2,19 @@
 // Script to regenerate DRIVERS.CSV file for a specific client
 // Can be called directly or included in edit operations
 
-// Suppress error display (recommended for production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// Only include database and set headers if this file is called directly (not included)
+if (basename(__FILE__) == basename($_SERVER['SCRIPT_FILENAME'])) {
+    // Suppress error display (recommended for production)
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
 
-// Set header to return JSON
-header('Content-Type: application/json');
+    // Set header to return JSON
+    header('Content-Type: application/json');
 
-// Include necessary files
-include('../../db/dbh2.php'); // Database connection
+    // Include necessary files
+    include('../../db/dbh2.php'); // Database connection
+}
 
 // Function to generate DRIVERS.CSV file for a single UID
 function generateDriversFileForUID($conn, $companyId, $uid) {
