@@ -1,5 +1,5 @@
 <?php
-// Script to regenerate VEHICLES.TXT file for a specific client
+// Script to regenerate VEHICLES.CSV file for a specific client
 // Can be called directly or included in edit operations
 
 // Suppress error display (recommended for production)
@@ -13,7 +13,7 @@ header('Content-Type: application/json');
 // Include necessary files
 include('../../db/dbh2.php'); // Database connection
 
-// Function to generate VEHICLES.TXT file for a single UID
+// Function to generate VEHICLES.CSV file for a single UID
 function generateVehiclesFileForUID($conn, $companyId, $uid) {
     // Create directory if it doesn't exist
     $directory = "/home/ehon/files/fms/cfg/" . $uid;
@@ -36,12 +36,12 @@ function generateVehiclesFileForUID($conn, $companyId, $uid) {
     if ($vehiclesResult->num_rows === 0) {
         $vehiclesStmt->close();
         // Create empty file if no vehicles
-        $filePath = $directory . "/VEHICLES.TXT";
+        $filePath = $directory . "/VEHICLES.CSV";
         file_put_contents($filePath, "");
-        return ['success' => true, 'message' => 'VEHICLES.TXT created (empty - no vehicles found)', 'uid' => $uid, 'file_path' => $filePath];
+        return ['success' => true, 'message' => 'VEHICLES.CSV created (empty - no vehicles found)', 'uid' => $uid, 'file_path' => $filePath];
     }
     
-    // Build VEHICLES.TXT content
+    // Build VEHICLES.CSV content
     $vehiclesContent = "";
     $vehicleCount = 0;
     while ($vehicle = $vehiclesResult->fetch_assoc()) {
@@ -62,18 +62,18 @@ function generateVehiclesFileForUID($conn, $companyId, $uid) {
     
     $vehiclesStmt->close();
     
-    // Write to VEHICLES.TXT
-    $filePath = $directory . "/VEHICLES.TXT";
+    // Write to VEHICLES.CSV
+    $filePath = $directory . "/VEHICLES.CSV";
     if (file_put_contents($filePath, $vehiclesContent) === false) {
-        error_log("Failed to write VEHICLES.TXT for UID: " . $uid);
-        return ['success' => false, 'message' => 'Failed to write VEHICLES.TXT file for UID: ' . $uid];
+        error_log("Failed to write VEHICLES.CSV for UID: " . $uid);
+        return ['success' => false, 'message' => 'Failed to write VEHICLES.CSV file for UID: ' . $uid];
     }
     
-    error_log("VEHICLES.TXT file generated for UID: " . $uid . " at " . $filePath);
-    return ['success' => true, 'message' => "VEHICLES.TXT generated successfully with $vehicleCount vehicles", 'uid' => $uid, 'file_path' => $filePath, 'vehicle_count' => $vehicleCount];
+    error_log("VEHICLES.CSV file generated for UID: " . $uid . " at " . $filePath);
+    return ['success' => true, 'message' => "VEHICLES.CSV generated successfully with $vehicleCount vehicles", 'uid' => $uid, 'file_path' => $filePath, 'vehicle_count' => $vehicleCount];
 }
 
-// Function to generate VEHICLES.TXT files for all UIDs under a client
+// Function to generate VEHICLES.CSV files for all UIDs under a client
 function generateVehiclesFile($conn, $companyId) {
     // Get all UIDs for this company that have device_type = 10
     // Join console_asociation with console table to filter by device_type
@@ -97,7 +97,7 @@ function generateVehiclesFile($conn, $companyId) {
     }
     $uidStmt->close();
     
-    // Generate VEHICLES.TXT for each UID
+    // Generate VEHICLES.CSV for each UID
     $results = [];
     $successCount = 0;
     $failCount = 0;

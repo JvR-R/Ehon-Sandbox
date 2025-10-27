@@ -2,10 +2,13 @@
 Celery tasks for async operations
 """
 import logging
+import imaplib
 from decimal import Decimal
 from celery import shared_task
 from django.core.mail import EmailMessage
 from django.utils import timezone
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 LOG = logging.getLogger("accounts.tasks")
 
@@ -98,13 +101,23 @@ Alert sent at: {timezone.now().strftime('%Y-%m-%d %H:%M:%S %Z')}
             cc_list = [email.strip() for email in cc_emails.split(',') if email.strip()]
             email.cc = cc_list
         
-        # Send email
+        # Send email via SMTP
         email.send(fail_silently=False)
         
         LOG.info("✅ Level alert email sent to %s for site %s, tank %s", 
                 receiver_email, site_name, tank_id)
         
-        # Save to email historic
+        # Save to IMAP Sent folder
+        save_to_sent_folder(
+            subject=subject,
+            html_content=html_content,
+            text_content=text_content,
+            to_email=receiver_email,
+            from_email='vmi@ehon.com.au',
+            cc_emails=cc_emails
+        )
+        
+        # Save to email historic database
         save_email_historic(receiver_email)
         
         return f"Email sent successfully to {receiver_email}"
@@ -114,6 +127,48 @@ Alert sent at: {timezone.now().strftime('%Y-%m-%d %H:%M:%S %Z')}
                  receiver_email, exc, exc_info=True)
         # Retry with exponential backoff
         raise self.retry(exc=exc, countdown=60 * (2 ** self.request.retries))
+
+
+def save_to_sent_folder(subject: str, html_content: str, text_content: str, 
+                        to_email: str, from_email: str, cc_emails: str = None):
+    """
+    Save sent email to IMAP Sent folder (matches PHP save_mail function)
+    """
+    try:
+        # Create the email message
+        msg = MIMEMultipart('alternative')
+        msg['Subject'] = subject
+        msg['From'] = from_email
+        msg['To'] = to_email
+        msg['Date'] = timezone.now().strftime('%a, %d %b %Y %H:%M:%S %z')
+        
+        if cc_emails:
+            msg['Cc'] = cc_emails
+        
+        # Add text and HTML parts
+        part1 = MIMEText(text_content, 'plain', 'utf-8')
+        part2 = MIMEText(html_content, 'html', 'utf-8')
+        msg.attach(part1)
+        msg.attach(part2)
+        
+        # Connect to IMAP server
+        imap = imaplib.IMAP4_SSL('mail.ehon.com.au', 993)
+        imap.login('vmi@ehon.com.au', 'VMIEHON2023')
+        
+        # Append to Sent folder
+        imap.append(
+            'INBOX.Sent',
+            '',  # No flags
+            imaplib.Time2Internaldate(timezone.now()),
+            msg.as_bytes()
+        )
+        
+        imap.logout()
+        LOG.info("📁 Email saved to Sent folder")
+        
+    except Exception as exc:
+        # Log but don't fail - email was already sent successfully
+        LOG.warning("Could not save to IMAP Sent folder (non-critical): %s", exc)
 
 
 @shared_task

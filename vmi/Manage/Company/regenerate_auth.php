@@ -1,5 +1,5 @@
 <?php
-// Script to regenerate AUTH.TXT file for a specific client
+// Script to regenerate AUTH.CSV file for a specific client
 // Can be called directly or included in edit operations
 
 // Suppress error display (recommended for production)
@@ -13,7 +13,7 @@ header('Content-Type: application/json');
 // Include necessary files
 include('../../db/dbh2.php'); // Database connection
 
-// Function to generate AUTH.TXT file for a single UID
+// Function to generate AUTH.CSV file for a single UID
 function generateAuthFileForUID($conn, $companyId, $uid) {
     // Create directory if it doesn't exist
     $directory = "/home/ehon/files/fms/cfg/" . $uid;
@@ -37,12 +37,12 @@ function generateAuthFileForUID($conn, $companyId, $uid) {
     if ($tagsResult->num_rows === 0) {
         $tagsStmt->close();
         // Create empty file if no tags
-        $filePath = $directory . "/AUTH.TXT";
+        $filePath = $directory . "/AUTH.CSV";
         file_put_contents($filePath, "");
-        return ['success' => true, 'message' => 'AUTH.TXT created (empty - no tags found)', 'uid' => $uid, 'file_path' => $filePath];
+        return ['success' => true, 'message' => 'AUTH.CSV created (empty - no tags found)', 'uid' => $uid, 'file_path' => $filePath];
     }
     
-    // Build AUTH.TXT content
+    // Build AUTH.CSV content
     $authContent = "";
     $tagCount = 0;
     while ($tag = $tagsResult->fetch_assoc()) {
@@ -89,18 +89,18 @@ function generateAuthFileForUID($conn, $companyId, $uid) {
     
     $tagsStmt->close();
     
-    // Write to AUTH.TXT
-    $filePath = $directory . "/AUTH.TXT";
+    // Write to AUTH.CSV
+    $filePath = $directory . "/AUTH.CSV";
     if (file_put_contents($filePath, $authContent) === false) {
-        error_log("Failed to write AUTH.TXT for UID: " . $uid);
-        return ['success' => false, 'message' => 'Failed to write AUTH.TXT file for UID: ' . $uid];
+        error_log("Failed to write AUTH.CSV for UID: " . $uid);
+        return ['success' => false, 'message' => 'Failed to write AUTH.CSV file for UID: ' . $uid];
     }
     
-    error_log("AUTH.TXT file generated for UID: " . $uid . " at " . $filePath);
-    return ['success' => true, 'message' => "AUTH.TXT generated successfully with $tagCount tags", 'uid' => $uid, 'file_path' => $filePath, 'tag_count' => $tagCount];
+    error_log("AUTH.CSV file generated for UID: " . $uid . " at " . $filePath);
+    return ['success' => true, 'message' => "AUTH.CSV generated successfully with $tagCount tags", 'uid' => $uid, 'file_path' => $filePath, 'tag_count' => $tagCount];
 }
 
-// Function to generate AUTH.TXT files for all UIDs under a client
+// Function to generate AUTH.CSV files for all UIDs under a client
 function generateAuthFile($conn, $companyId) {
     // Get all UIDs for this company that have device_type = 10
     // Join console_asociation with console table to filter by device_type
@@ -124,7 +124,7 @@ function generateAuthFile($conn, $companyId) {
     }
     $uidStmt->close();
     
-    // Generate AUTH.TXT for each UID
+    // Generate AUTH.CSV for each UID
     $results = [];
     $successCount = 0;
     $failCount = 0;

@@ -1,5 +1,5 @@
 <?php
-// Script to regenerate DRIVERS.TXT file for a specific client
+// Script to regenerate DRIVERS.CSV file for a specific client
 // Can be called directly or included in edit operations
 
 // Suppress error display (recommended for production)
@@ -13,7 +13,7 @@ header('Content-Type: application/json');
 // Include necessary files
 include('../../db/dbh2.php'); // Database connection
 
-// Function to generate DRIVERS.TXT file for a single UID
+// Function to generate DRIVERS.CSV file for a single UID
 function generateDriversFileForUID($conn, $companyId, $uid) {
     // Create directory if it doesn't exist
     $directory = "/home/ehon/files/fms/cfg/" . $uid;
@@ -36,12 +36,12 @@ function generateDriversFileForUID($conn, $companyId, $uid) {
     if ($driversResult->num_rows === 0) {
         $driversStmt->close();
         // Create empty file if no drivers
-        $filePath = $directory . "/DRIVERS.TXT";
+        $filePath = $directory . "/DRIVERS.CSV";
         file_put_contents($filePath, "");
-        return ['success' => true, 'message' => 'DRIVERS.TXT created (empty - no drivers found)', 'uid' => $uid, 'file_path' => $filePath];
+        return ['success' => true, 'message' => 'DRIVERS.CSV created (empty - no drivers found)', 'uid' => $uid, 'file_path' => $filePath];
     }
     
-    // Build DRIVERS.TXT content
+    // Build DRIVERS.CSV content
     $driversContent = "";
     $driverCount = 0;
     while ($driver = $driversResult->fetch_assoc()) {
@@ -63,18 +63,18 @@ function generateDriversFileForUID($conn, $companyId, $uid) {
     
     $driversStmt->close();
     
-    // Write to DRIVERS.TXT
-    $filePath = $directory . "/DRIVERS.TXT";
+    // Write to DRIVERS.CSV
+    $filePath = $directory . "/DRIVERS.CSV";
     if (file_put_contents($filePath, $driversContent) === false) {
-        error_log("Failed to write DRIVERS.TXT for UID: " . $uid);
-        return ['success' => false, 'message' => 'Failed to write DRIVERS.TXT file for UID: ' . $uid];
+        error_log("Failed to write DRIVERS.CSV for UID: " . $uid);
+        return ['success' => false, 'message' => 'Failed to write DRIVERS.CSV file for UID: ' . $uid];
     }
     
-    error_log("DRIVERS.TXT file generated for UID: " . $uid . " at " . $filePath);
-    return ['success' => true, 'message' => "DRIVERS.TXT generated successfully with $driverCount drivers", 'uid' => $uid, 'file_path' => $filePath, 'driver_count' => $driverCount];
+    error_log("DRIVERS.CSV file generated for UID: " . $uid . " at " . $filePath);
+    return ['success' => true, 'message' => "DRIVERS.CSV generated successfully with $driverCount drivers", 'uid' => $uid, 'file_path' => $filePath, 'driver_count' => $driverCount];
 }
 
-// Function to generate DRIVERS.TXT files for all UIDs under a client
+// Function to generate DRIVERS.CSV files for all UIDs under a client
 function generateDriversFile($conn, $companyId) {
     // Get all UIDs for this company that have device_type = 10
     // Join console_asociation with console table to filter by device_type
@@ -98,7 +98,7 @@ function generateDriversFile($conn, $companyId) {
     }
     $uidStmt->close();
     
-    // Generate DRIVERS.TXT for each UID
+    // Generate DRIVERS.CSV for each UID
     $results = [];
     $successCount = 0;
     $failCount = 0;
