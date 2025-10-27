@@ -539,6 +539,21 @@ class DipreadHistoric(models.Model):
         db_table = 'dipread_historic'
 
 
+class EmailHistoric(models.Model):
+    """
+    Historic record of emails sent from the system
+    Matches the actual email_historic table structure
+    """
+    idemail_historic = models.AutoField(primary_key=True)
+    email_date = models.DateField()
+    email_time = models.TimeField()
+    receiver_email = models.CharField(max_length=85)
+
+    class Meta:
+        managed = False  # Table already exists in database
+        db_table = 'email_historic'
+
+
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
     object_id = models.TextField(blank=True, null=True)
