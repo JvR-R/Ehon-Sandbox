@@ -545,7 +545,6 @@ thead th.active,tbody td.active {
     display: grid;
 }
 .child_details{
-    height: 25rem;
     position: relative;
     overflow: overlay;
 }
