@@ -32,7 +32,7 @@ def handle(serial: str | None, payload: dict) -> None:
     uid = console.uid
 
     # Extract data from the nested "data" object
-    data = payload.get("data", {})
+    data = payload.get("transaction", {})
 
     # ── timestamp comes from startDateTime (YYYY-MM-DD HH:MM:SS) ──────────────────
     try:
