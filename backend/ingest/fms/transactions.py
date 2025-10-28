@@ -43,14 +43,6 @@ def handle(serial: str | None, payload: dict) -> None:
 
     pump_num = int(data.get("pump_num", 1))        # default to 1 if absent
 
-    # Parse end datetime if available
-    end_ts = None
-    if data.get("endDateTime"):
-        try:
-            end_ts = datetime.strptime(data["endDateTime"], "%Y-%m-%d %H:%M:%S")
-        except Exception:
-            pass
-    
     try:
         with db_tx.atomic():
             Tx.objects.create(
@@ -67,8 +59,8 @@ def handle(serial: str | None, payload: dict) -> None:
                 pump_id           = pump_num,
                 stop_method       = data.get("Stop_method"),
                 pulses            = data.get("pulses"),
-                startDateTime     = ts,
-                endDateTime       = end_ts,
+                startDateTime     = data.get("startDateTime"),  # Store as string
+                endDateTime       = data.get("endDateTime"),    # Store as string
                 startDip          = data.get("startDip"),
                 endDip            = data.get("endDip"),
                 actions           = "DISPENSE",  # Required field

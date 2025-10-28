@@ -466,8 +466,8 @@ class ClientTransaction(models.Model):
     # Additional FMS fields
     stop_method          = models.IntegerField(blank=True, null=True, db_column='stop_method')
     pulses               = models.IntegerField(blank=True, null=True)
-    startDateTime        = models.DateTimeField(blank=True, null=True)
-    endDateTime          = models.DateTimeField(blank=True, null=True)
+    startDateTime        = models.CharField(max_length=30, blank=True, null=True)  # Store as string to avoid timezone conversion
+    endDateTime          = models.CharField(max_length=30, blank=True, null=True)  # Store as string to avoid timezone conversion
     startDip             = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     endDip               = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
