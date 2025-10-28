@@ -462,6 +462,14 @@ class ClientTransaction(models.Model):
     actions              = models.CharField(max_length=20)
     product              = models.CharField(max_length=45, blank=True, null=True)
     mcs_transaction_id   = models.IntegerField(blank=True, null=True)
+    
+    # Additional FMS fields
+    stop_method          = models.IntegerField(blank=True, null=True, db_column='stop_method')
+    pulses               = models.IntegerField(blank=True, null=True)
+    startDateTime        = models.DateTimeField(blank=True, null=True)
+    endDateTime          = models.DateTimeField(blank=True, null=True)
+    startDip             = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    endDip               = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
     class Meta:
         managed = False

@@ -43,6 +43,14 @@ def handle(serial: str | None, payload: dict) -> None:
 
     pump_num = int(data.get("pump_num", 1))        # default to 1 if absent
 
+    # Parse end datetime if available
+    end_ts = None
+    if data.get("endDateTime"):
+        try:
+            end_ts = datetime.strptime(data["endDateTime"], "%Y-%m-%d %H:%M:%S")
+        except Exception:
+            pass
+    
     try:
         with db_tx.atomic():
             Tx.objects.create(
@@ -54,14 +62,13 @@ def handle(serial: str | None, payload: dict) -> None:
                 card_holder_name  = data.get("driverName", ""),
                 odometer          = data.get("odo", 0),
                 registration      = data.get("rego", ""),
-                project_num       = data.get("project_num", ""),
                 dispensed_volume  = float(data.get("volume", 0)),
                 tank_id           = pump_num,
                 pump_id           = pump_num,
-                Stop_method       = data.get("Stop_method"),
+                stop_method       = data.get("Stop_method"),
                 pulses            = data.get("pulses"),
-                startDateTime     = data.get("startDateTime"),
-                endDateTime       = data.get("endDateTime"),
+                startDateTime     = ts,
+                endDateTime       = end_ts,
                 startDip          = data.get("startDip"),
                 endDip            = data.get("endDip"),
                 actions           = "DISPENSE",  # Required field
