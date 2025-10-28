@@ -296,6 +296,13 @@ $(document).ready(function () {
             <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'LOCK'}">Lock</button>
             <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'UNLOCK'}">Unlock</button>
         </div>
+        <div class="fms-cmd-buttons">
+            <button class="button-js btn-fms-url-command" data-uid="${uid}" data-cmmd="auth">Auth</button>
+            <button class="button-js btn-fms-url-command" data-uid="${uid}" data-cmmd="vehicles">Vehicles</button>
+            <button class="button-js btn-fms-url-command" data-uid="${uid}" data-cmmd="drivers">Drivers</button>
+            <button class="button-js btn-fms-url-command" data-uid="${uid}" data-cmmd="tanks">Tanks</button>
+            <button class="button-js btn-fms-url-command" data-uid="${uid}" data-cmmd="pumps">Pumps</button>
+        </div>
         `;
         fmsContainer.html(fmsHtml);
         detailsContainer.append(fmsContainer);
@@ -1070,6 +1077,30 @@ $(document).ready(function () {
             headers: { "X-CSRFToken": getCookie("csrftoken") }
         })
         .done(() => alert(cmmd + " Command sent"))
+        .fail(xhr =>
+            alert("Error: " + (xhr.responseText || xhr.statusText)));
+    });
+
+    /* FMS URL Command button (Auth, Vehicles, Drivers) */
+    $(document).on("click", ".btn-fms-url-command", function () {
+        const uid = $(this).data("uid");
+        const cmmd = $(this).data("cmmd");
+        
+        // Build URL based on command type
+        const url = `https://ehon.com.au/api-v1/download.php?f=fms/cfg/${uid}/${cmmd.toUpperCase()}.CSV`;
+
+        $.ajax({
+            url: "/backend/fms/command/",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                uid: uid,
+                cmd: cmmd,
+                value: url
+            }),
+            headers: { "X-CSRFToken": getCookie("csrftoken") }
+        })
+        .done(() => alert(cmmd.toUpperCase() + " Command sent"))
         .fail(xhr =>
             alert("Error: " + (xhr.responseText || xhr.statusText)));
     });

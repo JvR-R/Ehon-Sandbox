@@ -3,6 +3,7 @@ Celery tasks for async operations
 """
 import logging
 import imaplib
+import time
 from decimal import Decimal
 from celery import shared_task
 from django.core.mail import EmailMessage
@@ -66,7 +67,7 @@ def send_level_alert_email(self, site_name: str, tank_id: int,
             <hr style="border: 1px solid #e0e0e0;">
             <p style="color: #666; font-size: 12px;">
                 This is an automated alert from Ehon VMI System.<br>
-                Alert sent at: {timezone.now().strftime('%Y-%m-%d %H:%M:%S %Z')}
+                Alert sent at: {timezone.localtime().strftime('%Y-%m-%d %H:%M:%S AEST')}
             </p>
         </body>
         </html>
@@ -81,7 +82,7 @@ Volume: {formatted_volume} L
 Ullage: {formatted_ullage} L
 
 This is an automated alert from Ehon VMI System.
-Alert sent at: {timezone.now().strftime('%Y-%m-%d %H:%M:%S %Z')}
+Alert sent at: {timezone.localtime().strftime('%Y-%m-%d %H:%M:%S AEST')}
         """
         
         # Create email message
@@ -140,7 +141,7 @@ def save_to_sent_folder(subject: str, html_content: str, text_content: str,
         msg['Subject'] = subject
         msg['From'] = from_email
         msg['To'] = to_email
-        msg['Date'] = timezone.now().strftime('%a, %d %b %Y %H:%M:%S %z')
+        msg['Date'] = timezone.localtime().strftime('%a, %d %b %Y %H:%M:%S %z')
         
         if cc_emails:
             msg['Cc'] = cc_emails
@@ -151,24 +152,29 @@ def save_to_sent_folder(subject: str, html_content: str, text_content: str,
         msg.attach(part1)
         msg.attach(part2)
         
-        # Connect to IMAP server
+        # Connect to IMAP server and save to Sent folder
         imap = imaplib.IMAP4_SSL('mail.ehon.com.au', 993)
         imap.login('vmi@ehon.com.au', 'VMIEHON2023')
         
         # Append to Sent folder
-        imap.append(
+        message_bytes = msg.as_bytes()
+        result = imap.append(
             'INBOX.Sent',
-            '',  # No flags
-            imaplib.Time2Internaldate(timezone.now()),
-            msg.as_bytes()
+            '',
+            imaplib.Time2Internaldate(time.time()),
+            message_bytes
         )
         
+        if result[0] == 'OK':
+            LOG.info("📁 Email saved to Sent folder")
+        else:
+            LOG.error("Failed to save to Sent folder: %s", result)
+        
         imap.logout()
-        LOG.info("📁 Email saved to Sent folder")
         
     except Exception as exc:
         # Log but don't fail - email was already sent successfully
-        LOG.warning("Could not save to IMAP Sent folder (non-critical): %s", exc)
+        LOG.warning("Could not save to IMAP Sent folder (non-critical): %s", exc, exc_info=True)
 
 
 @shared_task
