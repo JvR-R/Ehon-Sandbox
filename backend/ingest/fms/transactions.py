@@ -50,12 +50,20 @@ def handle(serial: str | None, payload: dict) -> None:
                 fms_id            = uid,  # Use device_id as fms_id
                 transaction_date  = ts.date(),
                 transaction_time  = ts.time(),
+                card_number       = data.get("driverID"),
                 card_holder_name  = data.get("driverName", ""),
                 odometer          = data.get("odo", 0),
                 registration      = data.get("rego", ""),
+                project_num       = data.get("project_num", ""),
                 dispensed_volume  = float(data.get("volume", 0)),
                 tank_id           = pump_num,
                 pump_id           = pump_num,
+                Stop_method       = data.get("Stop_method"),
+                pulses            = data.get("pulses"),
+                startDateTime     = data.get("startDateTime"),
+                endDateTime       = data.get("endDateTime"),
+                startDip          = data.get("startDip"),
+                endDip            = data.get("endDip"),
                 actions           = "DISPENSE",  # Required field
             )
     except Exception as exc:
