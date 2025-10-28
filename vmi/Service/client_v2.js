@@ -84,7 +84,7 @@ $(document).ready(function () {
     const file = $("#sc_file_" + mac).val()?.trim();  
     if (!file) return alert("Enter a file name");
 
-    const url = `https://ehon.com.au/api-v1/download.php?f=Charts/${encodeURI(file)}`;
+    const url = `https://ehonenergytech.com.au/api-v1/download.php?f=Charts/${encodeURI(file)}`;
 
     $.ajax({
         url:  "/backend/gateway/command/",
@@ -156,7 +156,7 @@ $(document).ready(function () {
     const file = $("#fw_file_" + mac).val()?.trim();  
     if (!file) return alert("Enter a file name");
 
-    const url = `https://ehon.com.au/api-v1/download/${encodeURIComponent(file)}`;
+    const url = `https://ehonenergytech.com.au/api-v1/download/${encodeURIComponent(file)}`;
 
     $.ajax({
         url:  "/backend/gateway/command/",
@@ -1020,7 +1020,7 @@ $(document).ready(function () {
         const file = $("#fms_fw_file_" + uid).val()?.trim();
         if (!file) return alert("Enter a file name");
 
-        const url = `https://ehon.com.au/api-v1/download/${encodeURIComponent(file)}`;
+        const url = `https://ehonenergytech.com.au/api-v1/download/${encodeURIComponent(file)}`;
 
         $.ajax({
             url: "/backend/fms/command/",
@@ -1087,7 +1087,7 @@ $(document).ready(function () {
         const cmmd = $(this).data("cmmd");
         
         // Build URL based on command type
-        const url = `https://ehon.com.au/api-v1/download.php?f=fms/cfg/${uid}/${cmmd.toUpperCase()}.CSV`;
+        const url = `https://ehonenergytech.com.au/api-v1/download.php?f=fms/cfg/${uid}/${cmmd.toUpperCase()}.CSV`;
 
         $.ajax({
             url: "/backend/fms/command/",
