@@ -88,15 +88,12 @@ include('../../db/border.php');
                                         <label>Card Name :</label>
                                         <input class="input" type="text" placeholder="Enter Card Name" name="card_name" required> 
                                         <label>Card Number:</label>
-                                        <input class="input" type="number" placeholder="Enter Card Number" name="card_number" autocomplete="off">                     
+                                        <input class="input" type="number" placeholder="Enter Card Number" name="card_number" id="card_number" autocomplete="off">                     
                                         <label>Card Type:</label>
-                                        <select class="small-dropdown-toggle" name="card_type" required>  
+                                        <select class="small-dropdown-toggle" name="card_type" id="card_type" required>  
                                             <option value="999">Select a Type</option>
-                                            <option value="1">RFID</option>
+                                            <option value="1">RFID(card number)</option>
                                             <option value="0">PIN-Only</option>
-                                            <option value="3">Mobile</option>
-                                            <option value="4">iButton</option>
-                                            <option value="5">White Card</option>
                                         </select> 
                                         <label for="expiry-date" style="margin-top: 10px;">Expiry Date:</label>
                                         <input class="input" type="date" id="expiry-date" name="expiry_date" style="max-width: 10rem; background-color: #2a3a6b9e; margin-top: 10px;">           
@@ -223,15 +220,24 @@ include('../../db/border.php');
             // Retrieve form fields
             const cardNumberInput = document.querySelector('input[name="card_number"]');
             const pinNumberInput = document.getElementById('pin_number');
+            const cardTypeSelect = document.getElementById('card_type');
             const pinPattern = /^\d{4}$/;
             const pinErrorDiv = document.getElementById('pin_error');
 
             // Trim values
             const cardNumber = cardNumberInput.value.trim();
             const pinNumber = pinNumberInput.value.trim();
+            const cardType = cardTypeSelect.value;
 
-            // Validate PIN if filled
-            if (pinNumber !== "") {
+            // Validate based on card type
+            if (cardType === '0') {
+                // PIN-Only: PIN is required
+                if (pinNumber === "") {
+                    toastr.error('PIN Number is required for PIN-Only card type.');
+                    pinNumberInput.focus();
+                    return;
+                }
+                // Validate PIN format
                 if (!pinPattern.test(pinNumber)) {
                     pinErrorDiv.style.display = 'block';
                     pinNumberInput.style.borderColor = 'red';
@@ -242,22 +248,39 @@ include('../../db/border.php');
                     pinErrorDiv.style.display = 'none';
                     pinNumberInput.style.borderColor = 'initial';
                 }
+            } else if (cardType === '1') {
+                // RFID: Card Number is required
+                if (cardNumber === "") {
+                    toastr.error('Card Number is required for RFID card type.');
+                    cardNumberInput.focus();
+                    return;
+                }
+                // Validate Card Number format
+                if (!/^\d{6,20}$/.test(cardNumber)) {
+                    toastr.error('Card Number must be between 6 and 20 digits.');
+                    cardNumberInput.focus();
+                    return;
+                }
+                // Validate PIN if filled
+                if (pinNumber !== "") {
+                    if (!pinPattern.test(pinNumber)) {
+                        pinErrorDiv.style.display = 'block';
+                        pinNumberInput.style.borderColor = 'red';
+                        pinNumberInput.focus();
+                        toastr.error('PIN must be exactly 4 digits.');
+                        return;
+                    } else {
+                        pinErrorDiv.style.display = 'none';
+                        pinNumberInput.style.borderColor = 'initial';
+                    }
+                } else {
+                    pinErrorDiv.style.display = 'none';
+                    pinNumberInput.style.borderColor = 'initial';
+                }
             } else {
-                pinErrorDiv.style.display = 'none';
-                pinNumberInput.style.borderColor = 'initial';
-            }
-
-            // Check that at least one of card_number or pin_number is filled
-            if (cardNumber === "" && pinNumber === "") {
-                toastr.error('Please provide either a Card Number, a PIN Number, or both.');
-                return;
-            }
-
-            // Optional: Validate Card Number format if needed
-            // Example: Ensure it's numeric and within a certain length
-            if (cardNumber !== "" && !/^\d{6,20}$/.test(cardNumber)) {
-                toastr.error('Card Number must be between 6 and 20 digits.');
-                cardNumberInput.focus();
+                // No card type selected or default
+                toastr.error('Please select a Card Type.');
+                cardTypeSelect.focus();
                 return;
             }
 
@@ -364,9 +387,52 @@ document.addEventListener('DOMContentLoaded', function() {
     var promptDriverSelect = document.getElementById('prompt_driver');
     var listDriverSelect = document.getElementById('list_driver');
 
+    // Card Type validation elements
+    var cardTypeSelect = document.getElementById('card_type');
+    var cardNumberInput = document.getElementById('card_number');
+    var pinNumberInput = document.getElementById('pin_number');
+
     // Initially disable list_vehicle and list_driver
     listVehicleSelect.disabled = true;
     listDriverSelect.disabled = true;
+
+    // Event listener for card type changes
+    cardTypeSelect.addEventListener('change', function() {
+        if (this.value == '0') {
+            // PIN-Only selected
+            // Disable and clear card number
+            cardNumberInput.disabled = true;
+            cardNumberInput.value = '';
+            cardNumberInput.required = false;
+            cardNumberInput.style.backgroundColor = '#cccccc';
+            cardNumberInput.style.cursor = 'not-allowed';
+            
+            // Make PIN required
+            pinNumberInput.required = true;
+            pinNumberInput.placeholder = 'PIN is Required';
+        } else if (this.value == '1') {
+            // RFID selected
+            // Enable card number and make it required
+            cardNumberInput.disabled = false;
+            cardNumberInput.required = true;
+            cardNumberInput.style.backgroundColor = '';
+            cardNumberInput.style.cursor = '';
+            
+            // Make PIN optional
+            pinNumberInput.required = false;
+            pinNumberInput.placeholder = 'Optional';
+        } else {
+            // Default/Select a Type
+            // Reset both to default state
+            cardNumberInput.disabled = false;
+            cardNumberInput.required = false;
+            cardNumberInput.style.backgroundColor = '';
+            cardNumberInput.style.cursor = '';
+            
+            pinNumberInput.required = false;
+            pinNumberInput.placeholder = 'Empty if not Needed';
+        }
+    });
 
     // Event listener for prompt_vehicle
     promptVehicleSelect.addEventListener('change', function() {
