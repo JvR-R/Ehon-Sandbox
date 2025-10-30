@@ -517,8 +517,44 @@ function wireChartDisable(row) {
   const depth  = byId(`depth-${row}`);
   const setDis = (on) => [shape, height, width, depth].forEach(el => { if (el) el.disabled = !!on; });
   const check  = () => setDis(sel && sel.value && sel.value !== '0');
+  
   if (sel) {
-    sel.addEventListener('change', check);
+    let previousValue = sel.value;
+    
+    sel.addEventListener('change', (e) => {
+      // Check if a chart is being selected (not "0")
+      if (sel.value && sel.value !== '0') {
+        // Check if any shape dimensions have non-zero values
+        const hasNonZeroValues = 
+          (height && parseFloat(height.value) !== 0) ||
+          (width && parseFloat(width.value) !== 0) ||
+          (depth && parseFloat(depth.value) !== 0);
+        
+        if (hasNonZeroValues) {
+          const confirmed = confirm('Selecting a strapping chart will disable the tank shape');
+          if (confirmed) {
+            // Reset values to 0
+            if (height) height.value = 0;
+            if (width) width.value = 0;
+            if (depth) depth.value = 0;
+            // Disable fields
+            check();
+            previousValue = sel.value;
+          } else {
+            // Revert to previous selection
+            sel.value = previousValue;
+            return;
+          }
+        } else {
+          check();
+          previousValue = sel.value;
+        }
+      } else {
+        check();
+        previousValue = sel.value;
+      }
+    });
+    
     check(); // initial state
   }
 }
