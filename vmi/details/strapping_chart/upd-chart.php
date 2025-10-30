@@ -165,8 +165,8 @@
             if (addBtn){
                 addBtn.addEventListener('click', () => {
                     const currentRows = getDataRows().length;
-                    if (currentRows >= 50) {
-                        toastr.error('Maximum number of rows is 50');
+                    if (currentRows >= 40) {
+                        toastr.error('Maximum number of rows is 40');
                         return;
                     }
                     const tr = createRow();
@@ -184,6 +184,20 @@
 
             // Form validation on submit
             form.addEventListener('submit', function(e) {
+                // Validate chart name not blank
+                if (nameInput.value.trim() === '') {
+                    e.preventDefault();
+                    toastr.error('Chart name is required');
+                    return false;
+                }
+
+                // Validate chart name - no spaces allowed
+                if (nameInput.value.includes(' ')) {
+                    e.preventDefault();
+                    toastr.error('Chart name cannot contain spaces');
+                    return false;
+                }
+
                 // Validate chart name length (max 12 characters)
                 if (nameInput.value.length > 12) {
                     e.preventDefault();
@@ -191,17 +205,11 @@
                     return false;
                 }
 
-                if (nameInput.value.trim() === '') {
-                    e.preventDefault();
-                    toastr.error('Chart name is required');
-                    return false;
-                }
-
-                // Validate max 50 rows
+                // Validate max 40 rows
                 const currentRows = getDataRows().length;
-                if (currentRows > 50) {
+                if (currentRows > 40) {
                     e.preventDefault();
-                    toastr.error('Maximum number of rows is 50');
+                    toastr.error('Maximum number of rows is 40');
                     return false;
                 }
             });

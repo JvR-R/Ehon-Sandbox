@@ -18,6 +18,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Extract the file name without extension to use as chart name
         $chartName = pathinfo($originalFileName, PATHINFO_FILENAME);
         
+        // Validate chart name is not blank
+        if (trim($chartName) === '') {
+            $conn->close();
+            header('Location: /vmi/details/strapping_chart/?status=error&msg=name_blank');
+            exit();
+        }
+        
+        // Validate chart name - no spaces allowed
+        if (strpos($chartName, ' ') !== false) {
+            $conn->close();
+            header('Location: /vmi/details/strapping_chart/?status=error&msg=name_spaces');
+            exit();
+        }
+        
         // Validate chart name length (max 12 characters)
         if (strlen($chartName) > 12) {
             $conn->close();
@@ -69,8 +83,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
             fclose($handle);
 
-            // Validate maximum 50 rows
-            if (count($data) > 50) {
+            // Validate maximum 40 rows
+            if (count($data) > 40) {
                 $conn->close();
                 header('Location: /vmi/details/strapping_chart/?status=error&msg=max_rows&rows=' . count($data));
                 exit();

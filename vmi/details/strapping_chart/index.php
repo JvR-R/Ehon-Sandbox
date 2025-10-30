@@ -32,7 +32,7 @@
                         <div class="form-row">
                             <label class="form-label">Number of points:</label>
                             <div class="form-field">
-                                <input class="form-input" type="number" name="chart" id="chart" placeholder="Enter number of points (max 50)" min="1" max="50" required>
+                                <input class="form-input" type="number" name="chart" id="chart" placeholder="Enter number of points (max 40)" min="1" max="40" required>
                                 <input type="hidden" name="companyId" value="<?php echo htmlspecialchars($companyId); ?>">
                                 <button type="submit" class="form-button">Create Chart</button>
                             </div>
@@ -50,7 +50,7 @@
                             <label class="form-label">CSV File:</label>
                             <div class="form-field">
                                 <div class="file-input-wrapper tooltip">
-                                    <span class="tooltiptext">The file name will be used as the strapping chart name (max 12 chars, max 50 rows)</span>
+                                    <span class="tooltiptext">The file name will be used as the strapping chart name (max 12 chars, max 40 rows)</span>
                                     <input type="file" name="csv_file" accept=".csv" class="file-input" required>
                                     <label class="file-input-label">Choose CSV file...</label>
                                 </div>
@@ -142,11 +142,15 @@
                         const msg = params.get('msg');
                         const len = params.get('len');
                         const rows = params.get('rows');
-                        if (msg === 'name_length') {
+                        if (msg === 'name_blank') {
+                            toastr.error('Chart name cannot be blank');
+                        } else if (msg === 'name_spaces') {
+                            toastr.error('Chart name cannot contain spaces');
+                        } else if (msg === 'name_length') {
                             const lengthMsg = len ? `Chart name can only have 12 characters maximum. Your filename is ${len} characters.` : 'Chart name can only have 12 characters maximum';
                             toastr.error(lengthMsg);
                         } else if (msg === 'max_rows') {
-                            const rowsMsg = rows ? `Maximum number of rows is 50. Your CSV has ${rows} valid rows.` : 'Maximum number of rows is 50';
+                            const rowsMsg = rows ? `Maximum number of rows is 40. Your CSV has ${rows} valid rows.` : 'Maximum number of rows is 40';
                             toastr.error(rowsMsg);
                         } else if (msg === 'csv_columns') {
                             toastr.error('CSV file must contain "volume" and "mm" columns');
@@ -197,6 +201,11 @@
                             toastr.warning(`Filename "${fileNameWithoutExt}" is ${fileNameWithoutExt.length} characters. Maximum is 12 characters.`);
                         }
                         
+                        // Validate filename - no spaces allowed
+                        if (fileNameWithoutExt.includes(' ')) {
+                            toastr.warning(`Filename "${fileNameWithoutExt}" contains spaces. Spaces are not allowed in chart names.`);
+                        }
+                        
                         label.textContent = fileName;
                         label.style.color = 'var(--brand-blue-600)';
                         label.style.borderColor = 'var(--brand-blue-600)';
@@ -214,13 +223,13 @@
             const forms = document.querySelectorAll('form');
             forms.forEach(form => {
                 form.addEventListener('submit', function(e) {
-                    // Validate number of points (max 50)
+                    // Validate number of points (max 40)
                     const chartInput = form.querySelector('input[name="chart"]');
                     if (chartInput) {
                         const numPoints = parseInt(chartInput.value);
-                        if (numPoints > 50) {
+                        if (numPoints > 40) {
                             e.preventDefault();
-                            toastr.error('Maximum number of points is 50');
+                            toastr.error('Maximum number of points is 40');
                             return false;
                         }
                         if (numPoints < 1) {

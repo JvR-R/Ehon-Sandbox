@@ -187,14 +187,39 @@ try {
           ");
           $schart = $st ? $st->fetchAll(PDO::FETCH_ASSOC) : [];
       } else {
-          // Non-owner: charts from client_id 15100 (shared) + their own client
+          // Non-owner: fetch reseller_id and Dist_id from clients table
+          $st = $pdo->prepare("
+              SELECT reseller_id, Dist_id
+              FROM clients
+              WHERE client_id = ?
+              LIMIT 1
+          ");
+          $st->execute([$client_id]);
+          $clientInfo = $st->fetch(PDO::FETCH_ASSOC);
+          
+          // Build list of client_ids to include: own client + reseller + distributor + shared (15100)
+          $clientIds = [$client_id, 15100];
+          if ($clientInfo) {
+              if (!empty($clientInfo['reseller_id'])) {
+                  $clientIds[] = (int)$clientInfo['reseller_id'];
+              }
+              if (!empty($clientInfo['Dist_id'])) {
+                  $clientIds[] = (int)$clientInfo['Dist_id'];
+              }
+          }
+          
+          // Remove duplicates and build placeholders for IN clause
+          $clientIds = array_unique($clientIds);
+          $placeholders = implode(',', array_fill(0, count($clientIds), '?'));
+          
+          // Query strapping charts from all relevant client_ids
           $st = $pdo->prepare("
               SELECT chart_id, chart_name
               FROM strapping_chart
-              WHERE client_id IN (?, 15100)
+              WHERE client_id IN ($placeholders)
               ORDER BY chart_name
           ");
-          $st->execute([$client_id]);
+          $st->execute($clientIds);
           $schart = $st->fetchAll(PDO::FETCH_ASSOC);  // [{chart_id, chart_name}]
       }
   }

@@ -20,6 +20,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $chart = $_POST['chart'];
     $strname = $_POST['strname'];
     
+    // Validate chart name is not blank
+    if (trim($strname) === '') {
+        sc_write_log('Chart name validation failed: blank name');
+        $conn->close();
+        header('Location: /vmi/details/strapping_chart/?status=error&msg=name_blank');
+        exit();
+    }
+    
+    // Validate chart name - no spaces allowed
+    if (strpos($strname, ' ') !== false) {
+        sc_write_log('Chart name validation failed: contains spaces');
+        $conn->close();
+        header('Location: /vmi/details/strapping_chart/?status=error&msg=name_spaces');
+        exit();
+    }
+    
     // Validate chart name length (max 12 characters)
     if (strlen($strname) > 12) {
         sc_write_log('Chart name validation failed: ' . strlen($strname) . ' characters');
@@ -28,8 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     }
     
-    // Validate max 50 rows
-    if ($chart > 51) { // chart value is rows + 1
+    // Validate max 40 rows
+    if ($chart > 41) { // chart value is rows + 1
         sc_write_log('Chart rows validation failed: ' . ($chart - 1) . ' rows');
         $conn->close();
         header('Location: /vmi/details/strapping_chart/?status=error&msg=max_rows');
