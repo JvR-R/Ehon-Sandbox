@@ -531,7 +531,7 @@ function wireChartDisable(row) {
           (depth && parseFloat(depth.value) !== 0);
         
         if (hasNonZeroValues) {
-          const confirmed = confirm('Selecting a strapping chart will disable the tank shape');
+          const confirmed = confirm('Selecting a strapping chart will reset the tank shape');
           if (confirmed) {
             // Reset values to 0
             if (height) height.value = 0;
