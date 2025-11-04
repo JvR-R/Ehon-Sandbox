@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Inline Theme Test - EHON VMI</title>
+  <style>
+    /* INLINE THEME CSS FOR TESTING */
+    :root {
+      --bg: #ffffff;
+      --text: #000000;
+      --accent: #6c72ff;
+    }
+    
+    [data-theme="dark"] {
+      --bg: #1a1b1f;
+      --text: #ffffff;
+      --accent: #8a8fff;
+    }
+    
+    * {
+      transition: all 0.3s ease;
+    }
+    
+    body {
+      margin: 0;
+      padding: 40px;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    h1 {
+      color: var(--accent);
+      font-size: 48px;
+    }
+    
+    .status {
+      font-size: 24px;
+      padding: 20px;
+      margin: 20px 0;
+      border: 3px solid var(--accent);
+      border-radius: 10px;
+      background: var(--bg);
+    }
+    
+    .toggle-btn {
+      font-size: 32px;
+      padding: 20px 40px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+    
+    .toggle-btn:hover {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+    
+    .box {
+      padding: 30px;
+      margin: 20px 0;
+      border-radius: 10px;
+      background: var(--accent);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 INLINE THEME TEST</h1>
+    
+    <div class="status" id="status">
+      Current: <strong>LIGHT MODE ☀️</strong>
+    </div>
+    
+    <button class="toggle-btn" onclick="toggleTheme()">
+      CLICK TO TOGGLE
+    </button>
+    
+    <div class="box">
+      This box should change color!
+    </div>
+    
+    <p>
+      Background: <span id="bg-color">white</span><br>
+      Text: <span id="text-color">black</span>
+    </p>
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const status = document.getElementById('status');
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      
+      if (isDark) {
+        // Switch to light
+        html.removeAttribute('data-theme');
+        status.innerHTML = 'Current: <strong>LIGHT MODE ☀️</strong>';
+        localStorage.setItem('theme', 'light');
+        console.log('Switched to LIGHT mode');
+      } else {
+        // Switch to dark
+        html.setAttribute('data-theme', 'dark');
+        status.innerHTML = 'Current: <strong>DARK MODE 🌙</strong>';
+        localStorage.setItem('theme', 'dark');
+        console.log('Switched to DARK mode');
+      }
+      
+      updateColors();
+    }
+    
+    function updateColors() {
+      const bg = getComputedStyle(document.body).backgroundColor;
+      const color = getComputedStyle(document.body).color;
+      document.getElementById('bg-color').textContent = bg;
+      document.getElementById('text-color').textContent = color;
+    }
+    
+    // Load saved theme
+    window.addEventListener('DOMContentLoaded', function() {
+      const saved = localStorage.getItem('theme');
+      console.log('Saved theme:', saved);
+      
+      if (saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.getElementById('status').innerHTML = 'Current: <strong>DARK MODE 🌙</strong>';
+      }
+      
+      updateColors();
+      console.log('Theme loaded!');
+    });
+  </script>
+</body>
+</html>
+
