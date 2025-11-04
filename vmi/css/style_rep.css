@@ -4,7 +4,7 @@ section.topborder {
   left: 0vw;
   top: 0px;
   height: 64px;
-  background-color: white;
+  background-color: var(--nav-bg);
   text-align: left;
   z-index: 501;
 }
@@ -12,7 +12,7 @@ section.topborder {
 .border {
   width: 56px;
   height: 100vh;
-  background-color: white;
+  background-color: var(--nav-bg);
   left: 0%;
   justify-content: center;
   align-items: center;
@@ -29,7 +29,7 @@ section.topborder {
   align-items: center;
   text-decoration: none;
   margin: 25px auto;
-  color: #e2e1e1;
+  color: var(--text-muted);
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -50,7 +50,7 @@ section.topborder {
   visibility: hidden; /* Hide text initially */
   font-weight: bold;
   font-size: 12px; /* Adjust based on your preference */
-  color: #676767;
+  color: var(--text-secondary);
   margin-left: 10px; /* Space between icon and text */
   white-space: nowrap; /* Ensure the text doesn't wrap */
   transition: visibility 0.3s linear;
@@ -109,7 +109,7 @@ section.topborder {
   width: 100%;
   min-height: 600px;
   min-width: 300px;
-  background-color: white;
+  background-color: var(--bg-primary);
   overflow:auto;
   overflow-x: auto;
   position: relative;
@@ -141,7 +141,7 @@ section.topborder {
 }
 
 .card-link:hover {
-  background-color: #f0f0f0; /* Example: Changes background color on hover */
+  background-color: var(--nav-hover); /* Example: Changes background color on hover */
   text-decoration: underline; /* Example: Adds an underline on hover */
   /* Add other hover styles if needed */
 }
@@ -149,9 +149,9 @@ section.topborder {
   padding: 0.5rem 1rem 0rem;
 }
 .btn-primary {
-  color: #fff;
+  color: var(--btn-text);
   text-align: center;
-  background-color: #6c72ff;
+  background-color: var(--btn-primary-bg);
   border-radius: 4px;
   justify-content: center;
   padding: 8px;
@@ -162,8 +162,8 @@ section.topborder {
 }
 
 .btn-primary:hover {
-  color: #fff;
-  background-color: #212c4d;
+  color: var(--btn-text);
+  background-color: var(--btn-primary-hover);
 }
 
 .btn-primary.small {
@@ -178,8 +178,8 @@ section.topborder {
 }
 
 .btn-primary.large.white {
-  color: #493aff;
-  background-color: #fff;
+  color: var(--accent-primary);
+  background-color: var(--bg-primary);
   transition: transform .3s, background-color .3s, color .3s;
 }
 
@@ -195,9 +195,9 @@ section.topborder {
   background-color: #343b4f;
 }
 .btn-secondary {
-  color: #fff;
+  color: var(--btn-text);
   text-align: center;
-  background-color: #212c4d;
+  background-color: var(--btn-secondary-bg);
   border-radius: 4px;
   padding: 8px;
   line-height: 1.167em;
@@ -206,8 +206,8 @@ section.topborder {
 }
 
 .btn-secondary:hover {
-  color: #fff;
-  background-color: #6c72ff;
+  color: var(--btn-text);
+  background-color: var(--btn-secondary-hover);
   cursor: pointer;
 }
 
@@ -219,11 +219,11 @@ section.topborder {
 }
 
 .btn-secondary.bg-neutral-600 {
-  background-color: #37446b;
+  background-color: var(--input-border);
 }
 
 .btn-secondary.bg-neutral-600:hover {
-  background-color: #6c72ff;
+  background-color: var(--btn-primary-bg);
 }
 .filter__div{
   padding: 0.5rem 1rem 0rem 2rem;
@@ -235,11 +235,11 @@ section.topborder {
   min-height: 18rem;
   border-bottom-left-radius: 10px;  /* Adjust the radius as needed */
   border-bottom-right-radius: 10px;
-  background-color: #0000000b;
+  background-color: var(--bg-accent);
 }
 .form-select.form-select-lg {
-  background: #011a37;;
-  color: white;
+  background: var(--input-bg);
+  color: var(--input-text);
   border-radius: 0.5rem;
   overflow: auto;
   padding: 0.8rem;
@@ -255,39 +255,39 @@ section.topborder {
 }
 
 .form-select.form-select-lg::-webkit-scrollbar-thumb {
-  background: black; /* Scroll thumb color */
+  background: var(--scrollbar-thumb); /* Scroll thumb color */
   border-radius: 10px;
 }
 
 /* For Firefox */
 .form-select.form-select-lg {
   scrollbar-width: thin; /* "auto" or "thin" */
-  scrollbar-color: black transparent; /* thumb and track color */
+  scrollbar-color: var(--scrollbar-thumb) transparent; /* thumb and track color */
 }
 input[type="date"]{
-  background-color: #011a37;
+  background-color: var(--input-bg);
   padding: 0.5rem;
   font-family: "Roboto Mono",monospace;
-  color: #ffffff;
+  color: var(--input-text);
   font-size: 18px;
   border: none;
   outline: none;
   border-radius: 5px;
 }
 ::-webkit-calendar-picker-indicator{
-  background-color: #ffffff;
+  background-color: var(--bg-primary);
   padding: 5px;
   cursor: pointer;
   border-radius: 3px;
 }
 /* Targets the scrollbar track */
 ::-webkit-scrollbar-track {
-  background-color: #f0f0f0;
+  background-color: var(--scrollbar-track);
 }
 
 /* Targets the scrollbar thumb */
 ::-webkit-scrollbar-thumb {
-  background-color: #888;
+  background-color: var(--scrollbar-thumb);
   border-radius: 10px;
 }
 
@@ -300,10 +300,10 @@ html {
   scroll-behavior: smooth;
 }
 .upload-container {
-  background: #002F60;
+  background: var(--bg-darker);
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px var(--shadow-sm);
   text-align: center;
   max-width: 20rem;
 }
@@ -339,5 +339,5 @@ input[type="file"] {
 
 .acknowledge-btn:focus {
   outline: none; /* Remove default outline */
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+  box-shadow: 0 0 5px var(--shadow-md); /* Add a subtle shadow */
 }

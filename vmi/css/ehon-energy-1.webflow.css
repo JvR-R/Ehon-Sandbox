@@ -27,7 +27,7 @@
 }
 
 body {
-  color: #1a1b1f;
+  color: var(--text-primary);
   font-family: Montserrat, sans-serif;
   font-size: 16px;
   font-weight: 400;
@@ -87,7 +87,7 @@ p {
 }
 
 a {
-  color: #1a1b1f;
+  color: var(--text-link);
   text-align: center;
   align-self: center;
   text-decoration: underline;
@@ -96,11 +96,11 @@ a {
 }
 
 a:hover {
-  color: #32343a;
+  color: var(--text-tertiary);
 }
 
 a:active {
-  color: #43464d;
+  color: var(--text-tertiary);
 }
 
 ul {
@@ -146,7 +146,7 @@ figcaption {
 
 .divider {
   height: 1px;
-  background-color: #eee;
+  background-color: var(--divider-color);
   padding-top: 10px;
 }
 
@@ -167,8 +167,8 @@ figcaption {
   width: auto;
   height: auto;
   max-width: 2064px;
-  color: #000;
-  background-color: #f4f4f4;
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
   flex: 0 auto;
   margin: auto;
   padding: 0;
@@ -219,7 +219,7 @@ figcaption {
 
 .paragraph-bigger {
   opacity: 1;
-  color: #2b3590;
+  color: var(--accent-primary);
   margin-bottom: 10px;
   font-size: 20px;
   font-weight: 500;
@@ -228,8 +228,8 @@ figcaption {
 
 .paragraph-bigger.cc-bigger-light {
   opacity: .6;
-  color: #000;
-  -webkit-text-stroke-color: black;
+  color: var(--text-primary);
+  -webkit-text-stroke-color: var(--text-primary);
 }
 
 .paragraph-bigger.cc-bigger-white-light {
@@ -237,10 +237,10 @@ figcaption {
 }
 
 .button {
-  color: #fff;
+  color: var(--btn-text);
   letter-spacing: 2px;
   text-transform: uppercase;
-  background-color: #f90606;
+  background-color: var(--accent-danger);
   border-radius: 0;
   padding: 12px 25px;
   font-size: 12px;
@@ -250,47 +250,47 @@ figcaption {
 }
 
 .button:hover {
-  color: #fff;
-  background-color: #32343a;
+  color: var(--btn-text);
+  background-color: var(--text-tertiary);
 }
 
 .button:active {
-  background-color: #43464d;
+  background-color: var(--text-tertiary);
 }
 
 .button.cc-jumbo-button {
-  background-color: #f90606;
+  background-color: var(--accent-danger);
   padding: 16px 35px;
   font-size: 14px;
   line-height: 26px;
 }
 
 .button.cc-jumbo-button.cc-jumbo-white {
-  color: #fff;
-  background-color: #f90606;
+  color: var(--btn-text);
+  background-color: var(--accent-danger);
   position: static;
 }
 
 .button.cc-jumbo-button.cc-jumbo-white:hover {
-  background-color: #f1f1f1;
+  background-color: var(--bg-tertiary);
 }
 
 .button.cc-jumbo-button.cc-jumbo-white:active {
-  background-color: #e1e1e1;
+  background-color: var(--bg-tertiary);
 }
 
 .button.cc-contact-us {
   z-index: 5;
   object-fit: fill;
-  background-color: #f90606;
+  background-color: var(--accent-danger);
   padding-left: 20px;
   padding-right: 20px;
   position: relative;
 }
 
 .button.cc-white-button {
-  color: #fff;
-  background-color: #2b3590;
+  color: var(--btn-text);
+  background-color: var(--accent-primary);
   padding: 16px 35px;
   font-size: 14px;
   line-height: 26px;

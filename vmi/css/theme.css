@@ -1,0 +1,296 @@
+/**
+ * EHON VMI - Theme System
+ * Light/Dark Mode CSS Variables
+ * 
+ * Usage: This file should be included BEFORE all other CSS files
+ * Add this to your PHP pages: <link href="/vmi/css/theme.css" rel="stylesheet" type="text/css">
+ */
+
+/* ============================================
+   DEFAULT THEME (LIGHT MODE)
+   ============================================ */
+:root {
+  /* Background Colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f4f4f4;
+  --bg-tertiary: #f0f0f0;
+  --bg-accent: #0000000b;
+  --bg-card: #ffffff;
+  --bg-dark: #011a37;
+  --bg-darker: #002F60;
+  
+  /* Text Colors */
+  --text-primary: #1a1b1f;
+  --text-secondary: #676767;
+  --text-tertiary: #32343a;
+  --text-inverse: #ffffff;
+  --text-muted: #e2e1e1;
+  --text-link: #1a1b1f;
+  
+  /* Border Colors */
+  --border-color: #e2e2e2;
+  --border-light: #eee;
+  --border-dark: #333;
+  
+  /* Brand Colors (stay consistent) */
+  --accent-primary: #6c72ff;
+  --accent-primary-hover: #212c4d;
+  --accent-secondary: #57c3ff;
+  --accent-danger: #EC1C1C;
+  --accent-success: #00c853;
+  --accent-warning: #ff9800;
+  
+  /* Button Colors */
+  --btn-primary-bg: #6c72ff;
+  --btn-primary-hover: #212c4d;
+  --btn-secondary-bg: #212c4d;
+  --btn-secondary-hover: #6c72ff;
+  --btn-text: #ffffff;
+  
+  /* Input/Form Colors */
+  --input-bg: #011a37;
+  --input-text: #ffffff;
+  --input-border: #37446b;
+  
+  /* Navigation Colors */
+  --nav-bg: #ffffff;
+  --nav-text: #676767;
+  --nav-hover: #f0f0f0;
+  
+  /* Scrollbar Colors */
+  --scrollbar-track: #f0f0f0;
+  --scrollbar-thumb: #888;
+  
+  /* Shadow Colors */
+  --shadow-sm: rgba(0, 0, 0, 0.1);
+  --shadow-md: rgba(0, 0, 0, 0.2);
+  --shadow-lg: rgba(0, 0, 0, 0.3);
+  
+  /* Status Badge Colors */
+  --status-green-bg: #00c853;
+  --status-green-text: #ffffff;
+  --status-red-bg: #ff5252;
+  --status-red-text: #ffffff;
+  
+  /* Chart Colors */
+  --chart-bar: #6c72ff;
+  --chart-line: #57c3ff;
+  
+  /* Special Purpose */
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --divider-color: #eee;
+}
+
+/* ============================================
+   DARK MODE THEME
+   ============================================ */
+[data-theme="dark"] {
+  /* Background Colors */
+  --bg-primary: #1a1b1f;
+  --bg-secondary: #252629;
+  --bg-tertiary: #2a2b2f;
+  --bg-accent: #ffffff0b;
+  --bg-card: #252629;
+  --bg-dark: #121418;
+  --bg-darker: #0a0b0d;
+  
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --text-tertiary: #d0d0d0;
+  --text-inverse: #1a1b1f;
+  --text-muted: #606060;
+  --text-link: #8a8fff;
+  
+  /* Border Colors */
+  --border-color: #3a3b3f;
+  --border-light: #2a2b2f;
+  --border-dark: #606060;
+  
+  /* Brand Colors (slightly adjusted for dark mode) */
+  --accent-primary: #8a8fff;
+  --accent-primary-hover: #a0a6ff;
+  --accent-secondary: #70d0ff;
+  --accent-danger: #ff4444;
+  --accent-success: #00e676;
+  --accent-warning: #ffa726;
+  
+  /* Button Colors */
+  --btn-primary-bg: #8a8fff;
+  --btn-primary-hover: #a0a6ff;
+  --btn-secondary-bg: #3a3b4f;
+  --btn-secondary-hover: #8a8fff;
+  --btn-text: #ffffff;
+  
+  /* Input/Form Colors */
+  --input-bg: #2a2b2f;
+  --input-text: #ffffff;
+  --input-border: #4a4b4f;
+  
+  /* Navigation Colors */
+  --nav-bg: #1f2023;
+  --nav-text: #b0b0b0;
+  --nav-hover: #2a2b2f;
+  
+  /* Scrollbar Colors */
+  --scrollbar-track: #2a2b2f;
+  --scrollbar-thumb: #505050;
+  
+  /* Shadow Colors */
+  --shadow-sm: rgba(0, 0, 0, 0.3);
+  --shadow-md: rgba(0, 0, 0, 0.5);
+  --shadow-lg: rgba(0, 0, 0, 0.7);
+  
+  /* Status Badge Colors */
+  --status-green-bg: #00e676;
+  --status-green-text: #000000;
+  --status-red-bg: #ff4444;
+  --status-red-text: #ffffff;
+  
+  /* Chart Colors */
+  --chart-bar: #8a8fff;
+  --chart-line: #70d0ff;
+  
+  /* Special Purpose */
+  --overlay-bg: rgba(0, 0, 0, 0.7);
+  --divider-color: #3a3b3f;
+}
+
+/* ============================================
+   TRANSITION FOR SMOOTH THEME SWITCHING
+   ============================================ */
+*,
+*::before,
+*::after {
+  transition: background-color 0.3s ease, 
+              color 0.3s ease, 
+              border-color 0.3s ease,
+              box-shadow 0.3s ease !important;
+}
+
+/* Exclude transitions for elements that shouldn't animate */
+.no-theme-transition,
+.no-theme-transition *,
+img,
+video,
+canvas {
+  transition: none !important;
+}
+
+/* ============================================
+   THEME TOGGLE BUTTON STYLES
+   ============================================ */
+.theme-toggle-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  margin: 20px 0;
+}
+
+.theme-toggle-btn {
+  background: transparent;
+  border: 2px solid var(--border-color);
+  border-radius: 50px;
+  width: 60px;
+  height: 30px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.theme-toggle-btn:hover {
+  border-color: var(--accent-primary);
+}
+
+.theme-toggle-slider {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  left: 3px;
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+[data-theme="dark"] .theme-toggle-slider {
+  transform: translateX(30px);
+}
+
+.theme-toggle-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* Icon styles */
+.theme-icon-sun::before {
+  content: "☀️";
+}
+
+.theme-icon-moon::before {
+  content: "🌙";
+}
+
+/* Sidebar theme toggle (compact version) */
+.button-link.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 25px auto;
+  cursor: pointer;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+.button-link.theme-toggle .button-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.button-link.theme-toggle .theme-toggle-btn {
+  width: 48px;
+  height: 24px;
+  margin: 0;
+}
+
+.button-link.theme-toggle .theme-toggle-slider {
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
+}
+
+[data-theme="dark"] .button-link.theme-toggle .theme-toggle-slider {
+  transform: translateX(24px);
+}
+
+.button-link.theme-toggle span {
+  visibility: hidden;
+  font-weight: bold;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-left: 10px;
+  white-space: nowrap;
+  transition: visibility 0.3s linear;
+}
+
+.border:hover .button-link.theme-toggle span {
+  visibility: visible;
+}
+
+@media (min-width: 1920px) {
+  .button-link.theme-toggle span {
+    visibility: visible;
+  }
+}
+
