@@ -630,17 +630,21 @@ class Drivers(models.Model):
 class FuelQuality(models.Model):
     if_fq = models.AutoField(primary_key=True)
     client_id = models.IntegerField(blank=True, null=True)
+    fq_date = models.DateField(blank=True, null=True)
+    fq_time = models.TimeField(blank=True, null=True)
     uid = models.IntegerField(blank=True, null=True)
     tank_id = models.IntegerField(blank=True, null=True)
-    fq_timestamp = models.CharField(max_length=45, blank=True, null=True)
     particle_4um = models.IntegerField(blank=True, null=True)
     particle_6um = models.IntegerField(blank=True, null=True)
     particle_14um = models.IntegerField(blank=True, null=True)
-    particle_21um = models.IntegerField(blank=True, null=True)
-    fq_date0 = models.DateField(blank=True, null=True)
-    fq_time0 = models.TimeField(blank=True, null=True)
-    fq_date = models.DateField(blank=True, null=True)
-    fq_time = models.TimeField(blank=True, null=True)
+    fq_bubbles = models.IntegerField(blank=True, null=True)
+    fq_cutting = models.IntegerField(blank=True, null=True)
+    fq_sliding = models.IntegerField(blank=True, null=True)
+    fq_fatigue = models.IntegerField(blank=True, null=True)
+    fq_fibre = models.IntegerField(blank=True, null=True)
+    fq_air = models.IntegerField(blank=True, null=True)
+    fq_unknown = models.IntegerField(blank=True, null=True)
+    fq_temp = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False
