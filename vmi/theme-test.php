@@ -1,8 +1,16 @@
 <?php
-session_start();
-// Mock session data for testing
-$_SESSION['companyId'] = 15100;
-$_SESSION['accessLevel'] = 1;
+// Include database connection first
+include_once(__DIR__ . '/db/dbh2.php');
+
+// Start session and set test data
+if (!isset($_SESSION['companyId'])) {
+    $_SESSION['companyId'] = 15100;
+    $_SESSION['accessLevel'] = 1;
+}
+
+// Set required variables for border.php
+$companyId = $_SESSION['companyId'];
+$accessLevel = $_SESSION['accessLevel'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
