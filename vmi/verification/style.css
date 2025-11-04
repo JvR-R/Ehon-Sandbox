@@ -22,7 +22,7 @@ main.table {
   top: 63px;
   display: block;
   backdrop-filter: blur(7px);
-  box-shadow: 0 .4rem .8rem #0005;
+  box-shadow: 0 .4rem .8rem var(--shadow-md);
   border-start-start-radius: .8rem;
   overflow-x: hidden;
 }

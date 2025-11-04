@@ -57,7 +57,7 @@ section.topborder{
 .button-link:hover {
     width: 55%;
     color: var(--accent-warning);
-    box-shadow: 0 .1rem .4rem #0002;
+    box-shadow: 0 .1rem .4rem var(--shadow-sm);
 }
 .button-text {
     display: inline-block;
@@ -82,12 +82,12 @@ section.topborder{
 main.table {
     width: calc(100% - 71px);
     height: 94%;
-    background-color: #fff5;
+    background-color: var(--table-main-bg);
     position: absolute;
     left: 71px;
     top: 61px;
     backdrop-filter: blur(7px);
-    box-shadow: 0 .4rem .8rem #0005;
+    box-shadow: 0 .4rem .8rem var(--shadow-md);
     overflow: hidden;
     border-start-start-radius: .8rem;
 }
@@ -122,20 +122,20 @@ main.table {
 .table__header .input-group {
     width: 35%;
     height: 100%;
-    background-color: #fff5;
+    background-color: var(--table-main-bg);
     padding: 0 .8rem;
     border-radius: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #fff8;
+    background: var(--bg-card);
     transition: .2s;
 }
 
 .table__header .input-group:hover {
     width: 45%;
-    background-color: #fff8;
-    box-shadow: 0 .1rem .4rem #0002;
+    background-color: var(--bg-card);
+    box-shadow: 0 .1rem .4rem var(--shadow-sm);
 }
 
 .table__header .input-group img {
@@ -156,7 +156,7 @@ main.table {
 .table__body {
     width: calc(100% - 10px);
     max-height: calc(92% - 1.6rem);
-    background-color: #fffb;
+    background-color: var(--table-body-bg);
     margin: .8rem auto;
     border-radius: .6rem;
     overflow: overlay;
@@ -173,7 +173,7 @@ main.table {
 
 .table__body::-webkit-scrollbar-thumb{
     border-radius: .5rem;
-    background-color: #0004;
+    background-color: var(--scrollbar-thumb);
     visibility: hidden;
 }
 
@@ -231,7 +231,7 @@ tbody tr.hide {
 }
 
 tbody tr:hover {
-    /*background-color: #fff6 !important;*/
+    /*background-color: var(--bg-secondary) !important;*/
     background-color: #f7921e70 !important;
 }
 
@@ -332,7 +332,7 @@ thead th.active,tbody td.active {
     display: inline-block;
     width: 2rem;
     height: 2rem;
-    background: #fff6 url(images/export.png) center / 80% no-repeat;
+    background: var(--bg-secondary) url(images/export.png) center / 80% no-repeat;
     border-radius: 50%;
     transition: .2s ease-in-out;
 }
@@ -360,7 +360,7 @@ thead th.active,tbody td.active {
     transform: scale(.8);
     transform-origin: top right;
     
-    box-shadow: 0 .2rem .5rem #0004;
+    box-shadow: 0 .2rem .5rem var(--scrollbar-thumb);
     
     transition: .2s;
 }

@@ -53,12 +53,12 @@ body {
 main.table {
     width: calc(100% - 76px);
     height: 94%;
-    background-color: #fff5;
+    background-color: var(--table-main-bg);
     position: absolute;
     left: 71px;
     top: 61px;
     backdrop-filter: blur(7px);
-    box-shadow: 0 .4rem .8rem #0005;
+    box-shadow: 0 .4rem .8rem var(--shadow-md);
     overflow: hidden;
     border-start-start-radius: .8rem;
 }
@@ -74,25 +74,25 @@ main.table {
 .table__header .input-group {
     width: 35%;
     height: 100%;
-    background-color: #fff5;
+    background-color: var(--table-main-bg);
     padding: 0 .8rem;
     border-radius: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #fff8;
+    background: var(--bg-card);
     transition: .2s;
     display: none;
 }
 #customers_table_filter{
     width: 20%;
     height: 100%;
-    background-color: #fff5!important;
+    background-color: var(--table-main-bg)!important;
     padding: 0 .8rem;
     border-radius: 2rem;
     justify-content: center;
     align-items: center;
-    background: #fff8;
+    background: var(--bg-card);
     transition: .2s;
     border:solid;
     border-width: thin;
@@ -103,8 +103,8 @@ main.table {
 
 #customers_table_filter:hover {
     width: 45%;
-    background-color: #fff8;
-    box-shadow: 0 .1rem .4rem #0002;
+    background-color: var(--bg-card);
+    box-shadow: 0 .1rem .4rem var(--shadow-sm);
 }
 
 #customers_table_filter img {
@@ -125,7 +125,7 @@ main.table {
 .table__body {
     width: calc(100% - 10px);
     max-height: calc(92% - 1.6rem);
-    background-color: #fffb;
+    background-color: var(--table-body-bg);
     margin: .8rem auto;
     border-radius: .6rem;
     overflow: overlay;
@@ -143,7 +143,7 @@ main.table {
 
 .table__body::-webkit-scrollbar-thumb{
     border-radius: .5rem;
-    background-color: #0004;
+    background-color: var(--scrollbar-thumb);
     visibility: hidden;
 }
 
@@ -203,8 +203,8 @@ tbody tr.hide {
 }
 
 tbody tr:not(.expanded-details):hover {
-    /*background-color: #fff6 !important;*/
-    background-color: #bbc7ff65 !important;
+    /*background-color: var(--bg-secondary) !important;*/
+    background-color: var(--table-row-hover) !important;
 }
 
 tbody tr td,
@@ -297,7 +297,7 @@ thead th.active,tbody td.active {
     display: inline-block;
     width: 3rem;
     height: 3rem;
-    background: #fff6 url(/vmi/images/EHON-VMI_icons-REPORTS.png) center / 80% no-repeat;
+    background: var(--bg-secondary) url(/vmi/images/EHON-VMI_icons-REPORTS.png) center / 80% no-repeat;
     border-radius: 50%;
     transition: .2s ease-in-out;
 }
@@ -325,7 +325,7 @@ thead th.active,tbody td.active {
     transform: scale(.8);
     transform-origin: top right;
     
-    box-shadow: 0 .2rem .5rem #0004;
+    box-shadow: 0 .2rem .5rem var(--scrollbar-thumb);
     
     transition: .2s;
 }

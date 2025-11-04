@@ -19,6 +19,13 @@
   --bg-dark: #011a37;
   --bg-darker: #002F60;
   
+  /* Table-specific Colors */
+  --table-main-bg: rgba(255, 255, 255, 0.95);
+  --table-body-bg: rgba(255, 255, 255, 0.73);
+  --table-header-bg: #d7d7d7;
+  --table-row-even: #0000000b;
+  --table-row-hover: rgba(187, 199, 255, 0.4);
+  
   /* Text Colors */
   --text-primary: #1a1b1f;
   --text-secondary: #676767;
@@ -86,13 +93,20 @@
    ============================================ */
 [data-theme="dark"] {
   /* Background Colors */
-  --bg-primary: #1a1b1f;
-  --bg-secondary: #252629;
-  --bg-tertiary: #2a2b2f;
-  --bg-accent: #ffffff0b;
-  --bg-card: #252629;
-  --bg-dark: #121418;
-  --bg-darker: #0a0b0d;
+  --bg-primary: #121212;
+  --bg-secondary: #1e1e1e;
+  --bg-tertiary: #252525;
+  --bg-accent: rgba(255, 255, 255, 0.05);
+  --bg-card: #1e1e1e;
+  --bg-dark: #0d0d0d;
+  --bg-darker: #000000;
+  
+  /* Table-specific Colors */
+  --table-main-bg: rgba(30, 30, 30, 0.95);
+  --table-body-bg: rgba(25, 25, 25, 0.85);
+  --table-header-bg: #2a2a2a;
+  --table-row-even: rgba(255, 255, 255, 0.03);
+  --table-row-hover: rgba(100, 110, 255, 0.15);
   
   /* Text Colors */
   --text-primary: #ffffff;
