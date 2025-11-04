@@ -72,6 +72,7 @@ if (isset($_SESSION['loggedin'])) {
             opacity: 0.6;
         }
     </style>
+    <link rel="stylesheet" href="/vmi/css/theme.css">
 </head>
 <body>
     <main class="table">

@@ -93,7 +93,7 @@ main.table {
   width: 100%;
   min-height: 600px;
   min-width: 300px;
-  background-color: white;
+  background-color: var(--text-inverse);
   overflow:auto;
   overflow-x: auto;
   position: relative;
@@ -102,7 +102,7 @@ main.table {
   } 
 /* Professional Form Cards */
 .form-card {
-  background: white;
+  background: var(--bg-primary);
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -131,7 +131,7 @@ main.table {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  background: white;
+  background: var(--bg-primary);
 } 
 tbody{
   left: 0%;
@@ -168,7 +168,7 @@ table th:last-child {
 } */
 
 table td {
-  background-color: #ffffff;
+  background-color: var(--table-main-bg)ff;
   border: none;
   border-bottom: 1px solid #e8ecef;
   font-size: 16px;
@@ -277,7 +277,7 @@ h2{
 }
 select{
   font-size: 24px;
-  color:white;
+  color: var(--text-inverse);
   background-color:#000000a8;
   border-radius: 0.4rem;
   padding: 2px;
@@ -312,7 +312,7 @@ select{
   padding: 12px 16px;
   border: 2px solid #e2e8f0;
   border-radius: 8px;
-  background-color: #fff;
+  background-color: var(--bg-card);
   transition: all 0.2s ease-in-out;
   outline: none;
 }
@@ -334,7 +334,7 @@ select{
 /* Professional Form Layout */
 .form-header {
   background: var(--gradient-brand);
-  color: white;
+  color: var(--text-inverse);
   padding: 20px 24px;
   margin: 0;
   font-size: 18px;
@@ -381,7 +381,7 @@ select{
   font-size: 14px;
   font-family: inherit;
   color: #374151;
-  background-color: #ffffff;
+  background-color: var(--table-main-bg)ff;
   transition: all 0.2s ease-in-out;
   outline: none;
 }
@@ -399,7 +399,7 @@ select{
   font-size: 14px;
   font-family: inherit;
   color: #374151;
-  background-color: #ffffff;
+  background-color: var(--table-main-bg)ff;
   transition: all 0.2s ease-in-out;
   outline: none;
   cursor: pointer;
@@ -412,7 +412,7 @@ select{
 
 .form-button {
   background: var(--gradient-brand);
-  color: white;
+  color: var(--text-inverse);
   border: none;
   padding: 12px 24px;
   border-radius: 8px;
@@ -469,7 +469,7 @@ select{
 /* Modern Button Styling */
 .del-row {
   background: linear-gradient(135deg, #ff6b6b, #ee5a52);
-  color: white;
+  color: var(--text-inverse);
   border: none;
   padding: 8px 16px;
   border-radius: 6px;
@@ -493,7 +493,7 @@ select{
 /* Add Row Button */
 #add-row-btn {
   background: linear-gradient(135deg, #48bb78, #38a169);
-  color: white;
+  color: var(--text-inverse);
   border: none;
   padding: 12px 24px;
   border-radius: 8px;
@@ -512,7 +512,7 @@ select{
 /* Submit Button */
 input[type="submit"] {
   background: var(--gradient-brand);
-  color: white;
+  color: var(--text-inverse);
   border: none;
   padding: 14px 32px;
   border-radius: 8px;
@@ -530,7 +530,7 @@ input[type="submit"]:hover {
 
 .submit_delete {
   background: linear-gradient(135deg, #ff6b6b, #ee5a52);
-  color: white;
+  color: var(--text-inverse);
   border: none;
   padding: 10px 20px;
   border-radius: 8px;

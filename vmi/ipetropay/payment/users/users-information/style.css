@@ -7,7 +7,7 @@
 }
 body {
   min-height: auto;
-  background: white center / cover;
+  background: var(--bg-primary) center / cover;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -63,7 +63,7 @@ main.table {
   left: 71px;
   top: 61px;
   backdrop-filter: blur(7px);
-  box-shadow: 0 .4rem .8rem #0005;
+  box-shadow: 0 .4rem .8rem var(--shadow-md);
   overflow: hidden;
   border-start-start-radius: .8rem;
   background-repeat: no-repeat;
@@ -91,14 +91,14 @@ tbody{
 
 }
 table th {
-  background-color: #ffffff9c;
+  background-color: var(--table-main-bg)ff9c;
   color: var(--text-link);
   border-style: solid;
   font-size: 36px;
   padding: 10px;
 }
 table td{
-  background-color: #ffffff82;
+  background-color: var(--table-main-bg)ff82;
   border-style: solid;
   font-size: 36px;
   color: var(--text-link);

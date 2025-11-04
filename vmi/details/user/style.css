@@ -6,7 +6,7 @@
 }
 body {
   min-height: auto;
-  background: white center / cover;
+  background: var(--bg-primary) center / cover;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -22,7 +22,7 @@ main.table {
   top: 63px;
   display: block;
   backdrop-filter: blur(7px);
-  box-shadow: 0 .4rem .8rem #0005;
+  box-shadow: 0 .4rem .8rem var(--shadow-md);
   border-start-start-radius: .8rem;
   overflow-x: hidden;
 }
@@ -74,7 +74,7 @@ h2{
   flex-direction: column;
   gap: 10px;
   max-width: 350px;
-  background-color: #fff;
+  background-color: var(--bg-card);
   padding: 20px;
   border-radius: 20px;
   position: relative;
@@ -132,7 +132,7 @@ h2{
   outline: 0;
   border: 1px solid rgba(105, 105, 105, 0.397);
   border-radius: 10px;
-  background-color: white;
+  background-color: var(--text-inverse);
 }
 .form label {
   position: relative;

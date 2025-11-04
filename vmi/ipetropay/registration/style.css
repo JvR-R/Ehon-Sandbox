@@ -7,7 +7,7 @@
 
 body {
     min-height: 100vh;
-    background-color: #fff5;
+    background-color: var(--table-main-bg);
     background: url(/images/peakpx.jpg);
     background-size: cover;
     background-repeat: no-repeat;

@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="../menu.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <title>Company Information</title>
+    <link rel="stylesheet" href="/vmi/css/theme.css">
 </head>
 <body>
     <main class="table">

@@ -14,6 +14,7 @@
     <script src="script.js"></script>
     <link rel="stylesheet" href="style.css">
     
+    <link rel="stylesheet" href="/vmi/css/theme.css">
 </head>
 
 <body>

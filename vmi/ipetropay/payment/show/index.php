@@ -13,6 +13,7 @@
     <title>Card Transactions</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
+    <link rel="stylesheet" href="/vmi/css/theme.css">
 </head>
 <body>
     <main class="table">

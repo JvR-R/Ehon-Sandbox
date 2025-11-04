@@ -7,7 +7,7 @@
 }
 body {
     min-height: auto;
-    background: white center / cover;
+    background: var(--bg-primary) center / cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -58,12 +58,12 @@ section.topborder{
 main.table {
     width: calc(100% - 71px);
     height: 94%;
-    background-color: #fff5;
+    background-color: var(--table-main-bg);
     position: absolute;
     left: 71px;
     top: 61px;
     backdrop-filter: blur(7px);
-    box-shadow: 0 .4rem .8rem #0005;
+    box-shadow: 0 .4rem .8rem var(--shadow-md);
     overflow: hidden;
     border-start-start-radius: .8rem;
     background-repeat: no-repeat;
@@ -121,7 +121,7 @@ h2{
     font-size: 24px;
     margin-top: 10px; /* Added margin-top */
     background-color: var(--text-link); /* Button background color */
-    color: white; /* Button text color */
+    color: var(--text-inverse); /* Button text color */
     border: none;
     cursor: pointer;
     border-radius: 10%;
@@ -140,7 +140,7 @@ h2{
   .table__header {
     width: 100%;
     height: 8%;
-    background-color: #d7d7d7bf;
+    background-color: var(--table-header-bg);
     padding: .8rem 1rem;
 
     display: flex;
@@ -151,7 +151,7 @@ h2{
 .table__header .input-group {
     width: 35%;
     height: 100%;
-    background-color: #fff5;
+    background-color: var(--table-main-bg);
     padding: 0 .8rem;
     border-radius: 2rem;
     display: flex;
@@ -185,7 +185,7 @@ h2{
 .table__body {
     width: 99%;
     max-height: calc(89% - 1.6rem);
-    background-color: #fffb;
+    background-color: var(--table-main-bg);
 
     margin: .8rem auto;
     border-radius: .6rem;
@@ -229,8 +229,8 @@ thead th {
     position: sticky;
     top: 0;
     left: 0;
-    background-color: #002e60;
-    color: white;
+    background-color: var(--bg-dark);
+    color: var(--text-inverse);
     cursor: pointer;
     text-transform: capitalize;
 }
@@ -322,7 +322,7 @@ thead th.active,tbody td.active {
 }
 
 .export__file .export__file-btn:hover { 
-    background-color: #fff;
+    background-color: var(--bg-card);
     transform: scale(1.15);
     cursor: pointer;
 }
@@ -375,7 +375,7 @@ thead th.active,tbody td.active {
 
 .export__file .export__file-options label:hover{
     transform: scale(1.05);
-    background-color: #fff;
+    background-color: var(--bg-card);
     cursor: pointer;
 }
 

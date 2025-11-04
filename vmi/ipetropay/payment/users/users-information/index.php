@@ -8,6 +8,7 @@ include('../../../borderipay.php');
 <head>
     <link rel="stylesheet" href="style.css">
     <title>Company Information</title>
+    <link rel="stylesheet" href="/vmi/css/theme.css">
 </head>
 <body>
 <main class="table">

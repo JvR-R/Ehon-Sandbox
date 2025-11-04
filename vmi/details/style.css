@@ -80,7 +80,7 @@ table th {
 
 }
 table td{
-  /* background-color: #ffffff82;
+  /* background-color: var(--table-main-bg)ff82;
   color: var(--text-link); */
   background-color: #454545;
   color: #fbfbfb;

@@ -73,6 +73,11 @@
   --shadow-md: rgba(0, 0, 0, 0.2);
   --shadow-lg: rgba(0, 0, 0, 0.3);
   
+  /* Input Shadow Colors (for text boxes to pop) */
+  --input-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --input-shadow-hover: 0 3px 12px rgba(0, 0, 0, 0.12);
+  --input-shadow-focus: 0 4px 16px rgba(0, 47, 96, 0.15);
+  
   /* Status Badge Colors */
   --status-green-bg: #00c853;
   --status-green-text: #ffffff;
@@ -155,6 +160,11 @@
   --shadow-md: rgba(0, 0, 0, 0.5);
   --shadow-lg: rgba(0, 0, 0, 0.7);
   
+  /* Input Shadow Colors (enhanced for dark mode) */
+  --input-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+  --input-shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.5);
+  --input-shadow-focus: 0 6px 20px rgba(138, 143, 255, 0.3);
+  
   /* Status Badge Colors */
   --status-green-bg: #00e676;
   --status-green-text: #000000;
@@ -222,6 +232,125 @@
 [data-theme="dark"] svg * {
   fill: var(--text-primary);
   stroke: var(--text-primary);
+}
+
+/* ============================================
+   DATATABLES OVERRIDES FOR DARK MODE
+   Fix hardcoded white backgrounds from CDN
+   ============================================ */
+[data-theme="dark"] table.dataTable,
+[data-theme="dark"] table.dataTable tbody tr,
+[data-theme="dark"] table.dataTable tbody tr td,
+[data-theme="dark"] .dataTables_wrapper,
+[data-theme="dark"] .dataTables_wrapper tbody tr {
+  background-color: var(--table-body-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] table.dataTable tbody tr:hover,
+[data-theme="dark"] table.dataTable tbody tr:hover td {
+  background-color: var(--table-row-hover) !important;
+}
+
+[data-theme="dark"] table.dataTable thead th,
+[data-theme="dark"] table.dataTable thead td {
+  background-color: var(--table-header-bg) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Child rows and expanded details */
+[data-theme="dark"] table.dataTable tbody tr.child,
+[data-theme="dark"] table.dataTable tbody tr.expanded-details {
+  background-color: var(--bg-secondary) !important;
+}
+
+/* DataTables pagination and info */
+[data-theme="dark"] .dataTables_info,
+[data-theme="dark"] .dataTables_paginate {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .dataTables_paginate .paginate_button {
+  color: var(--text-primary) !important;
+  background-color: var(--bg-secondary) !important;
+}
+
+[data-theme="dark"] .dataTables_paginate .paginate_button:hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+/* ============================================
+   ENHANCED INPUT/TEXTAREA STYLING
+   Make text boxes pop with shadows
+   ============================================ */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+input[type="date"],
+input[type="time"],
+textarea,
+select {
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  border: 1px solid var(--input-border);
+  box-shadow: var(--input-shadow);
+  transition: all 0.3s ease;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+}
+
+input[type="text"]:hover,
+input[type="email"]:hover,
+input[type="password"]:hover,
+input[type="number"]:hover,
+input[type="search"]:hover,
+input[type="tel"]:hover,
+input[type="url"]:hover,
+input[type="date"]:hover,
+input[type="time"]:hover,
+textarea:hover,
+select:hover {
+  box-shadow: var(--input-shadow-hover);
+  border-color: var(--accent-primary);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  box-shadow: var(--input-shadow-focus);
+  border-color: var(--accent-primary);
+  transform: translateY(-1px);
+}
+
+/* Dark mode specific input enhancements */
+[data-theme="dark"] input[type="text"],
+[data-theme="dark"] input[type="email"],
+[data-theme="dark"] input[type="password"],
+[data-theme="dark"] input[type="number"],
+[data-theme="dark"] input[type="search"],
+[data-theme="dark"] input[type="tel"],
+[data-theme="dark"] input[type="url"],
+[data-theme="dark"] input[type="date"],
+[data-theme="dark"] input[type="time"],
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  border-color: var(--input-border);
 }
 
 /* ============================================

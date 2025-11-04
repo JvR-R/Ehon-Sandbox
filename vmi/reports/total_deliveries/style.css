@@ -30,7 +30,7 @@ table {
 }
 body {
     min-height: auto;
-    background: white center / cover;
+    background: var(--bg-primary) center / cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,9 +39,9 @@ body {
 .button-js {
     font-weight: bold;
     font-size: 18px;
-    background-color: #002e60;
+    background-color: var(--bg-dark);
     cursor: pointer;
-    color: white;
+    color: var(--text-inverse);
     transition: 0.4s;
     border-radius: 0.4rem;
     padding: 4px;
@@ -53,9 +53,9 @@ body {
 .button-js3 {
     font-weight: bold;
     font-size: 18px;
-    background-color: #002e60;
+    background-color: var(--bg-dark);
     cursor: pointer;
-    color: white;
+    color: var(--text-inverse);
     transition: 0.4s;
     border-radius: 0.4rem;
     padding: 4px;
@@ -70,9 +70,9 @@ body {
     font-weight: bold;
     font-size: 18px;
     position: absolute;
-    background-color: #002e60;
+    background-color: var(--bg-dark);
     cursor: pointer;
-    color: white;
+    color: var(--text-inverse);
     transition: 0.4s;
     border-radius: 0.4rem;
     padding: 4px;
@@ -86,19 +86,19 @@ body {
 main.table {
     width: calc(100% - 76px);
     height: 94%;
-    background-color: #fff5;
+    background-color: var(--table-main-bg);
     position: absolute;
     left: 71px;
     top: 61px;
     backdrop-filter: blur(7px);
-    box-shadow: 0 .4rem .8rem #0005;
+    box-shadow: 0 .4rem .8rem var(--shadow-md);
     overflow: hidden;
     border-start-start-radius: .8rem;
 }
 .table__header {
     width: 100%;
     height: 4.5rem;
-    background-color: #d7d7d7bf;
+    background-color: var(--table-header-bg);
     padding: .8rem 1rem;
     display: flex;
     justify-content: space-between;
@@ -107,7 +107,7 @@ main.table {
 .table__header .input-group {
     width: 35%;
     height: 100%;
-    background-color: #fff5;
+    background-color: var(--table-main-bg);
     padding: 0 .8rem;
     border-radius: 2rem;
     display: flex;
@@ -120,7 +120,7 @@ main.table {
 #customers_table_filter{
     width: 20%;
     height: 100%;
-    background-color: #fff5!important;
+    background-color: var(--table-main-bg)!important;
     padding: 0 .8rem;
     border-radius: 2rem;
     justify-content: center;
@@ -158,7 +158,7 @@ main.table {
 .table__body {
     width: calc(100% - 10px);
     max-height: calc(92% - 1.6rem);
-    background-color: #fffb;
+    background-color: var(--table-main-bg);
     margin: .8rem auto;
     border-radius: .6rem;
     overflow: overlay;
@@ -213,8 +213,8 @@ thead th {
     position: sticky;
     top: 0;
     left: 0;
-    background-color: #002e60;
-    color: white;
+    background-color: var(--bg-dark);
+    color: var(--text-inverse);
     cursor: pointer;
     text-transform: capitalize;
     z-index: 2;
@@ -336,7 +336,7 @@ thead th.active,tbody td.active {
 }
 
 .export__file .export__file-btn:hover { 
-    background-color: #fff;
+    background-color: var(--bg-card);
     transform: scale(1.15);
     cursor: pointer;
 }
@@ -389,7 +389,7 @@ thead th.active,tbody td.active {
 
 .export__file .export__file-options label:hover{
     transform: scale(1.05);
-    background-color: #fff;
+    background-color: var(--bg-card);
     cursor: pointer;
 }
 
@@ -431,7 +431,7 @@ thead th.active,tbody td.active {
     position: relative;
     height: 20px;
     width: 100px;
-    background-color: #ffffff;
+    background-color: var(--table-main-bg)ff;
     border-radius: 4px;
     overflow: hidden;
     z-index: 1;
@@ -500,7 +500,7 @@ thead th.active,tbody td.active {
 .info_text{
     margin-left: 85px;
     margin-top: 30px;
-    background-color: white;
+    background-color: var(--text-inverse);
     backdrop-filter: blur(30px);
     border-radius: 0.8rem;
     padding: 1rem;
@@ -514,7 +514,7 @@ thead th.active,tbody td.active {
     max-width: 26rem;
     margin-left: 90px;
     margin-top: 30px;
-    background-color: white;
+    background-color: var(--text-inverse);
     backdrop-filter: blur(30px);
     border-radius: 0.8rem;
     padding: 20px;
@@ -579,7 +579,7 @@ thead th.active,tbody td.active {
     height: 27rem;
     top: 50px;
     position: absolute;
-    background: white;
+    background: var(--bg-primary);
     display: none;
     min-width: 90rem;
 }
@@ -587,7 +587,7 @@ thead th.active,tbody td.active {
     min-height: 27rem;
     top: 50px;
     position: absolute;
-    background: white;
+    background: var(--bg-primary);
     display: none;
     min-width: 90rem;
 }
@@ -595,7 +595,7 @@ thead th.active,tbody td.active {
     height: 27rem;
     top: 50px;
     position: absolute;
-    background: white;
+    background: var(--bg-primary);
     display: none;
     min-width: 90rem;
 }
@@ -723,7 +723,7 @@ label img{
 .group_filter{
     background: #454545;
     border-radius: 0.2rem;
-    color: white;   
+    color: var(--text-inverse);   
     z-index: 15;
 }
 @media(min-width: 1920px) {
@@ -774,7 +774,7 @@ label img{
     opacity: 1;
 }
 .alarm_count{
-    background: white;
+    background: var(--bg-primary);
     padding: 5px;
     border-radius: 0.3rem;
     font-weight: bold;
