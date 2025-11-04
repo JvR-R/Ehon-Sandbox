@@ -118,7 +118,7 @@ h2 {
     padding: 3px 6px;
     font-size: 20px;
     margin-top: 50px; /* Added margin-top */
-    background-color: #002F60; /* Button background color */
+    background-color: var(--text-link); /* Button background color */
     color: white; /* Button text color */
     border: none;
     cursor: pointer;
@@ -143,7 +143,7 @@ input[type="file"] {
     padding: 3px 6px;
     font-size: 14px;
     margin-top: 10px; /* Added margin-top */
-    background-color: #002F60; /* Button background color */
+    background-color: var(--text-link); /* Button background color */
     color: white; /* Button text color */
     border: none;
     border-radius: 0.4rem;

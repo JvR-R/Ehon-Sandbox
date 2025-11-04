@@ -171,6 +171,60 @@
 }
 
 /* ============================================
+   DARK MODE TEXT OVERRIDES
+   Ensure ALL text is light/readable
+   ============================================ */
+[data-theme="dark"] body,
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6,
+[data-theme="dark"] p,
+[data-theme="dark"] span,
+[data-theme="dark"] div,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] li,
+[data-theme="dark"] a,
+[data-theme="dark"] label,
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  color: var(--text-primary) !important;
+}
+
+/* Specific element overrides for dark mode */
+[data-theme="dark"] thead th {
+  background-color: var(--table-header-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] tbody tr {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .table__header {
+  background-color: var(--table-header-bg) !important;
+}
+
+[data-theme="dark"] .table__body {
+  background-color: var(--table-body-bg) !important;
+}
+
+[data-theme="dark"] main.table {
+  background-color: var(--table-main-bg) !important;
+}
+
+/* SVG icons in dark mode */
+[data-theme="dark"] svg,
+[data-theme="dark"] svg * {
+  fill: var(--text-primary);
+  stroke: var(--text-primary);
+}
+
+/* ============================================
    TRANSITION FOR SMOOTH THEME SWITCHING
    ============================================ */
 body,

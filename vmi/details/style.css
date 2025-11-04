@@ -81,7 +81,7 @@ table th {
 }
 table td{
   /* background-color: #ffffff82;
-  color: #002F60; */
+  color: var(--text-link); */
   background-color: #454545;
   color: #fbfbfb;
   font-size: 24px;
@@ -153,7 +153,7 @@ form {
 }
   
 .sign svg path {
-  fill: white;
+  fill: var(--text-primary);
 }
 .button-link:hover .sign path {
   fill: #F7901E;

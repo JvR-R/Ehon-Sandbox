@@ -67,7 +67,7 @@ h2{
 }
   
 .sign svg path {
-  fill: white;
+  fill: var(--text-primary);
 }
 .form {
   display: flex;

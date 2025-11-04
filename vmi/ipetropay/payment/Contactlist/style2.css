@@ -395,7 +395,7 @@ thead th.active,tbody td.active {
   }
   
   .sign svg path {
-    fill: white;
+    fill: var(--text-primary);
   }
   .button-link:hover .sign path {
     fill: #F7901E;
@@ -422,7 +422,7 @@ thead th.active,tbody td.active {
   }
   
   .bell path {
-    fill: white;
+    fill: var(--text-primary);
   }
   
   .buttonbell:hover {
@@ -465,7 +465,7 @@ thead th.active,tbody td.active {
     transform: scale(0.8);
   }
   a.site-link {
-    color: #002F60; /* Set the desired link color */
+    color: var(--text-link); /* Set the desired link color */
     text-decoration: none; /* Remove underline */
   }
 
@@ -515,6 +515,6 @@ thead th.active,tbody td.active {
    }
    .hoverable {
     cursor:pointer;
-    color: #002F60;
+    color: var(--text-link);
 
 }

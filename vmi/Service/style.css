@@ -369,13 +369,13 @@ thead th.active,tbody td.active {
   }
   
   .sign svg path {
-    fill: white;
+    fill: var(--text-primary);
   }
   .button-link:hover .sign path {
     fill: #F7901E;
 }
   a.site-link {
-    color: #002F60; /* Set the desired link color */
+    color: var(--text-link); /* Set the desired link color */
     text-decoration: none; /* Remove underline */
   }
 
@@ -388,7 +388,7 @@ thead th.active,tbody td.active {
     }
       
 #primary {
-    fill: #040404;
+    fill: var(--text-primary);
     }
       
 #secondary {
@@ -753,6 +753,7 @@ label img{
 }
 
 .tooltip .tooltiptext {
+  color: var(--text-inverse);
     visibility: hidden;
     width: 180px;
     background-color: var(--text-primary);

@@ -58,7 +58,7 @@ h2{
 }
   
 .sign svg path {
-  fill: white;
+  fill: var(--text-primary);
 }
 .button-link:hover .sign path {
   fill: #F7901E;

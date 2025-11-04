@@ -17,7 +17,7 @@
 }
 
 .fqcard {
-    background-color: #002F60;
+    background-color: var(--text-link);
     border: .6px solid #343b4f;
     border-radius: 12px;
     box-shadow: 0 2px 7px rgba(20, 20, 43, .06);

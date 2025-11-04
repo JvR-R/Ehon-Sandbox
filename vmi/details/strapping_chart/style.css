@@ -273,7 +273,7 @@ h2{
 }
   
 .sign svg path {
-  fill: white;
+  fill: var(--text-primary);
 }
 select{
   font-size: 24px;

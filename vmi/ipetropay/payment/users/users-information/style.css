@@ -92,7 +92,7 @@ tbody{
 }
 table th {
   background-color: #ffffff9c;
-  color: #002F60;
+  color: var(--text-link);
   border-style: solid;
   font-size: 36px;
   padding: 10px;
@@ -101,7 +101,7 @@ table td{
   background-color: #ffffff82;
   border-style: solid;
   font-size: 36px;
-  color: #002F60;
+  color: var(--text-link);
   padding: 10px;
 }
 .Title{
@@ -155,7 +155,7 @@ form {
   }
   
   .sign svg path {
-    fill: white;
+    fill: var(--text-primary);
   }
   .button-link:hover .sign path {
     fill: #F7901E;
