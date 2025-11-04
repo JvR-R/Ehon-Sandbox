@@ -159,13 +159,12 @@
 /* ============================================
    TRANSITION FOR SMOOTH THEME SWITCHING
    ============================================ */
-*,
-*::before,
-*::after {
+body,
+body *:not(img):not(video):not(canvas):not(iframe) {
   transition: background-color 0.3s ease, 
               color 0.3s ease, 
               border-color 0.3s ease,
-              box-shadow 0.3s ease !important;
+              box-shadow 0.3s ease;
 }
 
 /* Exclude transitions for elements that shouldn't animate */
@@ -173,7 +172,8 @@
 .no-theme-transition *,
 img,
 video,
-canvas {
+canvas,
+iframe {
   transition: none !important;
 }
 

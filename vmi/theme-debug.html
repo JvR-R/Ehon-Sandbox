@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Theme Debug Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- THEME CSS -->
+  <link href="/vmi/css/theme.css" rel="stylesheet" type="text/css">
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      margin: 0;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      transition: all 0.3s ease;
+    }
+    
+    .debug-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .debug-box {
+      background: var(--bg-card);
+      border: 3px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    
+    .debug-box h2 {
+      color: var(--accent-primary);
+      margin-top: 0;
+    }
+    
+    .status {
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      font-family: monospace;
+    }
+    
+    .status.success {
+      background: var(--accent-success);
+      color: white;
+    }
+    
+    .status.error {
+      background: var(--accent-danger);
+      color: white;
+    }
+    
+    .status.info {
+      background: var(--bg-accent);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+    }
+    
+    #big-toggle {
+      font-size: 24px;
+      padding: 20px 40px;
+      background: var(--accent-primary);
+      color: var(--btn-text);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    
+    #big-toggle:hover {
+      transform: scale(1.05);
+      background: var(--accent-primary-hover);
+    }
+    
+    #big-toggle:active {
+      transform: scale(0.95);
+    }
+    
+    .log-box {
+      background: #000;
+      color: #0f0;
+      padding: 15px;
+      border-radius: 5px;
+      font-family: monospace;
+      font-size: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+      margin-top: 10px;
+    }
+    
+    .log-entry {
+      margin: 5px 0;
+      padding: 3px 0;
+      border-bottom: 1px solid #333;
+    }
+    
+    .color-demo {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .color-box {
+      padding: 20px;
+      text-align: center;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="debug-container">
+  <div class="debug-box">
+    <h2>🔍 Theme System Debugger</h2>
+    <p>This page will help diagnose theme switching issues.</p>
+  </div>
+
+  <div class="debug-box">
+    <h2>🎯 Big Test Button</h2>
+    <p>Click this button to toggle the theme:</p>
+    <div style="text-align: center; margin: 20px 0;">
+      <button id="big-toggle">CLICK ME TO TOGGLE THEME</button>
+    </div>
+    <div id="current-state" class="status info">
+      Current Theme: <strong id="theme-name">Checking...</strong>
+    </div>
+  </div>
+
+  <div class="debug-box">
+    <h2>✅ System Checks</h2>
+    <div id="check-css" class="status info">Checking CSS...</div>
+    <div id="check-js" class="status info">Checking JavaScript...</div>
+    <div id="check-localstorage" class="status info">Checking localStorage...</div>
+    <div id="check-html-attr" class="status info">Checking HTML attribute...</div>
+  </div>
+
+  <div class="debug-box">
+    <h2>🎨 Color Test</h2>
+    <p>These should change when theme toggles:</p>
+    <div class="color-demo">
+      <div class="color-box" style="background: var(--bg-primary); color: var(--text-primary); border: 2px solid var(--border-color);">
+        Primary Background
+      </div>
+      <div class="color-box" style="background: var(--bg-secondary); color: var(--text-primary);">
+        Secondary Background
+      </div>
+      <div class="color-box" style="background: var(--accent-primary); color: var(--btn-text);">
+        Primary Accent
+      </div>
+      <div class="color-box" style="background: var(--accent-danger); color: var(--btn-text);">
+        Danger Color
+      </div>
+    </div>
+  </div>
+
+  <div class="debug-box">
+    <h2>📋 Console Log</h2>
+    <div id="log-box" class="log-box">
+      <div class="log-entry">Initializing...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Load theme toggle script -->
+<script src="/vmi/js/theme-toggle.js"></script>
+
+<script>
+// Debug logging
+const logBox = document.getElementById('log-box');
+
+function addLog(message, type = 'info') {
+  const entry = document.createElement('div');
+  entry.className = 'log-entry';
+  entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+  logBox.appendChild(entry);
+  logBox.scrollTop = logBox.scrollHeight;
+  console.log(message);
+}
+
+// Check 1: CSS loaded
+setTimeout(() => {
+  const checkCss = document.getElementById('check-css');
+  const bgColor = getComputedStyle(document.body).getPropertyValue('--bg-primary');
+  if (bgColor) {
+    checkCss.textContent = '✅ CSS Variables Loaded: ' + bgColor.trim();
+    checkCss.className = 'status success';
+    addLog('✅ CSS variables detected: --bg-primary = ' + bgColor.trim());
+  } else {
+    checkCss.textContent = '❌ CSS Variables NOT loaded';
+    checkCss.className = 'status error';
+    addLog('❌ CSS variables NOT detected', 'error');
+  }
+}, 100);
+
+// Check 2: JavaScript loaded
+setTimeout(() => {
+  const checkJs = document.getElementById('check-js');
+  if (typeof window.ThemeManager !== 'undefined') {
+    checkJs.textContent = '✅ ThemeManager JavaScript Loaded';
+    checkJs.className = 'status success';
+    addLog('✅ ThemeManager found in window object');
+  } else {
+    checkJs.textContent = '❌ ThemeManager JavaScript NOT loaded';
+    checkJs.className = 'status error';
+    addLog('❌ ThemeManager NOT found', 'error');
+  }
+}, 100);
+
+// Check 3: localStorage
+setTimeout(() => {
+  const checkLs = document.getElementById('check-localstorage');
+  try {
+    localStorage.setItem('test', 'test');
+    localStorage.removeItem('test');
+    const savedTheme = localStorage.getItem('ehon-vmi-theme');
+    checkLs.textContent = '✅ localStorage Working. Saved theme: ' + (savedTheme || 'none');
+    checkLs.className = 'status success';
+    addLog('✅ localStorage accessible. Saved: ' + (savedTheme || 'none'));
+  } catch (e) {
+    checkLs.textContent = '❌ localStorage Error: ' + e.message;
+    checkLs.className = 'status error';
+    addLog('❌ localStorage error: ' + e.message, 'error');
+  }
+}, 100);
+
+// Check 4: HTML data-theme attribute
+function checkHtmlAttr() {
+  const checkAttr = document.getElementById('check-html-attr');
+  const themeName = document.getElementById('theme-name');
+  const attr = document.documentElement.getAttribute('data-theme');
+  
+  if (attr === 'dark') {
+    checkAttr.textContent = '✅ HTML Attribute: data-theme="dark"';
+    checkAttr.className = 'status success';
+    themeName.textContent = 'DARK MODE 🌙';
+    addLog('Current theme: DARK');
+  } else {
+    checkAttr.textContent = '✅ HTML Attribute: data-theme=' + (attr || 'not set (light mode)');
+    checkAttr.className = 'status success';
+    themeName.textContent = 'LIGHT MODE ☀️';
+    addLog('Current theme: LIGHT');
+  }
+}
+
+checkHtmlAttr();
+setInterval(checkHtmlAttr, 500);
+
+// Big toggle button
+document.getElementById('big-toggle').addEventListener('click', function() {
+  addLog('🖱️ Big toggle button clicked!');
+  
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  
+  addLog('Attempting to switch from "' + (currentTheme || 'light') + '" to "' + newTheme + '"');
+  
+  // Try using ThemeManager if available
+  if (window.ThemeManager) {
+    addLog('Using ThemeManager.toggleTheme()');
+    window.ThemeManager.toggleTheme();
+  } else {
+    // Manual toggle as fallback
+    addLog('ThemeManager not found, toggling manually');
+    if (newTheme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('ehon-vmi-theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('ehon-vmi-theme', 'light');
+    }
+  }
+  
+  setTimeout(() => {
+    const finalTheme = document.documentElement.getAttribute('data-theme');
+    addLog('✅ Theme switched! New theme: ' + (finalTheme || 'light'));
+  }, 100);
+});
+
+// Listen for theme changes
+window.addEventListener('themeChanged', function(e) {
+  addLog('🎨 themeChanged event fired: ' + e.detail.theme);
+});
+
+// Initial log
+addLog('=== Debug page loaded ===');
+addLog('User agent: ' + navigator.userAgent);
+</script>
+
+</body>
+</html>
+
