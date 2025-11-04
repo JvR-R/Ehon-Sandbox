@@ -13,6 +13,9 @@ function safe_html($string) {
   <meta charset="UTF-8">
   <meta name="csrf" content="<?= htmlspecialchars($_SESSION['csrf'] ?? bin2hex(random_bytes(16)), ENT_QUOTES) ?>">
   <title>EHON Energy Tech - VMI</title>
+  <!-- THEME CSS - MUST BE FIRST -->
+  <link rel="stylesheet" href="/vmi/css/theme.css">
+  <!-- Other CSS files -->
   <link rel="stylesheet" href="/vmi/css/normalize.css">
   <link rel="stylesheet" href="style.css"> 
   <link rel="stylesheet" href="/vmi/css/style_rep.css">

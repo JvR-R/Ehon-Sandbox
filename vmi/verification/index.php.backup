@@ -8,10 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <title>User Login</title>
-      <!-- THEME CSS - MUST BE FIRST -->
-  <link rel="stylesheet" href="/vmi/css/theme.css">
-  <!-- Other CSS files -->
-<link rel="stylesheet" href="/vmi/css/style_rep.css">
+    <link rel="stylesheet" href="/vmi/css/style_rep.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>

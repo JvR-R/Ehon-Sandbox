@@ -33,10 +33,7 @@ if (isset($_GET['console-id'])) {
 <head>
   <meta charset="UTF-8">
   <title>EHON Energy Tech - Calibration</title>
-    <!-- THEME CSS - MUST BE FIRST -->
-  <link rel="stylesheet" href="/vmi/css/theme.css">
-  <!-- Other CSS files -->
-<link rel="stylesheet" href="/vmi/css/normalize.css">
+  <link rel="stylesheet" href="/vmi/css/normalize.css">
   <link rel="stylesheet" href="/vmi/css/style_rep.css">
   <link href="/vmi/css/test-site-de674e.webflow.css" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="/vmi/css/toastr.css">

@@ -51,6 +51,9 @@ $result = $stmt->get_result();
   <meta property="og:type" content="website">
   <meta content="summary_large_image" name="twitter:card">
   <meta content="width=device-width, initial-scale=1" name="viewport">
+  <!-- THEME CSS - MUST BE FIRST -->
+  <link href="/vmi/css/theme.css" rel="stylesheet" type="text/css">
+  <!-- Other CSS files -->
   <link href="fq.css" rel="stylesheet" type="text/css">
   <link href="/vmi/css/normalize.css" rel="stylesheet" type="text/css">
   <link href="/vmi/css/webflow.css" rel="stylesheet" type="text/css">

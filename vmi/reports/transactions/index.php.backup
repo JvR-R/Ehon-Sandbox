@@ -18,10 +18,7 @@ include(BORDER_PATH);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Vendor Managed Inventory</title>
-      <!-- THEME CSS - MUST BE FIRST -->
-  <link rel="stylesheet" href="/vmi/css/theme.css">
-  <!-- Other CSS files -->
-<link rel="stylesheet" href="/vmi/css/normalize.css">
+    <link rel="stylesheet" href="/vmi/css/normalize.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="/vmi/css/style_rep.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css">
@@ -65,6 +62,20 @@ include(BORDER_PATH);
               aria-selected="true"
             >
               Sites
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="details-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#profile"
+              type="button"
+              role="tab"
+              aria-controls="profile"
+              aria-selected="false"
+            >
+              Details
             </button>
           </li>
           <li class="nav-item" role="presentation">
@@ -141,7 +152,7 @@ include(BORDER_PATH);
                     <option selected disabled>Select Company</option>
                     <?php
                     // Prepare and execute your SQL query to fetch options for the new filter
-                    $newFilterStmt = $conn->prepare("SELECT distinct(client_id), Client_name FROM Clients WHERE client_id in (SELECT Client_id FROM Console_Asociation WHERE uid in (SELECT uid FROM console where device_type != ?))");
+                    $newFilterStmt = $conn->prepare("SELECT distinct(client_id), Client_name FROM clients WHERE client_id in (SELECT Client_id FROM console_asociation WHERE uid in (SELECT uid FROM console where device_type != ?))");
                     $nonexist = 999;
                     $newFilterStmt->bind_param("i", $nonexist);
                     $newFilterStmt->execute();
@@ -156,6 +167,29 @@ include(BORDER_PATH);
                 </select>
             </div>
             <?php } ?>
+          </div>
+          <div class="tab-pane"
+            id="profile"
+            role="tabpanel"
+            aria-labelledby="profile-tab">
+            <label for="" class="form-label">Card Holder Name</label>
+            <input type="text"
+              name="filter_cardholder"
+              id="filter_cardholder"
+              style= "background: #011a37; color: white; border-radius: 0.5rem;"
+              aria-describedby="filter_cardholder"/>
+            <label for="" class="form-label">Card Number</label>
+            <input type="text"
+              name="filter_cardnumber"
+              id="filter_cardnumber"
+              style= "background: #011a37; color: white; border-radius: 0.5rem;"
+              aria-describedby="filter_cardnumber"/>
+            <label for="" class="form-label">Registration</label>
+            <input type="text"
+              name="filter_registration"
+              id="filter_registration"
+              style= "background: #011a37; color: white; border-radius: 0.5rem;"
+              aria-describedby="filter_registration"/>
           </div>
           <div class="tab-pane" 
             id="messages" 
@@ -196,13 +230,19 @@ include(BORDER_PATH);
           <thead>
             <tr>
               <th style = "border-top-left-radius: 0.5rem;"></th>
-              <th>ID</th>
+              <th>Transaction ID</th>
               <th>Date</th>
               <th>Time</th>
+              <th>Console ID</th>
               <th>Site Name</th>
+              <th>FMS ID</th>
               <th>Tank Number</th>
-              <th>Estimate Delivery</th>                 
-              <th style="border-top-right-radius: 0.5rem;">Volume</th>
+              <th>Pump Number</th>
+              <th>Card Number</th>
+              <th>Card Holder Name</th>
+              <th>Odometer</th>
+              <th>Registration</th>
+              <th style="border-top-right-radius: 0.5rem;">Volume</th>                     
             </tr>
           </thead>
           <tbody id="bodtest" style="max-height:540px;">

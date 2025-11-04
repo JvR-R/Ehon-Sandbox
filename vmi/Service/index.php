@@ -14,6 +14,8 @@ if($accessLevel !== 1){
 <head>
   <meta charset="UTF-8">
   <title>EHON Energy Tech - Service</title>
+  <!-- THEME CSS - MUST BE FIRST -->
+  <link rel="stylesheet" href="/vmi/css/theme.css">
   <!-- Include CSS stylesheets -->
   <link rel="stylesheet" href="/vmi/css/normalize.css">
   <link rel="stylesheet" href="style.css"> 
