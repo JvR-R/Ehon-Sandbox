@@ -422,8 +422,7 @@ class ServiceMap {
                 <div class="popup-tanks">
                     ${(location.tanks || []).map(tank => `
                         <div class="tank-info">
-                            <span>Tank ${tank.id || tank.tank_id || 'Unknown'}</span>
-                            <span>${this.formatFixed(tank.level !== undefined ? tank.level : tank.current_percent, 1, '0.0')}%</span>
+                            <span>Tank ${tank.id || tank.tank_id || 'Unknown'}-${this.formatFixed(tank.level !== undefined ? tank.level : tank.current_percent, 1, '0.0')}%</span>
                             <div class="level-bar">
                                 <div class="level-fill" style="width: ${this.coercePercent(tank.level !== undefined ? tank.level : tank.current_percent)}%"></div>
                             </div>

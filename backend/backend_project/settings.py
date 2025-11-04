@@ -11,9 +11,14 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import configparser
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load configuration from config.ini
+config = configparser.ConfigParser()
+config.read('/home/ehon/config.ini')
 
 
 # Quick-start development settings - unsuitable for production
@@ -82,11 +87,11 @@ WSGI_APPLICATION = 'backend_project.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "HOST": "127.0.0.1",          # matches service name
-        "PORT": "3306",
-        "NAME": "ehon_vmi",
-        "USER": "ehon_admin",
-        "PASSWORD": "$_i_dev789mysql",
+        "HOST": config.get('database', 'DB_HOST'),
+        "PORT": config.get('database', 'DB_PORT'),
+        "NAME": config.get('database', 'DB_NAME'),
+        "USER": config.get('database', 'DB_USER'),
+        "PASSWORD": config.get('database', 'DB_PASSWORD'),
         "OPTIONS": {"charset": "utf8mb4"},
     }
 }
