@@ -15,7 +15,7 @@ label {
   label[for="username"],
   label[for="password"] {
     font-size: 28px;
-    color: white;
+    color: var(--text-inverse);
     text-shadow: 4px 4px 8px #002F60; 
     
   }
@@ -30,7 +30,7 @@ label {
   }
   
   .inputlog:focus {
-    background-color: white;
+    background-color: var(--bg-primary);
     transform: scale(1.05);
     box-shadow: 13px 13px 100px #969696,
                -13px -13px 100px #ffffff;
@@ -39,7 +39,7 @@ label {
     display: none;
     position: absolute;
     background-color: #f44336;
-    color: white;
+    color: var(--text-inverse);
     padding: 10px;
     border-radius: 4px;
     top: 0;
@@ -120,7 +120,7 @@ label {
   outline: 0;
   border: 1px solid rgba(105, 105, 105, 0.397);
   border-radius: 10px;
-  background-color: white;
+  background-color: var(--bg-primary);
 }
 .form label {
   position: relative;
@@ -166,7 +166,7 @@ label {
   background-color: royalblue;
   padding: 10px;
   border-radius: 10px;
-  color: #fff;
+  color: var(--text-inverse);
   font-size: 16px;
   transform: .3s ease;
   position: relative;

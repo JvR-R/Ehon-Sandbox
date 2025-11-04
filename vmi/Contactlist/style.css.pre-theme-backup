@@ -7,7 +7,7 @@
 }
 body {
     min-height: auto;
-    background: var(--bg-primary) center / cover;
+    background: white center / cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -56,7 +56,7 @@ section.topborder{
 }
 .button-link:hover {
     width: 55%;
-    color: var(--accent-warning);
+    color: #F7901E;
     box-shadow: 0 .1rem .4rem #0002;
 }
 .button-text {
@@ -186,7 +186,7 @@ table {
 }
 
 h1{
-    color: var(--accent-warning);
+    color: #F7901E;
     font-weight: bold;
     font-size: 2vw;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); 
@@ -210,14 +210,14 @@ thead th {
     position: sticky;
     top: 0;
     left: 0;
-    background-color: var(--bg-dark);
-    color: var(--text-inverse);
+    background-color: #002e60;
+    color: white;
     cursor: pointer;
     text-transform: capitalize;
 }
 
 tbody tr:nth-child(even) {
-    background-color: var(--bg-accent);
+    background-color: #0000000b;
 }
 
 tbody tr {
@@ -263,22 +263,22 @@ tbody tr.hide td img {
 
 .status.delivered {
     background-color: #86e49d;
-    color: var(--text-primary);
+    color: #000000;
 }
 
 .status.cancelled {
     background-color: #d893a3;
-    color: var(--text-primary);
+    color: #000000;
 }
 
 .status.pending {
     background-color: #f5e97c;
-    color: var(--text-primary);
+    color: #000000;
 }
 
 .status.empty {
     background-color: #6fcaea;
-    color: var(--text-primary);
+    color: #000000;
 }
 
 
@@ -307,12 +307,12 @@ thead th:hover span.icon-arrow{
 }
 
 thead th:hover {
-    color: var(--accent-warning);
+    color: #F7901E;
 }
 
 thead th.active span.icon-arrow{
-    background-color: var(--accent-warning);
-    color: var(--text-inverse);
+    background-color: #F7901E;
+    color: #fff;
 }
 
 thead th.asc span.icon-arrow{
@@ -320,7 +320,7 @@ thead th.asc span.icon-arrow{
 }
 
 thead th.active,tbody td.active {
-    color: var(--accent-warning);
+    color: #F7901E;
 }
 
 .export__file {
@@ -338,7 +338,7 @@ thead th.active,tbody td.active {
 }
 
 .export__file .export__file-btn:hover { 
-    background-color: var(--bg-primary);
+    background-color: #fff;
     transform: scale(1.15);
     cursor: pointer;
 }
@@ -375,7 +375,7 @@ thead th.active,tbody td.active {
     display: block;
     width: 100%;
     padding: .6rem 0;
-    background-color: var(--bg-secondary);
+    background-color: #f2f2f2;
     
     display: flex;
     justify-content: space-around;
@@ -391,7 +391,7 @@ thead th.active,tbody td.active {
 
 .export__file .export__file-options label:hover{
     transform: scale(1.05);
-    background-color: var(--bg-primary);
+    background-color: #fff;
     cursor: pointer;
 }
 
@@ -479,7 +479,7 @@ thead th.active,tbody td.active {
   }
 
   a.site-link:hover {
-    color: var(--accent-warning); /* Set the desired link color on hover */
+    color: #F7901E; /* Set the desired link color on hover */
   }
 
 .hoverable {

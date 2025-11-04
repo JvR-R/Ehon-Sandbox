@@ -30,7 +30,7 @@ table {
 }
 body {
     min-height: auto;
-    background: var(--bg-primary) center / cover;
+    background: white center / cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,9 +39,9 @@ body {
 .button-js {
     font-weight: bold;
     font-size: 18px;
-    background-color: var(--bg-dark);
+    background-color: #002e60;
     cursor: pointer;
-    color: var(--text-inverse);
+    color: white;
     transition: 0.4s;
     border-radius: 0.4rem;
     padding: 4px;
@@ -53,9 +53,9 @@ body {
 .button-js3 {
     font-weight: bold;
     font-size: 18px;
-    background-color: var(--bg-dark);
+    background-color: #002e60;
     cursor: pointer;
-    color: var(--text-inverse);
+    color: white;
     transition: 0.4s;
     border-radius: 0.4rem;
     padding: 4px;
@@ -70,9 +70,9 @@ body {
     font-weight: bold;
     font-size: 18px;
     position: absolute;
-    background-color: var(--bg-dark);
+    background-color: #002e60;
     cursor: pointer;
-    color: var(--text-inverse);
+    color: white;
     transition: 0.4s;
     border-radius: 0.4rem;
     padding: 4px;
@@ -98,7 +98,7 @@ main.table {
 .table__header {
     width: 100%;
     height: 4.5rem;
-    background-color: var(--bg-tertiary);
+    background-color: #d7d7d7bf;
     padding: .8rem 1rem;
     display: flex;
     justify-content: space-between;
@@ -189,7 +189,7 @@ table {
 }
 
 h1{
-    color: var(--accent-danger);
+    color: #EC1C1C;
     font-weight: bold;
     font-size: 1.7vw;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); 
@@ -213,8 +213,8 @@ thead th {
     position: sticky !important;
     top: 0;
     left: 0;
-    background-color: var(--bg-dark);
-    color: var(--text-inverse);
+    background-color: #002e60;
+    color: white;
     cursor: pointer;
     text-transform: capitalize;
     z-index: 2;
@@ -222,7 +222,7 @@ thead th {
 }
 
 tbody tr:nth-child(even):not(.expanded-details) {
-    background-color: var(--bg-accent);
+    background-color: #0000000b;
 }
 
 tbody tr {
@@ -266,22 +266,22 @@ tbody tr.hide td p {
 
 .status.delivered {
     background-color: #86e49d;
-    color: var(--text-primary);
+    color: #000000;
 }
 
 .status.cancelled {
     background-color: #d893a3;
-    color: var(--text-primary);
+    color: #000000;
 }
 
 .status.pending {
     background-color: #f5e97c;
-    color: var(--text-primary);
+    color: #000000;
 }
 
 .status.empty {
     background-color: #6fcaea;
-    color: var(--text-primary);
+    color: #000000;
 }
 
 
@@ -306,12 +306,12 @@ thead th:hover span.icon-arrow{
 }
 
 thead th:hover {
-    color: var(--accent-warning);
+    color: #F7901E;
 }
 
 thead th.active span.icon-arrow{
-    background-color: var(--accent-warning);
-    color: var(--text-inverse);
+    background-color: #F7901E;
+    color: #fff;
 }
 
 thead th.asc span.icon-arrow{
@@ -319,7 +319,7 @@ thead th.asc span.icon-arrow{
 }
 
 thead th.active,tbody td.active {
-    color: var(--accent-warning);
+    color: #F7901E;
 }
 
 .export__file {
@@ -337,7 +337,7 @@ thead th.active,tbody td.active {
 }
 
 .export__file .export__file-btn:hover { 
-    background-color: var(--bg-primary);
+    background-color: #fff;
     transform: scale(1.15);
     cursor: pointer;
 }
@@ -374,7 +374,7 @@ thead th.active,tbody td.active {
     display: block;
     width: 100%;
     padding: .6rem 0;
-    background-color: var(--bg-secondary);
+    background-color: #f2f2f2;
     
     display: flex;
     justify-content: space-around;
@@ -390,7 +390,7 @@ thead th.active,tbody td.active {
 
 .export__file .export__file-options label:hover{
     transform: scale(1.05);
-    background-color: var(--bg-primary);
+    background-color: #fff;
     cursor: pointer;
 }
 
@@ -414,7 +414,7 @@ thead th.active,tbody td.active {
   }
 
   a.site-link:hover {
-    color: var(--accent-warning); /* Set the desired link color on hover */
+    color: #F7901E; /* Set the desired link color on hover */
   }
 .icon.flat-color {
     stroke: #ffffff;
@@ -432,7 +432,7 @@ thead th.active,tbody td.active {
     position: relative;
     height: 20px;
     width: 100px;
-    background-color: var(--bg-primary);
+    background-color: #ffffff;
     border-radius: 4px;
     overflow: hidden;
     z-index: 1;
@@ -476,7 +476,7 @@ thead th.active,tbody td.active {
     align-items: center;
     justify-content: center;
     font-size: 14px;
-    color: var(--text-primary);
+    color: #000000;
     text-align: center;
     z-index: 1;
     width: 100%;
@@ -501,7 +501,7 @@ thead th.active,tbody td.active {
 .info_text{
     margin-left: 85px;
     margin-top: 30px;
-    background-color: var(--bg-primary);
+    background-color: white;
     backdrop-filter: blur(30px);
     border-radius: 0.8rem;
     padding: 1rem;
@@ -515,7 +515,7 @@ thead th.active,tbody td.active {
     max-width: 26rem;
     margin-left: 90px;
     margin-top: 30px;
-    background-color: var(--bg-primary);
+    background-color: white;
     backdrop-filter: blur(30px);
     border-radius: 0.8rem;
     padding: 20px;
@@ -532,9 +532,9 @@ thead th.active,tbody td.active {
 }
 .recip{
     margin-bottom:5px;
-    background-color: var(--bg-accent);
+    background-color: #cfcfcf6e;
     border-radius: 0.4rem;
-    color: var(--text-primary);
+    color: black;
     font-weight: bold;
     margin-left: 1px;
     margin-right: 1px;
@@ -580,7 +580,7 @@ thead th.active,tbody td.active {
     height: 27rem;
     top: 50px;
     position: absolute;
-    background: var(--bg-primary);
+    background: white;
     display: none;
     min-width: 90rem;
 }
@@ -588,7 +588,7 @@ thead th.active,tbody td.active {
     min-height: 27rem;
     top: 50px;
     position: absolute;
-    background: var(--bg-primary);
+    background: white;
     display: none;
     min-width: 90rem;
 }
@@ -596,7 +596,7 @@ thead th.active,tbody td.active {
     height: 27rem;
     top: 50px;
     position: absolute;
-    background: var(--bg-primary);
+    background: white;
     display: none;
     min-width: 90rem;
 }
@@ -607,7 +607,7 @@ thead th.active,tbody td.active {
 [class^="navigation-item1"]{
     background-color: #e1e1e166;
     border: hidden;
-    color: var(--text-primary);
+    color: #222222;
     padding: 8px 20px;
     text-align: center;
     text-decoration: none;
@@ -618,7 +618,7 @@ thead th.active,tbody td.active {
 [class^="navigation-item2"]{
     background-color: #e1e1e166;
     border: hidden;
-    color: var(--text-primary);
+    color: #222222;
     padding: 8px 20px;
     text-align: center;
     text-decoration: none;
@@ -629,7 +629,7 @@ thead th.active,tbody td.active {
 [class^="navigation-item3"]{
     background-color: #e1e1e166;
     border: hidden;
-    color: var(--text-primary);
+    color: #222222;
     padding: 8px 20px;
     text-align: center;
     text-decoration: none;
@@ -640,7 +640,7 @@ thead th.active,tbody td.active {
 [class^="navigation-item4"]{
     background-color: #e1e1e166;
     border: hidden;
-    color: var(--text-primary);
+    color: #222222;
     padding: 8px 20px;
     text-align: center;
     text-decoration: none;
@@ -659,9 +659,9 @@ thead th.active,tbody td.active {
 }
 .recip1{
     margin-bottom: 5px;
-    background-color: var(--bg-accent);
+    background-color: #cfcfcf6e;
     border-radius: 0.4rem;
-    color: var(--text-primary);
+    color: black;
     font-weight: bold;
     margin-left: 1px;
     text-align: center;
@@ -670,9 +670,9 @@ thead th.active,tbody td.active {
 }
 .recip2{
     margin-bottom: 5px;
-    background-color: var(--bg-accent);
+    background-color: #cfcfcf6e;
     border-radius: 0.4rem;
-    color: var(--text-primary);
+    color: black;
     font-weight: bold;
     margin-left: 1px;
     text-align: center;
@@ -682,9 +682,9 @@ thead th.active,tbody td.active {
 }
 .recip3{
     margin-bottom: 5px;
-    background-color: var(--bg-accent);
+    background-color: #cfcfcf6e;
     border-radius: 0.4rem;
-    color: var(--text-primary);
+    color: black;
     font-weight: bold;
     margin-left: 1px;
     text-align: center;
@@ -694,9 +694,9 @@ thead th.active,tbody td.active {
 }
 .recip4{
     margin-bottom: 5px;
-    background-color: var(--bg-accent);
+    background-color: #cfcfcf6e;
     border-radius: 0.4rem;
-    color: var(--text-primary);
+    color: black;
     font-weight: bold;
     margin-left: 1px;
     text-align: center;
@@ -721,9 +721,9 @@ label img{
     margin-bottom: 5px;
 }
 .group_filter{
-    background: var(--input-border);
+    background: #454545;
     border-radius: 0.2rem;
-    color: var(--text-inverse);   
+    color: white;   
     z-index: 15;
 }
 @media(min-width: 1920px) {
@@ -755,8 +755,8 @@ label img{
 .tooltip .tooltiptext {
     visibility: hidden;
     width: 180px;
-    background-color: var(--text-primary);
-    color: var(--text-inverse);
+    background-color: black;
+    color: #fff;
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
@@ -774,7 +774,7 @@ label img{
     opacity: 1;
 }
 .alarm_count{
-    background: var(--bg-primary);
+    background: white;
     padding: 5px;
     border-radius: 0.3rem;
     font-weight: bold;
@@ -793,9 +793,9 @@ label img{
 }
 .relay-select{
     margin-bottom: 5px;
-    background-color: var(--bg-accent);
+    background-color: #cfcfcf6e;
     border-radius: 0.4rem;
-    color: var(--text-primary);
+    color: black;
     font-weight: bold;
     margin-left: 1px;
     margin-right: 1px;
@@ -810,7 +810,7 @@ label img{
 .toast {
     position: fixed; left: 50%; bottom: 1.5rem;
     transform: translateX(-50%) translateY(100%);
-    padding:.6rem 1rem; border-radius:.25rem; color: var(--text-inverse);
+    padding:.6rem 1rem; border-radius:.25rem; color:#fff;
     background:#333; opacity:0; transition:opacity .3s,transform .3s;
     z-index:9999; pointer-events:none;
   }
@@ -885,7 +885,7 @@ table.dataTable tr.dt-hasChild td.dt-control:before {
   }
 .gw-ports{
     margin-top: 30px;
-    background-color: var(--bg-primary);
+    background-color: white;
     backdrop-filter: blur(30px);
     border-radius: 0.8rem;
     padding: 1rem;
@@ -901,7 +901,7 @@ table.dataTable tr.dt-hasChild td.dt-control:before {
 }
 .gw-tanksinfo{
     margin-top: 30px;
-    background-color: var(--bg-primary);
+    background-color: white;
     backdrop-filter: blur(30px);
     border-radius: 0.8rem;
     padding: 1rem;

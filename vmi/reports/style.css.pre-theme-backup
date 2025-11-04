@@ -36,8 +36,8 @@ footer, header, hgroup, menu, nav, section {
 .tooltip .tooltiptext {
     visibility: hidden;
     width: 180px;
-    background-color: var(--text-primary);
-    color: var(--text-inverse);
+    background-color: black;
+    color: #fff;
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
@@ -57,7 +57,7 @@ footer, header, hgroup, menu, nav, section {
 .toast {
     position: fixed; left: 50%; bottom: 1.5rem;
     transform: translateX(-50%) translateY(100%);
-    padding:.6rem 1rem; border-radius:.25rem; color: var(--text-inverse);
+    padding:.6rem 1rem; border-radius:.25rem; color:#fff;
     background:#333; opacity:0; transition:opacity .3s,transform .3s;
     z-index:9999; pointer-events:none;
   }
@@ -89,20 +89,20 @@ footer, header, hgroup, menu, nav, section {
   height:auto;
 }
 .report-card {
-  background-color: var(--bg-darker);
+  background-color: #002F60;
   border: .6px solid #343b4f;
   border-radius: 12px;
   box-shadow: 0 2px 7px rgba(20, 20, 43, .06);
   padding: 1rem;
 }
 .text-100{
-    color: var(--text-inverse);
+    color: white;
 }
 .text-200{
-    color: var(--text-inverse);
+    color: white;
 }
 td, th{
-    color: var(--text-inverse);
+    color: white;
 }
 table {
 	border-collapse: collapse;
@@ -120,8 +120,8 @@ thead th {
     position: sticky;
     top: 0;
     left: 0;
-    background-color: var(--bg-dark);
-    color: var(--text-inverse);
+    background-color: #002e60;
+    color: white;
     cursor: pointer;
     text-transform: capitalize;
     z-index: 2
@@ -131,15 +131,15 @@ thead th {
     position: sticky;
     top: 0;
     left: 0;
-    background-color: var(--bg-dark);
-    color: var(--text-inverse);
+    background-color: #002e60;
+    color: white;
     cursor: pointer;
     text-transform: capitalize;
     z-index: 2;
 }
 
 tbody tr:nth-child(even):not(.expanded-details) {
-    background-color: var(--bg-accent);
+    background-color: #0000000b;
 }
 
 tbody tr {

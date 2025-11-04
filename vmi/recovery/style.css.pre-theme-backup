@@ -1,77 +1,71 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial;
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-body {
-  min-height: auto;
-  background: var(--bg-primary) center / cover;
+.login{
+	position: absolute;
+	top: 20%;
+}
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  label[for="username"],
+  label[for="password"] {
+    font-size: 28px;
+    color: white;
+    text-shadow: 4px 4px 8px #002F60; 
+    
+  }
+  .inputlog {
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    padding: 1em;
+    background-color: #ccc;
+    box-shadow: inset 2px 5px 10px rgba(0,0,0,0.3);
+    transition: 300ms ease-in-out;
+  }
+  
+  .inputlog:focus {
+    background-color: white;
+    transform: scale(1.05);
+    box-shadow: 13px 13px 100px #969696,
+               -13px -13px 100px #ffffff;
+  }
+  .error-message {
+    display: none;
+    position: absolute;
+    background-color: #f44336;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.log{
+  position: relative;
+  top:10%;
   display: flex;
   justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-main.table {
-  width: calc(100% - 70px);
-  height: 95%;
-  background-color: whitesmoke;
-  background-size:cover;
-  position: absolute;
-  left: 70px;
-  top: 63px;
-  display: block;
-  backdrop-filter: blur(7px);
-  box-shadow: 0 .4rem .8rem #0005;
-  border-start-start-radius: .8rem;
-  overflow-x: hidden;
-}
-.Title{
-  position: absolute;
-  width: 100%;
-  height: 8vh;
-  background-color: #0362bb25;
-}
-h2{
-  position: absolute;
-  left: 35vw;
-  top: 1vh;
-  color: var(--accent-warning);
-  font-weight: bold;
-  font-size: 60px;;
-}
-.full-size{
-  width: 100%;
-}
-.buttonc{
-  position: absolute;
-  bottom: 10%;
-  left:44%;
-}
-.buttonc2{
-  position: relative;
-  bottom: -21.5%;
-  left:43%;
-}
-.sign svg {
-  width: 32px;
-}
-  
-.sign svg path {
-  fill: white;
-}
-.button-link:hover .sign path {
-  fill: #F7901E;
+  margin: 50px;
+  background: url(../images/SL.112119.25250.30-p-1600.jpg);
+  padding: 130px;
+  background-size: cover;
 }
 .form {
   display: flex;
   flex-direction: column;
   gap: 10px;
   max-width: 350px;
-  background-color: var(--bg-primary);
+  background-color: #e8e8e8;
   padding: 20px;
   border-radius: 20px;
   position: relative;
+  padding-right: 45px;
 }
 .title {
   font-size: 28px;
@@ -126,43 +120,44 @@ h2{
   outline: 0;
   border: 1px solid rgba(105, 105, 105, 0.397);
   border-radius: 10px;
-  background-color: var(--bg-primary);
+  background-color: white;
 }
 .form label {
   position: relative;
 }
-.form label .input {
+.form label .inputlog {
   width: 100%;
   padding: 10px 10px 20px 10px;
   outline: 0;
   border: 1px solid rgba(105, 105, 105, 0.397);
   border-radius: 10px;
+  color:#002F60;
 }
-.form label .input + span {
+.form label .inputlog + span {
   position: absolute;
   left: 10px;
   top: 15px;
-  color: grey;
+  color: rgb(128, 128, 128);
   font-size: 0.9em;
   cursor: text;
   transition: 0.3s ease;
 }
-.form label .input:-webkit-autofill + span {
+.form label .inputlog:-webkit-autofill + span {
   color: green;
   top: 30px;
   font-size: 0.7em;
   font-weight: 600;
 }
-.form label .input:placeholder-shown + span {
+.form label .inputlog:placeholder-shown + span {
   top: 15px;
   font-size: 0.9em;
 }
-.form label .input:focus + span,.form label .input:valid + span {
+.form label .inputlog:focus + span,.form label .inputlog:valid + span {
   top: 30px;
   font-size: 0.7em;
   font-weight: 600;
 }
-.form label .input:valid + span {
+.form label .inputlog:valid + span {
   color: green;
 }
 .submit {
@@ -171,9 +166,13 @@ h2{
   background-color: royalblue;
   padding: 10px;
   border-radius: 10px;
-  color: var(--text-inverse);
+  color: #fff;
   font-size: 16px;
   transform: .3s ease;
+  position: relative;
+  left: 30%;
+  bottom: 15%;
+  cursor: pointer;
 }
 .submit:hover {
   background-color: rgb(56, 90, 194);
@@ -188,13 +187,4 @@ h2{
     transform: scale(1.8);
     opacity: 0;
   }
-}
-.log{
-  position: relative;
-  top:10%;
-  display: flex;
-  justify-content: center;
-}
-.lay{
-  margin-top: 25px;
 }
