@@ -353,6 +353,9 @@ $chartTxJson  = json_encode($chartTx , JSON_THROW_ON_ERROR);
 <title>Reports</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="/vmi/images/favicon.ico">
+<!-- THEME CSS - MUST BE FIRST -->
+<link rel="stylesheet" href="/vmi/css/theme.css">
+<!-- Other CSS files -->
 <link rel="stylesheet" href="/vmi/css/style_rep.css">
 <link rel="stylesheet" href="/vmi/css/test-site-de674e.webflow.css">
 <link rel="stylesheet" href="/vmi/css/normalize.css">
