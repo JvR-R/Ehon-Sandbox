@@ -274,14 +274,14 @@ $(document).ready(function () {
         var fmsHtml = `
         <div class="fms-actions-container" style="display: flex; gap: 20px;">
             <div class="fms-actions-left" style="flex: 1; display: flex; flex-direction: column;">
-                <div class="fms-actions" style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
+                <div class="fms-actions" style="background: var(--bg-secondary); padding: 15px; border-radius: 5px;">
                     <h3 style="margin-top: 0;">FMS Firmware</h3>
                     <label><strong>Firmware file:</strong></label>
                     <input type="text" id="fms_fw_file_${uid}" placeholder="fms_v2.3.bin" style="width: 100%; padding: 5px; margin: 5px 0;">
                     <button class="button-js btn-fms-fw-upgrade" data-uid="${uid}">Send</button>
                 </div>
             </div>
-            <div class="fms-custom-cmd-actions" style="flex: 1; background: #e8f5e9; padding: 15px; border-radius: 5px; max-height: 10rem;">
+            <div class="fms-custom-cmd-actions" style="flex: 1; background: var(--bg-tertiary); padding: 15px; border-radius: 5px; max-height: 10rem;">
                 <h3 style="margin-top: 0;">Custom Command</h3>
                 <label><strong>Command:</strong></label>
                 <input type="text" id="fms_custom_cmd_${uid}" placeholder="Enter command" style="width: 100%; padding: 5px; margin: 5px 0;">
@@ -357,20 +357,20 @@ $(document).ready(function () {
         var gwHtml = `
         <div class="gw-actions-container" style="display: flex; gap: 20px;">
             <div class="gw-actions-left" style="flex: 1; display: flex; flex-direction: column;">
-                <div class="gw-actions" style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
+                <div class="gw-actions" style="background: var(--bg-secondary); padding: 15px; border-radius: 5px;">
                     <h3 style="margin-top: 0;">Gateway actions</h3>
                     <label><strong>Firmware file:</strong></label>
                     <input type="text" id="fw_file_${mac}" placeholder="gw_v2.3.bin" style="width: 100%; padding: 5px; margin: 5px 0;">
                     <button class="button-js btn-fw-upgrade" data-mac="${mac}">Send</button>
                 </div>
-                <div class="sc-actions" style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
+                <div class="sc-actions" style="background: var(--bg-secondary); padding: 15px; border-radius: 5px;">
                     <h3 style="margin-top: 0;">Chart actions</h3>
                     <label><strong>Chart file:</strong></label>
                     <input type="text" id="sc_file_${mac}" placeholder="sc_v2.3.json" style="width: 100%; padding: 5px; margin: 5px 0;">
                     <button class="button-js btn-SC-upgrade" data-mac="${mac}">Send</button>
                 </div>
             </div>
-            <div class="custom-cmd-actions" style="flex: 1; background: #e8f5e9; padding: 15px; border-radius: 5px; max-height: 10rem;">
+            <div class="custom-cmd-actions" style="flex: 1; background: var(--bg-tertiary); padding: 15px; border-radius: 5px; max-height: 10rem;">
                 <h3 style="margin-top: 0;">Custom Command</h3>
                 <label><strong>Command:</strong></label>
                 <input type="text" id="custom_cmd_${mac}" placeholder="Enter command" style="width: 100%; padding: 5px; margin: 5px 0;">
@@ -399,8 +399,8 @@ $(document).ready(function () {
                 <button class="button-js btn-refresh-logs" data-mac="${mac}" data-cs-type="${cs_type}">Refresh</button>
             </div>
             <div class="logs-display" id="logs_display_${mac}" style="
-                background: #f5f5f5; 
-                border: 1px solid #ccc; 
+                background: var(--bg-secondary); 
+                border: 1px solid var(--border-color); 
                 padding: 10px; 
                 height: 400px; 
                 overflow-y: auto; 
