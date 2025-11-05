@@ -410,3 +410,24 @@ table.dataTable tbody tr.shown td.dt-control:before {
     color: #000000;
 }
 
+/* ============================================
+   DARK MODE BUTTON ENHANCEMENTS
+   Better contrast and visibility
+   ============================================ */
+[data-theme="dark"] .button-js,
+[data-theme="dark"] .button-js2,
+[data-theme="dark"] .button-js3 {
+    background-color: #1a3a5c;  /* Lighter blue for better contrast */
+    color: #ffffff;
+    border: 1px solid #3a5a7c;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .button-js:hover,
+[data-theme="dark"] .button-js2:hover,
+[data-theme="dark"] .button-js3:hover {
+    background-color: #2a4a6c;  /* Brighter on hover */
+    border-color: #4a6a8c;
+    box-shadow: 0 4px 12px rgba(58, 90, 124, 0.4);
+}
+
