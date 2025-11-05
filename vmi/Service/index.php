@@ -18,6 +18,9 @@ if($accessLevel !== 1){
   <link rel="stylesheet" href="/vmi/css/theme.css">
   <!-- Include CSS stylesheets -->
   <link rel="stylesheet" href="/vmi/css/normalize.css">
+  <!-- Unified VMI Tables & Components -->
+  <link rel="stylesheet" href="/vmi/css/vmi-tables.css">
+  <!-- Page-specific styles -->
   <link rel="stylesheet" href="style.css"> 
   <link rel="stylesheet" href="/vmi/css/style_rep.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css">   

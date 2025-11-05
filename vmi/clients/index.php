@@ -17,6 +17,9 @@ function safe_html($string) {
   <link rel="stylesheet" href="/vmi/css/theme.css">
   <!-- Other CSS files -->
   <link rel="stylesheet" href="/vmi/css/normalize.css">
+  <!-- Unified VMI Tables & Components -->
+  <link rel="stylesheet" href="/vmi/css/vmi-tables.css">
+  <!-- Page-specific styles -->
   <link rel="stylesheet" href="style.css"> 
   <link rel="stylesheet" href="/vmi/css/style_rep.css">
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

@@ -1,6 +1,88 @@
-
-/* Page-specific styles - Common styles moved to /vmi/css/vmi-tables.css */
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
 body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+* {
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+    font-family: Arial;
+}
+body {
+    min-height: auto;
+    background: var(--bg-primary) center / cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.button-js {
+    font-weight: bold;
+    font-size: 18px;
+    background-color: var(--bg-dark);
+    cursor: pointer;
+    color: var(--text-inverse);
+    transition: 0.4s;
+    border-radius: 0.4rem;
+    padding: 0.2rem;
+    margin: 1rem;
+}
+.button-js:hover{
+    transform: scale(1.2);
+}
+main.table {
+    width: calc(100% - 76px);
+    height: 94%;
+    background-color: var(--table-main-bg);
+    position: absolute;
+    left: 71px;
+    top: 61px;
+    backdrop-filter: blur(7px);
+    box-shadow: 0 .4rem .8rem var(--shadow-md);
+    overflow: hidden;
+    border-start-start-radius: .8rem;
+}
+.table__header {
+    width: 100%;
+    height: 4.5rem;
+    background-color: var(--bg-tertiary);
+    padding: .8rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.table__header .input-group {
+    width: 35%;
+    height: 100%;
+    background-color: var(--table-main-bg);
+    padding: 0 .8rem;
+    border-radius: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--bg-card);
+    transition: .2s;
+    display: none;
 }
 #customers_table_filter{
     width: 20%;
@@ -40,26 +122,107 @@ body {
     outline: none;
 }
 
+.table__body {
+    width: calc(100% - 10px);
+    max-height: calc(92% - 1.6rem);
+    background-color: var(--table-body-bg);
+    margin: .8rem auto;
+    border-radius: .6rem;
+    overflow: overlay;
+    position: absolute;
+    left: 10px;
+    margin-right: 5%;
+    padding-right: 50px;
+}
 
 
+.table__body::-webkit-scrollbar{
+    width: 0.5rem;
+    height: 0.5rem;
+}
 
+.table__body::-webkit-scrollbar-thumb{
+    border-radius: .5rem;
+    background-color: var(--scrollbar-thumb);
+    visibility: hidden;
+}
 
 .table__body:hover::-webkit-scrollbar-thumb{ 
     visibility: visible;
 }
 
 table {
+    width: 100%;
 }
 
+h1{
+    color: var(--accent-danger);
+    font-weight: bold;
+    font-size: 1.7vw;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); 
+}
 
+h1 img {
+    width: 100px;
+    height: auto;
+    margin-right: .5rem;
+    border-radius: 1%;
+    vertical-align: middle;
+}
 
+table, th, td {
+    border-collapse: collapse;
+    padding: 1rem;
+    text-align: center;
+}
 
+thead th {
+    position: sticky;
+    top: 0;
+    left: 0;
+    background-color: var(--bg-dark);
+    color: var(--text-inverse);
+    cursor: pointer;
+    text-transform: capitalize;
+    z-index: 2;
+}
 
+tbody tr:nth-child(even):not(.expanded-details) {
+    background-color: var(--bg-accent);
+}
 
+tbody tr {
+    animation-delay: 0.1s;
+    transition: .5s ease-in-out var(--delay), background-color 0s;
+}
 
+tbody tr.hide {
+    transform: translateX(100%);
+    display:none;
+    opacity: 0;
+}
 
+tbody tr:not(.expanded-details):hover {
+    /*background-color: var(--bg-secondary) !important;*/
+    background-color: var(--table-row-hover) !important;
+}
 
+tbody tr td,
+tbody tr td p,
+tbody tr td img {
+    transition: .2s ease-in-out;
+}
+td img{
+    height: 32px;
+    width: 32px;
+}
 
+tbody tr.hide td,
+tbody tr.hide td p {
+    padding: 0;
+    font: 0 / 0 sans-serif;
+    transition: .2s ease-in-out .5s;
+}
 .status {
     padding: .4rem 0;
     border-radius: 1rem;
@@ -121,6 +284,9 @@ thead th.asc span.icon-arrow{
     transform: rotate(180deg);
 }
 
+thead th.active,tbody td.active {
+    color: var(--accent-warning);
+}
 
 .export__file {
     position: relative;
@@ -290,23 +456,35 @@ thead th.asc span.icon-arrow{
 .chart1 {
     width: 800px; 
     height: 400px;
-    margin-top: 20px; 
+    margin-top: 20px;
+    margin-left: 100px; 
     overflow: overlay; 
   }
 .left-info{
     min-width: 28rem;
     display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.basic-info {
+    max-width: 40rem;
+    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .info_text{
-    margin-left: 85px;
     margin-top: 30px;
     background-color: var(--bg-primary);
     backdrop-filter: blur(30px);
     border-radius: 0.8rem;
     padding: 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    max-width: 19rem;
+    max-width: 15rem;
+    display: flex;
+    flex-direction: column;
 }
 .tanks_div{
     display: flex;
@@ -366,6 +544,43 @@ thead th.asc span.icon-arrow{
     height: 165px;
     display: grid;
 }
+.child_details{
+    position: relative;
+    overflow: overlay;
+}
+.menu_items{
+    position: absolute;
+    height: 30px;
+    
+}
+[class^="alert_info"] {
+    height: 26rem;
+    top: 50px;
+    position: absolute;
+    background: var(--bg-primary);
+    display: none;
+    min-width: 90rem;
+}
+[class^="tank_info"] {
+    min-height: 26rem;
+    top: 50px;
+    position: absolute;
+    background: var(--bg-primary);
+    display: none;
+    min-width: 90rem;
+}
+[class^="temp_info"] {
+    height: 26rem;
+    top: 50px;
+    position: absolute;
+    background: var(--bg-primary);
+    display: none;
+    min-width: 90rem;
+}
+.nav-items{
+    border-collapse: collapse;
+    padding: 5px;
+}
 [class^="navigation-item1"]{
     background-color: #e1e1e166;
     border: hidden;
@@ -410,9 +625,32 @@ thead th.asc span.icon-arrow{
     font-size: 16px;
     cursor: pointer;
 }
+[class^="navigation-item5"]{
+    background-color: #e1e1e166;
+    border: hidden;
+    color: var(--text-primary);
+    padding: 8px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}
+[class^="navigation-item6"]{
+    background-color: #e1e1e166;
+    border: hidden;
+    color: var(--text-primary);
+    padding: 8px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}
 .alerts_div{
     position: absolute;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    height: 11.5rem;
     max-width: 32rem;
     top: 20px;
     left: 50px;
@@ -565,120 +803,50 @@ label img{
     text-align: center; 
     cursor: pointer;
 }
-[class^="fms-container-"] {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: flex-end;
+.input{
+    background: #011a37;
+    color: var(--text-inverse);
+    border-radius: 0.5rem;
+    text-align: center;
+    max-width: 11rem;
 }
-.toast {
-    position: fixed; left: 50%; bottom: 1.5rem;
-    transform: translateX(-50%) translateY(100%);
-    padding:.6rem 1rem; border-radius:.25rem; color: var(--text-inverse);
-    background:#333; opacity:0; transition:opacity .3s,transform .3s;
-    z-index:9999; pointer-events:none;
-  }
-  .toast--success { background:#2e7d32; }
-  .toast--error   { background:#c62828; }
-  .toast--info    { background:#2F96B4; }
-  .toast.show     { opacity:1; transform:translateX(-50%) translateY(0); }
-
-  .inline-error {
-    color: #b00;
-    font-size: .9rem;
-    margin-top: .25rem;
-  }
-/* Spinner */
-.spinner {
-    border: 4px solid rgba(0,0,0,0.1);
-    border-top: 4px solid #002e60;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-  }
-  
-  .loading-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgb(255, 255, 255);
+.tinfo, .binfo, .ctrlinfo{
+    margin-top: 2.5rem;
+}
+.transactionInfoDiv{
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-content: center;
     justify-content: center;
-    z-index: 10;
-  }
-  .dt-search {
-    float: right;          /* push it to the far right */
-    margin: 0 1rem 1rem 0; /* top‑right‑bottom‑left */
+    align-items: center;
+    max-width: 30rem;
 }
-.dt-info {
-    text-align: start;     
-
+.controlInfoDiv{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    max-width: 30rem;
+    margin-top: 4rem;
 }
-@media (max-width: 768px) {        /* optional: mobile tweak */
-  .dt-search { float:none; text-align:center; }
-  .dt-info { float:none; text-align:center; }
-}
-
-/* 1. Remove the default triangle on any row with a child */
-table.dataTable tr.dt-hasChild td.dt-control:before {
-    border: none !important;
-    background: none !important;
-  }
-  
-  /* 2. (Re-)Define your plus/minus icons */
-  /* closed row: green “+” */
-  table.dataTable tbody td.dt-control:before {
-    content: "+" !important;
-    color: green;
-    font-size: 1.2em;
-    border: none !important;
-  }
-  
-  /* open row: red “−” */
-  table.dataTable tbody tr.shown td.dt-control:before {
-    content: "−" !important;
-    color: red !important;
-    border: none !important;
-    background: rgb(0, 21, 255)e !important;
-  }
-.gw-ports{
-    margin-top: 30px;
-    background-color: var(--bg-primary);
-    backdrop-filter: blur(30px);
-    border-radius: 0.8rem;
-    padding: 1rem;
+.gw-actions{
+    margin: 2rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    max-width: 19rem;
+    max-width: 30rem;
+    padding: 2px;
 }
-.gw-merged{
-    display:grid;
-    grid-template-columns: 0.82fr 1fr;
-    gap:12px;
-    align-items:center;
-    max-width:44rem;
-}
-.gw-tanksinfo{
-    margin-top: 30px;
-    background-color: var(--bg-primary);
-    backdrop-filter: blur(30px);
-    border-radius: 0.8rem;
-    padding: 1rem;
+.sc-actions{
+    margin: 2rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 30rem;
+    padding: 2px;
 }
-.button-gwalert{
-    margin: 1rem;
-    padding: 3px;
+.gwinfo{
+    margin-top: 3rem;
+    display:none;
 }
-.button-gwports {
-    margin: 1rem;
-    padding: 3px;
-}
-.button-gwsave {
-    margin: 1rem;
-    padding: 3px;
+.fmsinfo{
+    margin-top: 3rem;
+    display:none;
 }

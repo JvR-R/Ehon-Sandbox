@@ -1,0 +1,412 @@
+/* ============================================
+   VMI TABLES - UNIFIED STYLES
+   Common table, button, and layout styles
+   Used by: Service, Clients, and other VMI pages
+   ============================================ */
+
+/* ============================================
+   HTML5 RESET
+   ============================================ */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+ol, ul {
+	list-style: none;
+}
+
+blockquote, q {
+	quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* ============================================
+   UNIVERSAL RESET
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    line-height: 1;
+    min-height: auto;
+    background: var(--bg-primary) center / cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+.button-js {
+    font-weight: bold;
+    font-size: 18px;
+    background-color: var(--bg-dark);
+    cursor: pointer;
+    color: var(--text-inverse);
+    transition: 0.4s;
+    border-radius: 0.4rem;
+    padding: 0.25rem;
+    margin: 1rem;
+    border: none;
+}
+
+.button-js:hover {
+    transform: scale(1.1);
+}
+
+.button-js2 {
+    font-weight: bold;
+    font-size: 18px;
+    position: absolute;
+    background-color: var(--bg-dark);
+    cursor: pointer;
+    color: var(--text-inverse);
+    transition: 0.4s;
+    border-radius: 0.4rem;
+    padding: 4px;
+    left: 13rem;
+    height: 1.8rem;
+    margin: 1rem;
+    border: none;
+}
+
+.button-js2:hover {
+    font-size: 20px;
+}
+
+.button-js3 {
+    font-weight: bold;
+    font-size: 18px;
+    background-color: var(--bg-dark);
+    cursor: pointer;
+    color: var(--text-inverse);
+    transition: 0.4s;
+    border-radius: 0.4rem;
+    padding: 4px;
+    margin-top: 13rem;
+    margin-left: 12rem;
+    max-height: 2rem;
+    border: none;
+}
+
+.button-js3:hover {
+    font-size: 20px;
+}
+
+/* ============================================
+   MAIN TABLE CONTAINER
+   ============================================ */
+main.table {
+    width: calc(100% - 76px);
+    height: 94%;
+    background-color: var(--table-main-bg);
+    position: absolute;
+    left: 71px;
+    top: 61px;
+    backdrop-filter: blur(7px);
+    box-shadow: 0 .4rem .8rem var(--shadow-md);
+    overflow: hidden;
+    border-start-start-radius: .8rem;
+}
+
+/* ============================================
+   TABLE HEADER
+   ============================================ */
+.table__header {
+    width: 100%;
+    height: 4.5rem;
+    background-color: var(--bg-tertiary);
+    padding: .8rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.table__header .input-group {
+    width: 35%;
+    height: 100%;
+    background-color: var(--table-main-bg);
+    padding: 0 .8rem;
+    border-radius: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--bg-card);
+    transition: .2s;
+}
+
+.table__header h1 {
+    color: var(--accent-danger);
+    font-weight: bold;
+    font-size: 1.7vw;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); 
+}
+
+.table__header h1 img {
+    width: 100px;
+    height: auto;
+    margin-right: .5rem;
+    border-radius: 1%;
+    vertical-align: middle;
+}
+
+/* ============================================
+   TABLE BODY & SCROLLBAR
+   ============================================ */
+.table__body {
+    width: calc(100% - 10px);
+    max-height: calc(92% - 1.6rem);
+    background-color: var(--table-body-bg);
+    margin: .8rem auto;
+    border-radius: .6rem;
+    overflow: overlay;
+    position: absolute;
+    left: 10px;
+    margin-right: 5%;
+    padding-right: 50px;
+}
+
+.table__body::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+.table__body::-webkit-scrollbar-thumb {
+    border-radius: .5rem;
+    background-color: var(--scrollbar-thumb);
+    visibility: hidden;
+}
+
+.table__body:hover::-webkit-scrollbar-thumb { 
+    visibility: visible;
+}
+
+/* ============================================
+   TABLE ELEMENTS
+   ============================================ */
+table {
+    width: 100%;
+}
+
+table, th, td {
+    border-collapse: collapse;
+    padding: 1rem;
+    text-align: center;
+}
+
+/* ============================================
+   TABLE HEADER ROW
+   ============================================ */
+thead th {
+    position: sticky !important;
+    top: 0;
+    left: 0;
+    background-color: var(--bg-dark);
+    color: var(--text-inverse);
+    cursor: pointer;
+    text-transform: capitalize;
+    z-index: 2;
+    text-align: center !important;
+}
+
+thead th.active,
+tbody td.active {
+    color: var(--accent-primary);
+}
+
+/* ============================================
+   TABLE BODY ROWS
+   ============================================ */
+tbody tr:nth-child(even):not(.expanded-details) {
+    background-color: var(--bg-accent);
+}
+
+tbody tr {
+    animation-delay: 0.1s;
+    transition: .5s ease-in-out var(--delay), background-color 0s;
+}
+
+tbody tr.hide {
+    transform: translateX(100%);
+    display: none;
+    opacity: 0;
+}
+
+tbody tr:not(.expanded-details):hover {
+    background-color: var(--table-row-hover) !important;
+}
+
+tbody tr td,
+tbody tr td p,
+tbody tr td img {
+    transition: .2s ease-in-out;
+}
+
+tbody tr.hide td,
+tbody tr.hide td p {
+    padding: 0;
+    font: 0 / 0 sans-serif;
+    transition: .2s ease-in-out .5s;
+}
+
+td img {
+    height: 32px;
+    width: 32px;
+}
+
+/* ============================================
+   CHILD ROWS & EXPANDED DETAILS
+   ============================================ */
+.child_details {
+    position: relative;
+    overflow: overlay;
+}
+
+/* Expanded details row styling */
+tbody tr.expanded-details {
+    background-color: var(--bg-secondary);
+}
+
+/* ============================================
+   DATATABLES CONTROLS
+   ============================================ */
+#customers_table_filter {
+    width: 20%;
+    height: 100%;
+    background-color: var(--table-main-bg) !important;
+    padding: 0 .8rem;
+    border-radius: 2rem;
+    justify-content: center;
+    align-items: center;
+    background: var(--bg-card);
+    transition: .2s;
+    border: solid;
+    border-width: thin;
+    border-color: rgba(116, 116, 116, 0.288);
+    position: relative;
+}
+
+/* DataTables child row controls */
+table.dataTable tbody td.dt-control {
+    cursor: pointer;
+}
+
+table.dataTable tbody td.dt-control:before {
+    content: "+" !important;
+    color: var(--text-primary) !important;
+    border: none !important;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+table.dataTable tbody tr.shown td.dt-control:before {
+    content: "−" !important;
+    color: var(--accent-danger) !important;
+    border: none !important;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+@media (max-width: 1000px) {
+    .table__header h1 {
+        font-size: 2.5vw;
+    }
+    
+    .table__body {
+        width: 100%;
+        left: 0;
+        padding-right: 20px;
+    }
+    
+    main.table {
+        width: calc(100% - 40px);
+        left: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .table__header h1 {
+        font-size: 3vw;
+    }
+    
+    .table__header h1 img {
+        width: 60px;
+    }
+    
+    table, th, td {
+        padding: 0.5rem;
+        font-size: 12px;
+    }
+}
+
+/* ============================================
+   MENU ITEMS & INFO PANELS
+   ============================================ */
+.menu_items {
+    position: absolute;
+    height: 30px;
+}
+
+[class^="alert_info"],
+[class^="tank_info"],
+[class^="temp_info"] {
+    min-height: 26rem;
+    top: 50px;
+    position: absolute;
+    background: var(--bg-primary);
+    display: none;
+    min-width: 90rem;
+}
+
+.nav-items {
+    border-collapse: collapse;
+    padding: 5px;
+}
+
+/* ============================================
+   STATUS COLORS
+   ============================================ */
+.status {
+    padding: .4rem 0;
+    border-radius: 2rem;
+    text-align: center;
+}
+
+.status.delivered {
+    background-color: var(--status-green-bg);
+    color: var(--status-green-text);
+}
+
+.status.cancelled {
+    background-color: var(--status-red-bg);
+    color: var(--status-red-text);
+}
+
+.status.pending {
+    background-color: var(--accent-warning);
+    color: #000000;
+}
+
+.status.shipped {
+    background-color: var(--accent-secondary);
+    color: #000000;
+}
+
