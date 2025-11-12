@@ -54,7 +54,7 @@ def _normalize_endpoint(raw_host: Optional[str], raw_port) -> Tuple[str, int, Op
     """
     Accept either:
       - host: 'ehonenergytech.com.au'
-      - URL : 'mqtts://ehonenergytech.com.au:8883'
+      - URL : 'mqtts://ehonenergytech.com.au:8885'
     and return (host, port, scheme).
     """
     host = (raw_host or "").strip()
@@ -71,7 +71,7 @@ def _normalize_endpoint(raw_host: Optional[str], raw_port) -> Tuple[str, int, Op
         scheme = u.scheme
 
     if port is None:
-        port = 8883 if scheme in ("mqtts", "ssl", "tls") else 1883
+        port = 8885 if scheme in ("mqtts", "ssl", "tls") else 1883
 
     return host, int(port), scheme
 
@@ -81,7 +81,7 @@ def _use_tls(cfg: configparser.SectionProxy, port: int, scheme: Optional[str]) -
     return (
         v in ("1", "true", "yes", "on")
         or scheme in ("mqtts", "ssl", "tls")
-        or port == 8883
+        or port == 8885
     )
 
 
