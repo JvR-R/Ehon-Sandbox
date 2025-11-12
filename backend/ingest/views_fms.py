@@ -110,10 +110,14 @@ def send_fms_cmd(request):
     except ValueError:
         return HttpResponseBadRequest("invalid JSON")
 
+    log.info("FMS CMD received: payload=%s", data)
+    
     device_id = _resolve_device_id(data)
     if not device_id:
         log.warning("FMS CMD: could not resolve console device_id from payload=%s", data)
         return HttpResponseBadRequest("could not resolve a valid console device_id")
+    
+    log.info("FMS CMD: resolved device_id=%s", device_id)
 
     # Known OK/FAIL tokens per response sub-topic (adjust these for FMS-specific responses)
     _OK_FAIL = {
@@ -146,7 +150,9 @@ def send_fms_cmd(request):
             })
 
         # no wait requested → fire-and-forget
+        log.info("FMS CMD: publishing raw payload to fms/%s: %s", device_id, data["payload_raw"])
         mqtt_publish_raw(device_id, data["payload_raw"], qos=1, retain=False)
+        log.info("FMS CMD: raw publish completed successfully")
         return JsonResponse({"ok": True})
 
     # Back-compat single {cmd: value}
@@ -155,7 +161,9 @@ def send_fms_cmd(request):
     if not (cmd and val):
         return HttpResponseBadRequest("payload_raw OR (cmd,value) required")
 
+    log.info("FMS CMD: publishing {%s: %s} to fms/%s", cmd, val, device_id)
     mqtt_publish(device_id, cmd, val)
+    log.info("FMS CMD: publish completed successfully")
     return JsonResponse({"ok": True})
 
 
