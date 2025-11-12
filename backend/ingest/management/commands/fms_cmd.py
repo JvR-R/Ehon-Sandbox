@@ -154,15 +154,26 @@ def mqtt_publish(
     cli = _new_client("svc_sender")
 
     host, port, scheme = _normalize_endpoint(MQ.get("broker_host"), MQ.get("broker_port"))
+    LOG.info(f"mqtt_publish: connecting to {host}:{port} (TLS={_use_tls(MQ, port, scheme)})")
     _apply_auth_and_tls(cli, MQ, host, port, scheme)
 
-    cli.connect(host=host, port=int(port), keepalive=60)
+    try:
+        cli.connect(host=host, port=int(port), keepalive=60)
+    except Exception as e:
+        LOG.error(f"mqtt_publish: connection failed to {host}:{port}: {e}")
+        raise
 
     cli.loop_start()
     try:
-        info = cli.publish(f"fms/{device_id}", payload, qos=qos, retain=retain)
+        topic = f"fms/{device_id}"
+        LOG.info(f"mqtt_publish: publishing to {topic}: {payload}")
+        info = cli.publish(topic, payload, qos=qos, retain=retain)
         if qos:
             info.wait_for_publish(timeout=5)
+        LOG.info(f"mqtt_publish: successfully published to {topic}")
+    except Exception as e:
+        LOG.error(f"mqtt_publish: publish failed: {e}")
+        raise
     finally:
         cli.loop_stop()
         cli.disconnect()
@@ -173,14 +184,26 @@ def mqtt_publish_raw(device_id: str, payload_str: str, qos: int = 1, retain: boo
     cli = _new_client("svc_sender")
 
     host, port, scheme = _normalize_endpoint(MQ.get("broker_host"), MQ.get("broker_port"))
+    LOG.info(f"mqtt_publish_raw: connecting to {host}:{port} (TLS={_use_tls(MQ, port, scheme)})")
     _apply_auth_and_tls(cli, MQ, host, port, scheme)
 
-    cli.connect(host, int(port), 60)
+    try:
+        cli.connect(host, int(port), 60)
+    except Exception as e:
+        LOG.error(f"mqtt_publish_raw: connection failed to {host}:{port}: {e}")
+        raise
+        
     cli.loop_start()
     try:
-        info = cli.publish(f"fms/{device_id}", payload_str, qos=qos, retain=retain)
+        topic = f"fms/{device_id}"
+        LOG.info(f"mqtt_publish_raw: publishing to {topic}: {payload_str}")
+        info = cli.publish(topic, payload_str, qos=qos, retain=retain)
         if qos:
             info.wait_for_publish(timeout=5)
+        LOG.info(f"mqtt_publish_raw: successfully published to {topic}")
+    except Exception as e:
+        LOG.error(f"mqtt_publish_raw: publish failed: {e}")
+        raise
     finally:
         cli.loop_stop()
         cli.disconnect()
