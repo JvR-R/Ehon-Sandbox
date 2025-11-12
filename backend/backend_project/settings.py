@@ -87,11 +87,11 @@ WSGI_APPLICATION = 'backend_project.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "HOST": config.get('database', 'DB_HOST'),
-        "PORT": config.get('database', 'DB_PORT'),
-        "NAME": config.get('database', 'DB_NAME'),
-        "USER": config.get('database', 'DB_USER'),
-        "PASSWORD": config.get('database', 'DB_PASSWORD'),
+        "HOST": config.get('database', 'db_host'),
+        "PORT": config.get('database', 'db_port'),
+        "NAME": config.get('database', 'db_name'),
+        "USER": config.get('database', 'db_user'),
+        "PASSWORD": config.get('database', 'db_password'),
         "OPTIONS": {"charset": "utf8mb4"},
     }
 }
