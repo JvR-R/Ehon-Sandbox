@@ -130,7 +130,7 @@ def normalize_endpoint(raw_host: str, raw_port) -> tuple[str, int, str | None]:
         scheme = u.scheme
 
     if port is None:
-        port = 8883 if scheme in ("mqtts", "ssl", "tls") else 1883
+        port = 8885 if scheme in ("mqtts", "ssl", "tls") else 1885
 
     return host, int(port), scheme
 
@@ -141,7 +141,7 @@ def should_use_tls(cfg: dict, port: int, scheme: str | None) -> bool:
         return True
     if scheme in ("mqtts", "ssl", "tls"):
         return True
-    if port == 8883:
+    if port == 8885:
         return True
     return False
 
