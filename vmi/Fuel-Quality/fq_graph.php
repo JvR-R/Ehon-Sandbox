@@ -52,94 +52,6 @@ if ($uid === null || $tank_id === null) {
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.1/dist/chartjs-adapter-moment.min.js"></script>
-  <style>
-    .graph-container {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      margin: 20px 0;
-    }
-    .controls {
-      background: #f5f5f5;
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      display: flex;
-      gap: 15px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .controls label {
-      font-weight: bold;
-      margin-right: 5px;
-    }
-    .controls select, .controls input {
-      padding: 8px 12px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 14px;
-    }
-    .controls button {
-      padding: 8px 16px;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    .controls button:hover {
-      background: #0056b3;
-    }
-    .status {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: bold;
-    }
-    .status.connected {
-      background: #28a745;
-      color: white;
-    }
-    .status.disconnected {
-      background: #dc3545;
-      color: white;
-    }
-    .current-values {
-      display: flex;
-      gap: 20px;
-      margin-top: 15px;
-      justify-content: center;
-    }
-    .value-box {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 15px 25px;
-      border-radius: 8px;
-      text-align: center;
-      min-width: 120px;
-    }
-    .value-box.iso4 {
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    }
-    .value-box.iso6 {
-      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    }
-    .value-box.iso14 {
-      background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-    }
-    .value-box .label {
-      font-size: 12px;
-      opacity: 0.9;
-      margin-bottom: 5px;
-    }
-    .value-box .value {
-      font-size: 32px;
-      font-weight: bold;
-    }
-  </style>
 </head>
 <body>
 
@@ -236,8 +148,8 @@ function initChart() {
       datasets: [
         {
           label: 'ISO 4μm',
-          borderColor: 'rgb(240, 147, 251)',
-          backgroundColor: 'rgba(240, 147, 251, 0.1)',
+          borderColor: '#1c2541',
+          backgroundColor: 'rgba(28, 37, 65, 0.25)',
           data: [],
           tension: 0.4,
           pointRadius: 4,
@@ -246,8 +158,8 @@ function initChart() {
         },
         {
           label: 'ISO 6μm',
-          borderColor: 'rgb(79, 172, 254)',
-          backgroundColor: 'rgba(79, 172, 254, 0.1)',
+          borderColor: '#b91c1c',
+          backgroundColor: 'rgba(185, 28, 28, 0.25)',
           data: [],
           tension: 0.4,
           pointRadius: 4,
@@ -256,8 +168,8 @@ function initChart() {
         },
         {
           label: 'ISO 14μm',
-          borderColor: 'rgb(67, 233, 123)',
-          backgroundColor: 'rgba(67, 233, 123, 0.1)',
+          borderColor: '#14532d',
+          backgroundColor: 'rgba(20, 83, 45, 0.25)',
           data: [],
           tension: 0.4,
           pointRadius: 4,
