@@ -42,7 +42,8 @@ def handle(serial: str | None, payload: dict) -> None:
         return
 
     pump_num = int(data.get("pump_num", 1))        # default to 1 if absent
-
+    tank_num = int(data.get("tank_num", 1))        # default to 1 if absent
+    
     try:
         with db_tx.atomic():
             Tx.objects.create(
@@ -55,7 +56,7 @@ def handle(serial: str | None, payload: dict) -> None:
                 odometer          = data.get("odo", 0),
                 registration      = data.get("rego", ""),
                 dispensed_volume  = float(data.get("volume", 0)),
-                tank_id           = pump_num,
+                tank_id           = tank_num,
                 pump_id           = pump_num,
                 stop_method       = data.get("Stop_method"),
                 pulses            = data.get("pulses"),

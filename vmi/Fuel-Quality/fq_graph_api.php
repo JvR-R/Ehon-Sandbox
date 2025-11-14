@@ -8,7 +8,7 @@ include('../db/log.php');
 // Get parameters
 $uid = isset($_GET['uid']) ? intval($_GET['uid']) : null;
 $tank_id = isset($_GET['tank_id']) ? intval($_GET['tank_id']) : null;
-$time_window = isset($_GET['time_window']) ? intval($_GET['time_window']) : 600; // Default 10 minutes
+$time_window = isset($_GET['time_window']) ? intval($_GET['time_window']) : 7200; // Default 2 hours (7200 seconds)
 
 if ($uid === null || $tank_id === null) {
     echo json_encode(['error' => 'Missing uid or tank_id parameter']);
@@ -34,6 +34,7 @@ if ($access_result->num_rows === 0) {
 $access_stmt->close();
 
 // Fetch data from the last X seconds
+// Use TIMESTAMP() function to combine DATE and TIME - this is the standard MySQL/MariaDB way
 $query = "
     SELECT 
         fq.fq_date,
@@ -49,15 +50,25 @@ $query = "
     WHERE 
         fq.uid = ? 
         AND fq.tank_id = ?
-        AND CONCAT(fq.fq_date, ' ', fq.fq_time) >= DATE_SUB(NOW(), INTERVAL ? SECOND)
+        AND fq.fq_date IS NOT NULL
+        AND fq.fq_time IS NOT NULL
+        AND TIMESTAMP(fq.fq_date, fq.fq_time) >= DATE_SUB(NOW(), INTERVAL ? SECOND)
     ORDER BY 
         fq.fq_date ASC, 
         fq.fq_time ASC
 ";
 
 $stmt = $conn->prepare($query);
+if (!$stmt) {
+    echo json_encode(['error' => 'Query preparation failed: ' . $conn->error]);
+    exit;
+}
+
 $stmt->bind_param("iii", $uid, $tank_id, $time_window);
-$stmt->execute();
+if (!$stmt->execute()) {
+    echo json_encode(['error' => 'Query execution failed: ' . $stmt->error]);
+    exit;
+}
 $result = $stmt->get_result();
 
 $data = [];
