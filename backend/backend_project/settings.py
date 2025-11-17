@@ -35,6 +35,7 @@ ALLOWED_HOSTS = [
     "www.ehon.com.au",   # if you serve both
     "ehonenergytech.com.au",
     "www.ehonenergytech.com.au",
+    "mail.ehon.com.au",
 ]
 
 

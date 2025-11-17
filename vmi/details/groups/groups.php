@@ -1,7 +1,7 @@
 <?php
-  include('../db/dbh2.php');
-  include('../db/log.php');
-  include('../db/border.php');
+  include('../../db/dbh2.php');
+  include('../../db/log.php');
+  include('../../db/border.php');
 ?>
 <!DOCTYPE html>
 <html lang="en" title="">
@@ -12,7 +12,7 @@
     <meta property="og:type" content="website">
     <meta content="summary_large_image" name="twitter:card">
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <link rel="stylesheet" href="menu.css">
+    <link rel="stylesheet" href="../menu.css">
     <link href="/vmi/css/normalize.css" rel="stylesheet" type="text/css">
     <link href="/vmi/css/webflow.css" rel="stylesheet" type="text/css">
     <link href="/vmi/css/style_rep.css" rel="stylesheet" type="text/css">
@@ -23,7 +23,7 @@
     
     <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
     
     <style>
         /* Modern styling for DataTables */
@@ -148,7 +148,7 @@
     </div>
 
     <main class="table">
-    <?php include('top_menu.php');?>
+    <?php include('../top_menu.php');?>
         <div class="dashboard-content">
             <div class="dashboard-main-content">
                 <div class="container-default w-container" style="text-align: -webkit-center;">

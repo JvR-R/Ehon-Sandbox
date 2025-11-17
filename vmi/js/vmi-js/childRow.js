@@ -616,8 +616,8 @@ export function buildChild(d, ctx) {
             <label>Alert Type:</label>
             <select class="recip" id="alert_type-${row}">
               <option value="0">None</option>
-              <option value="1">Falling level</option>
-              <option value="2">Raising level</option>
+              <option value="1">Low Level</option>
+              <option value="2">High Level</option>
             </select>
             <label>Alert level:</label>
             <input class="recip" id="vol_alert-${row}" type="number" value="0">

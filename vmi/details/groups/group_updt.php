@@ -1,6 +1,6 @@
 <?php
-  include('../db/dbh2.php');
-  include('../db/log.php');
+  include('../../db/dbh2.php');
+  include('../../db/log.php');
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
