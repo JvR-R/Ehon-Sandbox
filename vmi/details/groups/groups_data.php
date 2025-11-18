@@ -89,10 +89,6 @@ $filteredRecords = $stmt->get_result()->fetch_assoc()['total'];
 $stmt->close();
 
 // Build the data query with LEFT JOIN in the correct position
-// Create separate params array for data query since it has additional parameters
-$dataParams = array_merge($baseParams, $searchParams);
-$dataParamTypes = $baseParamTypes . $searchParamTypes;
-
 $dataQuery = "SELECT 
                 cs.site_id,
                 cs.site_name,
@@ -101,11 +97,16 @@ $dataQuery = "SELECT
               " . $baseFrom;
 
 // Add LEFT JOIN for group membership if groupId is provided
+// NOTE: Parameters for LEFT JOIN must come FIRST in the bind order
+$dataParams = [];
+$dataParamTypes = '';
+
 if ($groupId > 0) {
     $dataQuery .= " LEFT JOIN client_site_groups csg 
                     ON cs.site_id = csg.site_no 
                     AND csg.group_id = ? 
                     AND csg.client_id = ?";
+    // Add group params FIRST (they appear first in SQL)
     $dataParams[] = $groupId;
     $dataParams[] = $companyId;
     $dataParamTypes .= 'ii';
@@ -117,6 +118,12 @@ if ($groupId > 0) {
 $dataQuery .= " " . $baseWhere;
 $dataQuery .= $searchQuery;
 $dataQuery .= " ORDER BY {$orderColumnName} {$orderDir} LIMIT ? OFFSET ?";
+
+// Add base params (for WHERE clause) AFTER group params
+$dataParams = array_merge($dataParams, $baseParams, $searchParams);
+$dataParamTypes .= $baseParamTypes . $searchParamTypes;
+
+// Add pagination params LAST
 $dataParams[] = $length;
 $dataParams[] = $start;
 $dataParamTypes .= 'ii';
