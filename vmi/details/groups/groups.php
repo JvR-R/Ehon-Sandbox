@@ -12,7 +12,6 @@
     <meta property="og:type" content="website">
     <meta content="summary_large_image" name="twitter:card">
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <link rel="stylesheet" href="../menu.css">
     <link href="/vmi/css/normalize.css" rel="stylesheet" type="text/css">
     <link href="/vmi/css/webflow.css" rel="stylesheet" type="text/css">
     <link href="/vmi/css/style_rep.css" rel="stylesheet" type="text/css">
@@ -21,24 +20,29 @@
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
     
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../menu.css">
+    <link rel="stylesheet" href="/vmi/css/theme.css">
+    
     <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="../style.css">
     
     <style>
-        /* Modern styling for DataTables */
+        /* Modern styling for DataTables with theme support */
         #sitesTable_wrapper {
             padding: 0;
+            background-color: var(--bg-card);
         }
         
         #sitesTable {
             width: 100% !important;
             border-collapse: collapse;
+            background-color: var(--table-body-bg);
         }
         
         #sitesTable thead th {
-            background-color: #002F60;
-            color: white;
+            background-color: var(--bg-darker);
+            color: var(--text-inverse);
             padding: 12px;
             text-align: left;
             font-weight: 600;
@@ -47,11 +51,13 @@
         
         #sitesTable tbody td {
             padding: 10px 12px;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--bg-card);
+            color: var(--text-primary);
         }
         
-        #sitesTable tbody tr:hover {
-            background-color: #f9fafb;
+        #sitesTable tbody tr:hover td {
+            background-color: var(--table-row-hover);
         }
         
         .dataTables_wrapper .dataTables_length,
@@ -59,34 +65,48 @@
         .dataTables_wrapper .dataTables_info,
         .dataTables_wrapper .dataTables_paginate {
             padding: 10px;
-            color: #374151;
+            color: var(--text-primary);
         }
         
+        .dataTables_wrapper .dataTables_length select,
         .dataTables_wrapper .dataTables_filter input {
-            border: 1px solid #d1d5db;
+            background-color: var(--input-bg);
+            color: var(--input-text);
+            border: 1px solid var(--input-border);
             border-radius: 4px;
             padding: 6px 12px;
             margin-left: 8px;
+        }
+        
+        .dataTables_wrapper .dataTables_filter input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: var(--input-shadow-focus);
         }
         
         .dataTables_wrapper .dataTables_paginate .paginate_button {
             padding: 4px 10px;
             margin: 0 2px;
             border-radius: 4px;
-            border: 1px solid #d1d5db;
-            background: white;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card) !important;
+            color: var(--text-primary) !important;
         }
         
         .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-            background: #002F60 !important;
-            color: white !important;
-            border-color: #002F60;
+            background: var(--bg-darker) !important;
+            color: var(--text-inverse) !important;
+            border-color: var(--bg-darker);
         }
         
         .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-            background: #f3f4f6 !important;
-            border-color: #9ca3af;
-            color: black !important;
+            background: var(--table-row-hover) !important;
+            border-color: var(--accent-primary) !important;
+            color: var(--text-primary) !important;
+        }
+        
+        .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+            color: var(--text-secondary) !important;
         }
         
         .dt-checkboxes {
@@ -94,6 +114,7 @@
             cursor: pointer;
             width: 18px;
             height: 18px;
+            accent-color: var(--accent-primary);
         }
         
         .loading-overlay {
@@ -103,7 +124,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: var(--overlay-bg);
             z-index: 9999;
             justify-content: center;
             align-items: center;
@@ -114,8 +135,8 @@
         }
         
         .spinner {
-            border: 4px solid #f3f4f6;
-            border-top: 4px solid #002F60;
+            border: 4px solid var(--bg-secondary);
+            border-top: 4px solid var(--bg-darker);
             border-radius: 50%;
             width: 50px;
             height: 50px;
@@ -129,16 +150,34 @@
         
         .stats-info {
             padding: 10px;
-            background: #f0f9ff;
-            border-left: 4px solid #002F60;
+            background: var(--table-row-hover);
+            border-left: 4px solid var(--bg-darker);
             margin-bottom: 15px;
             border-radius: 4px;
+            color: var(--text-primary);
         }
         
         .btn-container {
             display: flex;
             gap: 10px;
             margin-top: 15px;
+        }
+        
+        /* DataTables processing overlay */
+        .dataTables_processing {
+            background-color: var(--bg-card) !important;
+            color: var(--text-primary) !important;
+            border: 1px solid var(--border-color) !important;
+        }
+        
+        /* Sorting icons */
+        table.dataTable thead .sorting:before,
+        table.dataTable thead .sorting:after,
+        table.dataTable thead .sorting_asc:before,
+        table.dataTable thead .sorting_asc:after,
+        table.dataTable thead .sorting_desc:before,
+        table.dataTable thead .sorting_desc:after {
+            opacity: 0.6;
         }
     </style>
 </head>
