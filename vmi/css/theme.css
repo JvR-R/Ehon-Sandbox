@@ -226,7 +226,7 @@
 /* Cards and containers */
 [data-theme="dark"] .card,
 [data-theme="dark"] .card.pd-30px---36px {
-  background-color: var(--bg-darker) !important;
+  background-color: var(--bg-card) !important;
 }
 
 /* Small dropdown lists */
