@@ -86,6 +86,10 @@ main.table {
   position: relative;
 }
 
+.form-card form {
+  color: var(--text-primary);
+}
+
 .form-card:hover {
   box-shadow: 0 4px 8px var(--shadow-sm);
 }
@@ -310,6 +314,8 @@ select{
 
 .form-body {
   padding: 24px;
+  background: var(--bg-card);
+  color: var(--text-primary);
 }
 
 .form-row {
