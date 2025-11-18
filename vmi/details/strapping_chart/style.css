@@ -301,8 +301,8 @@ select{
 }
 /* Professional Form Layout */
 .form-header {
-  background: var(--bg-darker);
-  color: var(--text-primary);
+  background: var(--accent-primary);
+  color: var(--text-inverse);
   padding: 20px 24px;
   margin: 0;
   font-size: 18px;
