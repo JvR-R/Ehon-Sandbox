@@ -2,28 +2,31 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
 body {
-  min-height: auto;
-  background: var(--bg-primary) center / cover;
+  min-height: 100vh;
+  background: var(--bg-primary);
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  padding: 20px;
+  color: var(--text-primary);
 }
+
 main.table {
-  width: calc(100% - 70px);
-  height: 95%;
-  background-color: var(--bg-secondary);
-  background-size:cover;
-  position: absolute;
-  left: 70px;
-  top: 63px;
-  display: block;
-  backdrop-filter: blur(7px);
-  box-shadow: 0 .4rem .8rem var(--shadow-md);
-  border-start-start-radius: .8rem;
+  width: 100%;
+  max-width: 1400px;
+  min-height: calc(100vh - 100px);
+  background-color: var(--bg-card);
+  position: relative;
+  margin-top: 100px;
+  margin-left: 90px;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px var(--shadow-sm);
+  border: 1px solid var(--border-color);
   overflow-x: hidden;
 }
 .logo {
@@ -35,19 +38,20 @@ main.table {
   height: auto;
   z-index: 1;
 }
-.Title{
+.Title {
   position: absolute;
   width: 100%;
   height: 8vh;
-  background-color: var(--bg-accent);
+  background-color: var(--bg-card);
 }
-h2{
+
+h2 {
   position: absolute;
   left: 35vw;
   top: 1vh;
-  color: var(--accent-warning);
+  color: var(--text-primary);
   font-weight: bold;
-  font-size: 60px;;
+  font-size: 60px;
 }
 .full-size{
   width: 100%;
@@ -72,127 +76,152 @@ h2{
 .form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  max-width: 350px;
+  gap: 20px;
+  max-width: 500px;
   background-color: var(--bg-card);
-  padding: 20px;
-  border-radius: 20px;
+  padding: 32px;
+  border-radius: 12px;
   position: relative;
+  box-shadow: 0 2px 4px var(--shadow-sm);
+  border: 1px solid var(--border-color);
 }
+
 .title {
-  font-size: 28px;
-  color: var(--accent-primary);
+  font-size: 32px;
+  color: var(--text-primary);
   font-weight: 600;
-  letter-spacing: -1px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  padding-left: 30px;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  text-align: center;
 }
-.title::before,.title::after {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  left: 0px;
-  background-color: var(--accent-primary);
-}
-.title::before {
-  width: 18px;
-  height: 18px;
-  background-color: var(--accent-primary);
-}
+
+.title::before,
 .title::after {
-  width: 18px;
-  height: 18px;
-  animation: pulse 1s linear infinite;
+  display: none;
 }
-.message, .signin {
+.message, 
+.signin {
   color: var(--text-secondary);
   font-size: 14px;
+  text-align: center;
+  margin-bottom: 8px;
 }
+
 .signin {
   text-align: center;
 }
+
 .signin a {
   color: var(--accent-primary);
+  font-weight: 500;
 }
+
 .signin a:hover {
-  text-decoration: underline var(--accent-primary);
+  text-decoration: underline;
 }
+
 .flex {
   display: flex;
   width: 100%;
-  gap: 6px;
+  gap: 12px;
 }
-.form select{
+
+.form select {
   width: 100%;
-  padding: 5px 10px 5px 10px;
+  padding: 12px 16px;
   outline: 0;
   border: 1px solid var(--input-border);
-  border-radius: 10px;
+  border-radius: 8px;
   background-color: var(--input-bg);
   color: var(--input-text);
+  font-size: 14px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.form select:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(108, 114, 255, 0.1);
 }
 .form label {
   position: relative;
 }
+
 .form label .input {
   width: 100%;
-  padding: 10px 10px 20px 10px;
+  padding: 12px 16px 12px 16px;
   outline: 0;
   border: 1px solid var(--input-border);
-  border-radius: 10px;
+  border-radius: 8px;
   background-color: var(--input-bg);
   color: var(--input-text);
+  font-size: 14px;
+  transition: all 0.2s ease;
 }
+
+.form label .input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(108, 114, 255, 0.1);
+}
+
 .form label .input + span {
   position: absolute;
-  left: 10px;
-  top: 15px;
+  left: 16px;
+  top: -8px;
   color: var(--text-secondary);
-  font-size: 0.9em;
-  cursor: text;
-  transition: 0.3s ease;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: var(--bg-card);
+  padding: 0 6px;
+  pointer-events: none;
 }
-.form label .input:-webkit-autofill + span {
-  color: var(--accent-success);
-  top: 30px;
-  font-size: 0.7em;
-  font-weight: 600;
+
+.form label .input:-webkit-autofill + span,
+.form label .input:focus + span,
+.form label .input:valid + span {
+  color: var(--accent-primary);
 }
-.form label .input:-webkit-autofill + span {
-  color: var(--accent-success);
-  top: 30px;
-  font-size: 0.7em;
-  font-weight: 600;
-}
-.form label .input:placeholder-shown + span {
-  top: 15px;
-  font-size: 0.9em;
-}
-.form label .input:focus + span,.form label .input:valid + span {
-  top: 30px;
-  font-size: 0.7em;
-  font-weight: 600;
-}
+
 .form label .input:valid + span {
   color: var(--accent-success);
 }
 .submit {
   border: none;
   outline: none;
-  background-color: var(--btn-primary-bg);
-  padding: 10px;
-  border-radius: 10px;
-  color: var(--btn-text);
+  background-color: var(--accent-primary);
+  padding: 12px 24px;
+  border-radius: 8px;
+  color: var(--text-inverse);
   font-size: 16px;
-  transform: .3s ease;
+  font-weight: 600;
+  transition: all 0.2s ease;
   cursor: pointer;
+  box-shadow: 0 2px 4px var(--shadow-sm);
 }
+
 .submit:hover {
-  background-color: var(--btn-primary-hover);
+  background-color: var(--accent-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px var(--shadow-sm);
+}
+
+.submit:active {
+  transform: translateY(0);
+}
+
+.submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+#loading {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+  padding: 12px;
+  background-color: var(--bg-darker);
+  border-radius: 8px;
+  margin-top: 8px;
 }
 @keyframes pulse {
   from {
@@ -205,12 +234,48 @@ h2{
     opacity: 0;
   }
 }
-.log{
-  position: relative;
-  top:10%;
+.log {
   display: flex;
   justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: 20px;
 }
-.lay{
+
+.lay {
   margin-top: 25px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  main.table {
+    margin-left: 20px;
+    margin-top: 80px;
+    padding: 24px;
+  }
+  
+  .form {
+    max-width: 100%;
+    padding: 24px;
+  }
+  
+  .title {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+  
+  main.table {
+    margin-left: 10px;
+    margin-top: 70px;
+    padding: 16px;
+  }
+  
+  .form {
+    padding: 20px;
+  }
 }

@@ -21,24 +21,66 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <title>Company Information</title>
     <link rel="stylesheet" href="/vmi/css/theme.css">
+    
+    <style>
+        /* Page Header Enhancement */
+        .page-header {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+            text-align: center;
+        }
+        
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0 0 8px 0;
+        }
+        
+        .page-header p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        
+        /* Select label styling */
+        .select-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+    </style>
 </head>
 <body>
     <main class="table">
     <?php include('../top_menu.php'); ?>
+        
+        <div class="page-header">
+            <h1>User Invitation</h1>
+            <p>Send invitations to new users to join your organization</p>
+        </div>
+        
         <div class="log">
             <form class="form" id="inviteForm">
-                <p class="title">Register</p>
-                <p class="message">Enter email to send an invitation.</p>
+                <p class="title">Register New User</p>
+                <p class="message">Enter the email address and access level for the new user</p>
+                
                 <label>
                     <input required="" placeholder="" type="email" class="input" name="email" id="email" autocomplete="off">
-                    <span>Email</span>
+                    <span>Email Address</span>
                 </label>
-                <label>
+                
+                <div>
+                    <label class="select-label">Access Level</label>
                     <select name="level" id="level">
                         <option value="2">User</option>
                         <option value="1">Admin</option>
-                    </select>                   
-                </label>
+                    </select>
+                </div>
+                
                 <button class="submit" id="send_invite">Send Invitation</button>
                 <div id="loading" style="display: none;">Sending invitation...</div>
             </form>
