@@ -17,22 +17,33 @@
     <link rel="stylesheet" href="../menu.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="/vmi/css/theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         /* Page Header Enhancement */
         .page-title {
             margin-bottom: 30px !important;
-            padding-bottom: 20px !important;
-            border-bottom: 2px solid var(--border-color) !important;
+            padding: 24px 32px !important;
+            background-color: var(--bg-card) !important;
+            border-radius: 12px !important;
+            border-bottom: 3px solid var(--accent-primary) !important;
+            box-shadow: 0 2px 4px var(--shadow-sm) !important;
         }
         
         .page-title h1 {
             font-size: 32px !important;
-            font-weight: 600 !important;
+            font-weight: 700 !important;
             color: var(--text-primary) !important;
             margin: 0 0 8px 0 !important;
             background: none !important;
             -webkit-text-fill-color: initial !important;
+        }
+        
+        .page-title h1 i {
+            color: var(--accent-primary);
+            margin-right: 12px;
+            font-size: 28px;
+            vertical-align: middle;
         }
         
         .page-title p {
@@ -40,27 +51,88 @@
             color: var(--text-secondary);
             margin: 0;
         }
+        
+        /* Form Header Icons */
+        .form-header i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        /* Form Input Icons */
+        .form-input-wrapper {
+            position: relative;
+        }
+        
+        .form-input-wrapper i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 16px;
+            pointer-events: none;
+            z-index: 2;
+            transition: color 0.2s ease;
+        }
+        
+        .form-input-wrapper .form-input,
+        .form-input-wrapper .form-select {
+            padding-left: 48px;
+        }
+        
+        .form-input-wrapper:focus-within i {
+            color: var(--accent-primary);
+        }
+        
+        /* Button Icons */
+        .form-button i {
+            margin-right: 8px;
+            font-size: 14px;
+        }
+        
+        /* File Input Icon */
+        .file-input-wrapper {
+            position: relative;
+        }
+        
+        .file-input-wrapper > i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-primary);
+            font-size: 16px;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        .file-input-wrapper .file-input-label {
+            padding-left: 48px;
+        }
     </style>
 </head>
 <body>
     <?php include('../top_menu.php'); ?>
     <main class="table">
         <div class="page-title">
-            <h1>Strapping Charts</h1>
+            <h1><i class="fas fa-chart-line"></i> Strapping Charts</h1>
             <p>Create and manage tank strapping charts for accurate volume measurements</p>
         </div>
         <div class="top-config">
             <!-- New Strapping Chart Form -->
             <div class="form-card">
                 <form action="new_chart" method="post">
-                    <div class="form-header">New Strapping Chart</div>
+                    <div class="form-header"><i class="fas fa-plus-circle"></i> New Strapping Chart</div>
                     <div class="form-body">
                         <div class="form-row">
                             <label class="form-label">Number of points:</label>
                             <div class="form-field">
-                                <input class="form-input" type="number" name="chart" id="chart" placeholder="Enter number of points (max 40)" min="1" max="40" required>
+                                <div class="form-input-wrapper">
+                                    <i class="fas fa-hashtag"></i>
+                                    <input class="form-input" type="number" name="chart" id="chart" placeholder="Enter number of points (max 40)" min="1" max="40" required>
+                                </div>
                                 <input type="hidden" name="companyId" value="<?php echo htmlspecialchars($companyId); ?>">
-                                <button type="submit" class="form-button">Create Chart</button>
+                                <button type="submit" class="form-button"><i class="fas fa-plus"></i> Create Chart</button>
                             </div>
                         </div>
                     </div>
@@ -70,18 +142,19 @@
             <!-- New Strapping Chart (CSV) Form -->
             <div class="form-card">
                 <form action="new_chart2.php" method="post" enctype="multipart/form-data">
-                    <div class="form-header">New Strapping Chart (CSV)</div>
+                    <div class="form-header"><i class="fas fa-file-csv"></i> New Strapping Chart (CSV)</div>
                     <div class="form-body">
                         <div class="form-row">
                             <label class="form-label">CSV File:</label>
                             <div class="form-field">
                                 <div class="file-input-wrapper tooltip">
                                     <span class="tooltiptext">The file name will be used as the strapping chart name (max 12 chars, max 40 rows)</span>
+                                    <i class="fas fa-file-upload"></i>
                                     <input type="file" name="csv_file" accept=".csv" class="file-input" required>
                                     <label class="file-input-label">Choose CSV file...</label>
                                 </div>
                                 <input type="hidden" name="companyId" value="<?php echo htmlspecialchars($companyId); ?>">
-                                <button type="submit" class="form-button">Create Chart</button>
+                                <button type="submit" class="form-button"><i class="fas fa-upload"></i> Create Chart</button>
                             </div>
                         </div>
                     </div>
@@ -91,7 +164,7 @@
             <!-- Edit Strapping Chart Form -->
             <div class="form-card">
                 <form action="upd-chart" method="post">
-                    <div class="form-header">Edit Strapping Chart</div>
+                    <div class="form-header"><i class="fas fa-edit"></i> Edit Strapping Chart</div>
                     <div class="form-body">
                         <div class="form-row">
                             <label class="form-label">Chart Name:</label>
@@ -113,23 +186,26 @@
                                     $resulttest = $conn->query($groupname);
                                     if ($resulttest->num_rows > 0) {
                                         ?>
-                                        <select name="upd" id="upd" class="form-select" required>
-                                            <option value="">Select a chart to edit...</option>
-                                            <?php
-                                            while ($row = $resulttest->fetch_assoc()) {
-                                                $groupid = $row["group_id"];
-                                                $group_name = $row['chart_name'];
-                                                ?>
-                                                <option value="<?php echo $groupid; ?>"><?php echo $group_name; ?></option>
+                                        <div class="form-input-wrapper">
+                                            <i class="fas fa-list"></i>
+                                            <select name="upd" id="upd" class="form-select" required>
+                                                <option value="">Select a chart to edit...</option>
                                                 <?php
-                                            }
-                                            ?>
-                                        </select>
+                                                while ($row = $resulttest->fetch_assoc()) {
+                                                    $groupid = $row["group_id"];
+                                                    $group_name = $row['chart_name'];
+                                                    ?>
+                                                    <option value="<?php echo $groupid; ?>"><?php echo $group_name; ?></option>
+                                                    <?php
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
                                         <?php
                                     }
                                 ?>
                                 <input type="hidden" name="companyId" value="<?php echo htmlspecialchars($companyId); ?>">
-                                <button type="submit" class="form-button">Update Chart</button>
+                                <button type="submit" class="form-button"><i class="fas fa-save"></i> Update Chart</button>
                             </div>
                         </div>
                     </div>

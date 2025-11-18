@@ -23,11 +23,95 @@
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../menu.css">
     <link rel="stylesheet" href="/vmi/css/theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
+        /* Page Header */
+        .page-header {
+            margin-bottom: 30px;
+            padding: 24px 32px;
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            border-bottom: 3px solid var(--accent-primary);
+            box-shadow: 0 2px 4px var(--shadow-sm);
+            text-align: center;
+        }
+        
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0 0 8px 0;
+            letter-spacing: -0.5px;
+        }
+        
+        .page-header h1 i {
+            color: var(--accent-primary);
+            margin-right: 12px;
+            font-size: 28px;
+            vertical-align: middle;
+        }
+        
+        .page-header p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        
+        /* Icon Styling */
+        .icon-wrapper {
+            position: relative;
+        }
+        
+        .icon-wrapper i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 16px;
+            pointer-events: none;
+            z-index: 2;
+            transition: color 0.2s ease;
+        }
+        
+        .icon-wrapper input,
+        .icon-wrapper select {
+            padding-left: 40px;
+        }
+        
+        .icon-wrapper:focus-within i {
+            color: var(--accent-primary);
+        }
+        
+        /* Button Icons */
+        .btn-primary i,
+        input[type="submit"] i {
+            margin-right: 8px;
+            font-size: 14px;
+        }
+        
+        /* Card Header Icons */
+        .form-header i,
+        .card-header i {
+            margin-right: 8px;
+            color: var(--accent-primary);
+        }
+        
+        /* Stats Info Icon */
+        .stats-info i {
+            margin-right: 8px;
+            color: var(--accent-primary);
+        }
+        
+        /* Loading Spinner */
+        .spinner i {
+            color: var(--accent-primary);
+        }
+        
         /* Modern styling for DataTables with theme support */
         #sitesTable_wrapper {
             padding: 0;
@@ -47,6 +131,11 @@
             text-align: left;
             font-weight: 600;
             border: none;
+        }
+        
+        #sitesTable thead th i {
+            margin-right: 6px;
+            opacity: 0.9;
         }
         
         #sitesTable tbody td {
@@ -188,19 +277,26 @@
 
     <main class="table">
     <?php include('../top_menu.php');?>
+        <div class="page-header">
+            <h1><i class="fas fa-layer-group"></i> Site Groups</h1>
+            <p>Create and manage groups of sites for easier organization and reporting</p>
+        </div>
+        
         <div class="dashboard-content">
             <div class="dashboard-main-content">
                 <div class="container-default w-container" style="text-align: -webkit-center;">
                     <!-- Create New Group Section -->
                     <div class="mg-bottom-16px" style="max-width: 420px;">
                         <form class="small_group-details-card-grid" action="newgroup.php" method="post">
-                            <div id="w-node-_9745c905-0e47-203d-ac6e-d1bee1ec357d-e1ec357d" class="card_group top-details">
+                            <div id="w-node-_9745c905-0e47-203d-ac6e-d1bee1ec357d-e1ec357d" class="card_group top-details icon-wrapper">
+                                <i class="fas fa-tag"></i>
                                 <input class="input top-details" type="text" name="groupname" id="groupname" placeholder="Enter group name" required>
                             </div>
                             <div class="">
                                 <input type="hidden" name="companyId" value="<?php echo htmlspecialchars($companyId); ?>">
-                                <input type="submit" value="Create Group"
-                                    style="font-weight: bold; font-size: 24px; color:white; background-color: #002F60;border-radius: 4px;cursor: pointer;padding: 5px 10px;border: none;">
+                                <button type="submit" style="font-weight: bold; font-size: 24px; color:white; background-color: var(--accent-primary);border-radius: 8px;cursor: pointer;padding: 12px 24px;border: none; transition: all 0.2s ease; box-shadow: 0 2px 4px var(--shadow-sm);" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px var(--shadow-sm)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px var(--shadow-sm)'">
+                                    <i class="fas fa-plus-circle"></i> Create Group
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -219,16 +315,19 @@
                                         if($stmt->num_rows > 0) {
                                             $stmt->bind_result($group_id, $group_name);
                                     ?>
-                                            <div class="text-300 medium color-neutral-100">Edit your Group</div>
+                                            <div class="text-300 medium color-neutral-100"><i class="fas fa-edit"></i> Edit your Group</div>
                                             <div class="_2-items-wrap-container gap-12px">
-                                                <select id="groupDropdown" name="selected_group" class="small-dropdown-link w-dropdown-link" style="font-size: 14px; padding: 8px;">
-                                                    <option value="">Select Group</option>
-                                                    <?php
-                                                    while ($stmt->fetch()) {
-                                                        echo '<option value="' . $group_id . '">' . htmlspecialchars($group_name) . '</option>';
-                                                    }
-                                                    ?>
-                                                </select>
+                                                <div class="icon-wrapper" style="flex: 1;">
+                                                    <i class="fas fa-list"></i>
+                                                    <select id="groupDropdown" name="selected_group" class="small-dropdown-link w-dropdown-link" style="font-size: 14px; padding: 8px;">
+                                                        <option value="">Select Group</option>
+                                                        <?php
+                                                        while ($stmt->fetch()) {
+                                                            echo '<option value="' . $group_id . '">' . htmlspecialchars($group_name) . '</option>';
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
                                             </div>                                   
                                     <?php                                  
                                         } else {
@@ -245,7 +344,7 @@
                                         <input type="hidden" name="company_id" value="<?php echo htmlspecialchars($companyId); ?>">
                                         
                                         <div class="stats-info" id="statsInfo" style="display:none;">
-                                            <strong>Selected:</strong> <span id="selectedCount">0</span> sites
+                                            <i class="fas fa-check-circle"></i> <strong>Selected:</strong> <span id="selectedCount">0</span> sites
                                         </div>
                                         
                                         <table id="sitesTable" class="display" style="width:100%">
@@ -254,17 +353,19 @@
                                                     <th width="50">
                                                         <input type="checkbox" id="selectAll" class="dt-checkboxes">
                                                     </th>
-                                                    <th>Site Number</th>
-                                                    <th>Company Name</th>
-                                                    <th>Site Name</th>
+                                                    <th><i class="fas fa-hashtag"></i> Site Number</th>
+                                                    <th><i class="fas fa-building"></i> Company Name</th>
+                                                    <th><i class="fas fa-map-marker-alt"></i> Site Name</th>
                                                 </tr>
                                             </thead>
                                         </table>
                                         
                                         <div class="btn-container">
-                                            <input type="submit" name="submit" value="Update Group" class="btn-primary small w-inline-block" style="cursor:pointer; margin:0;">
+                                            <button type="submit" name="submit" class="btn-primary small w-inline-block" style="cursor:pointer; margin:0;">
+                                                <i class="fas fa-save"></i> Update Group
+                                            </button>
                                             <button type="button" id="clearSelection" class="btn-primary small w-inline-block" style="cursor:pointer; background-color: #6b7280; margin:0;">
-                                                Clear Selection
+                                                <i class="fas fa-times"></i> Clear Selection
                                             </button>
                                         </div>
                                     </form>
