@@ -280,10 +280,8 @@
                         orderable: false,
                         className: 'dt-body-center',
                         render: function(data, type, row) {
-                            const isChecked = selectedSites.has(row.site_id) || row.is_checked == 1;
-                            if (isChecked && !selectedSites.has(row.site_id)) {
-                                selectedSites.add(row.site_id);
-                            }
+                            // Check if site is in the selectedSites Set
+                            const isChecked = selectedSites.has(row.site_id);
                             return '<input type="checkbox" class="dt-checkboxes site-checkbox" ' +
                                    'data-siteid="' + row.site_id + '" ' +
                                    'data-sitename="' + row.site_name + '" ' +
@@ -331,12 +329,41 @@
             if (currentGroupId) {
                 $('#loadingOverlay').addClass('active');
                 selectedSites.clear(); // Clear previous selections
-                initializeDataTable(parseInt(currentGroupId));
-                $('#statsInfo').show();
                 
-                // Hide loading after table is drawn
-                sitesTable.one('draw', function() {
-                    $('#loadingOverlay').removeClass('active');
+                // Fetch ALL sites in the selected group to pre-populate selectedSites
+                $.ajax({
+                    url: 'fetch_data.php',
+                    type: 'POST',
+                    data: { 
+                        groupId: currentGroupId, 
+                        companyId: companyId 
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        // Pre-populate selectedSites with all sites in the group
+                        $.each(data, function(index, item) {
+                            selectedSites.add(item.siteId);
+                        });
+                        
+                        // Now initialize the table with pre-populated selections
+                        initializeDataTable(parseInt(currentGroupId));
+                        $('#statsInfo').show();
+                        updateSelectedCount();
+                        
+                        // Hide loading after table is drawn
+                        sitesTable.one('draw', function() {
+                            $('#loadingOverlay').removeClass('active');
+                        });
+                    },
+                    error: function(xhr, error, code) {
+                        console.error('Error fetching group data:', error);
+                        // Still initialize table even if fetch fails
+                        initializeDataTable(parseInt(currentGroupId));
+                        $('#statsInfo').show();
+                        sitesTable.one('draw', function() {
+                            $('#loadingOverlay').removeClass('active');
+                        });
+                    }
                 });
             } else {
                 selectedSites.clear();
