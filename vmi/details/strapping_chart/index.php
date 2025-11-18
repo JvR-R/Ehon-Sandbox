@@ -17,12 +17,37 @@
     <link rel="stylesheet" href="../menu.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="/vmi/css/theme.css">
+    
+    <style>
+        /* Page Header Enhancement */
+        .page-title {
+            margin-bottom: 30px !important;
+            padding-bottom: 20px !important;
+            border-bottom: 2px solid var(--border-color) !important;
+        }
+        
+        .page-title h1 {
+            font-size: 32px !important;
+            font-weight: 600 !important;
+            color: var(--text-primary) !important;
+            margin: 0 0 8px 0 !important;
+            background: none !important;
+            -webkit-text-fill-color: initial !important;
+        }
+        
+        .page-title p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+    </style>
 </head>
 <body>
     <?php include('../top_menu.php'); ?>
     <main class="table">
         <div class="page-title">
             <h1>Strapping Charts</h1>
+            <p>Create and manage tank strapping charts for accurate volume measurements</p>
         </div>
         <div class="top-config">
             <!-- New Strapping Chart Form -->
