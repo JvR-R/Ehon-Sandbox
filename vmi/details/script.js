@@ -178,12 +178,32 @@ document.addEventListener('DOMContentLoaded', function() {
     // Only run if the table exists and jQuery/DataTables have loaded
     if (typeof $ !== 'undefined' && $.fn && $.fn.DataTable && $('#users').length) {
 
+        // Detect if Company column exists (check table headers)
+        const $headers = $('#users thead th');
+        let roleColumnIndex = 3; // Default (User, Name, Surname, Role)
+        let hasCompanyColumn = false;
+        
+        $headers.each(function(index) {
+            if ($(this).text().trim() === 'Company') {
+                hasCompanyColumn = true;
+                roleColumnIndex = 4; // Role is after Company
+                return false; // break
+            }
+        });
+
         // Initialise or reuse existing DataTable instance
         const usersTable = $.fn.DataTable.isDataTable('#users')
             ? $('#users').DataTable()
             : $('#users').DataTable({
                 dom: 'lrtip',
-                order: [[0,'asc']]
+                order: [[0,'asc']],
+                pageLength: 25,
+                language: {
+                    lengthMenu: 'Show _MENU_ users per page',
+                    info: 'Showing _START_ to _END_ of _TOTAL_ users',
+                    infoEmpty: 'No users found',
+                    infoFiltered: '(filtered from _MAX_ total)'
+                }
             });
 
         // Text search (idempotent bindings)
@@ -198,8 +218,32 @@ document.addEventListener('DOMContentLoaded', function() {
             .off('change.vmiUserFilters')
             .on('change.vmiUserFilters', function () {
                 const val = this.value;
-                usersTable.column(3).search(val ? '^'+val+'$' : '', true, false).draw();
+                usersTable.column(roleColumnIndex).search(val ? '^'+val+'$' : '', true, false).draw();
             });
+
+        // Company filter (only if company column exists)
+        if (hasCompanyColumn && $('#companyFilter').length) {
+            // Custom search function for company filtering
+            let currentCompanyFilter = '';
+            
+            $.fn.dataTable.ext.search.push(
+                function(settings, data, dataIndex) {
+                    if (!currentCompanyFilter || settings.nTable.id !== 'users') {
+                        return true;
+                    }
+                    const row = usersTable.row(dataIndex).node();
+                    const rowCompanyId = $(row).attr('data-company-id');
+                    return rowCompanyId == currentCompanyFilter;
+                }
+            );
+            
+            $('#companyFilter')
+                .off('change.vmiUserFilters')
+                .on('change.vmiUserFilters', function() {
+                    currentCompanyFilter = this.value;
+                    usersTable.draw();
+                });
+        }
 
         /* Check if user has admin permissions and disable submit buttons if not */
         const isAdmin = typeof ADMIN_LEVELS !== 'undefined' && 

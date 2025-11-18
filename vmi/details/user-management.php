@@ -106,6 +106,12 @@
             color: var(--text-secondary);
         }
         
+        /* Company Filter - Monospace for hierarchy visualization */
+        #companyFilter {
+            font-family: 'Courier New', monospace;
+            min-width: 250px;
+        }
+        
         /* Table Container */
         .table_cust {
             background-color: var(--bg-card);
@@ -328,7 +334,7 @@
 </head>
 
 <body>
-<main class="table" style="height: 93%; left: 7rem;">
+<main class="table" style="height: 93%; left: 11rem;">
 
 <?php include('top_menu.php'); ?>
 
@@ -347,6 +353,63 @@
         <option value="User">User</option>
         <option value="Petro">Petro</option>
     </select>
+    <select id="companyFilter">
+        <option value="">All Companies</option>
+        <?php
+        // Build hierarchical company list based on access level
+        if ($companyId == 15100) {
+            // Owner sees all companies
+            $compSql = "SELECT DISTINCT c.client_id, c.client_name, c.reseller_id, c.Dist_id 
+                        FROM Clients c 
+                        ORDER BY 
+                            CASE 
+                                WHEN c.Dist_id IS NULL AND c.reseller_id IS NULL THEN 1
+                                WHEN c.reseller_id IS NULL THEN 2
+                                ELSE 3
+                            END,
+                            c.client_name";
+        } else {
+            // Get current company's role in hierarchy
+            $roleCheck = $conn->query("SELECT Dist_id, reseller_id FROM Clients WHERE client_id = $companyId");
+            $roleRow = $roleCheck->fetch_assoc();
+            
+            if ($roleRow && $roleRow['Dist_id'] === null && $roleRow['reseller_id'] === null) {
+                // This is a distributor - show all under them
+                $compSql = "SELECT DISTINCT c.client_id, c.client_name 
+                            FROM Clients c 
+                            WHERE c.Dist_id = $companyId OR c.client_id = $companyId
+                            ORDER BY c.client_name";
+            } elseif ($roleRow && $roleRow['reseller_id'] === null) {
+                // This is a reseller - show all under them
+                $compSql = "SELECT DISTINCT c.client_id, c.client_name 
+                            FROM Clients c 
+                            WHERE c.reseller_id = $companyId OR c.client_id = $companyId
+                            ORDER BY c.client_name";
+            } else {
+                // Regular client - only show themselves
+                $compSql = "SELECT client_id, client_name FROM Clients WHERE client_id = $companyId";
+            }
+        }
+        
+        $compResult = $conn->query($compSql);
+        if ($compResult && $compResult->num_rows > 0) {
+            while ($comp = $compResult->fetch_assoc()) {
+                $prefix = '';
+                if ($companyId == 15100) {
+                    // Add visual hierarchy for owner view
+                    if ($comp['Dist_id'] === null && $comp['reseller_id'] === null) {
+                        $prefix = '🏢 '; // Distributor
+                    } elseif ($comp['reseller_id'] === null) {
+                        $prefix = '  └ 📦 '; // Reseller
+                    } else {
+                        $prefix = '    └ 🏪 '; // Client
+                    }
+                }
+                echo '<option value="' . $comp['client_id'] . '">' . $prefix . htmlspecialchars($comp['client_name']) . '</option>';
+            }
+        }
+        ?>
+    </select>
 </div>
 
 <div class="table_cust">
@@ -356,6 +419,9 @@
         <th>User</th>
         <th>Name</th>
         <th>Surname</th>
+        <?php if ($companyId == 15100 || isset($roleRow)) { ?>
+        <th>Company</th>
+        <?php } ?>
         <th>Role</th>
         <th>Last Login</th>
         <th>Edit User</th>
@@ -365,11 +431,48 @@
 <tbody>
 <?php
     /* -------------------------------------------------
-       pull users for this company (except deleted 999)
+       Pull users based on hierarchical access
+       15100 (Owner) -> Distributor -> Reseller -> Client
     --------------------------------------------------*/
-    $sql = ($companyId == 15100)
-         ? "SELECT * FROM login WHERE access_level != 999"
-         : "SELECT * FROM login WHERE client_id = $companyId AND access_level != 999";
+    if ($companyId == 15100) {
+        // Owner sees ALL users globally
+        $sql = "SELECT l.*, c.client_name, c.Dist_id, c.reseller_id 
+                FROM login l 
+                LEFT JOIN Clients c ON l.client_id = c.client_id 
+                WHERE l.access_level != 999 
+                ORDER BY c.client_name, l.username";
+    } else {
+        // Check the company's position in the hierarchy
+        $roleCheck = $conn->query("SELECT Dist_id, reseller_id FROM Clients WHERE client_id = $companyId");
+        $roleRow = $roleCheck->fetch_assoc();
+        
+        if ($roleRow && $roleRow['Dist_id'] === null && $roleRow['reseller_id'] === null) {
+            // This is a Distributor - see all users under their resellers and clients
+            $sql = "SELECT l.*, c.client_name, c.Dist_id, c.reseller_id 
+                    FROM login l 
+                    LEFT JOIN Clients c ON l.client_id = c.client_id 
+                    WHERE (c.Dist_id = $companyId OR l.client_id = $companyId) 
+                    AND l.access_level != 999 
+                    ORDER BY c.client_name, l.username";
+        } elseif ($roleRow && $roleRow['reseller_id'] === null) {
+            // This is a Reseller - see all users under their clients
+            $sql = "SELECT l.*, c.client_name, c.Dist_id, c.reseller_id 
+                    FROM login l 
+                    LEFT JOIN Clients c ON l.client_id = c.client_id 
+                    WHERE (c.reseller_id = $companyId OR l.client_id = $companyId) 
+                    AND l.access_level != 999 
+                    ORDER BY c.client_name, l.username";
+        } else {
+            // Regular Client - only see their own users
+            $sql = "SELECT l.*, c.client_name, c.Dist_id, c.reseller_id 
+                    FROM login l 
+                    LEFT JOIN Clients c ON l.client_id = c.client_id 
+                    WHERE l.client_id = $companyId 
+                    AND l.access_level != 999 
+                    ORDER BY l.username";
+        }
+    }
+    
     $result = $conn->query($sql);
 
     /* map each level to its paired level (Admin ↔ User) */
@@ -382,10 +485,16 @@
     if ($result && $result->num_rows) {
         while ($row = $result->fetch_assoc()) {
 
-            echo "<tr>";
+            echo "<tr data-company-id='{$row['client_id']}'>";
             echo "<td>{$row['username']}</td>";
             echo "<td>{$row['name']}</td>";
             echo "<td>{$row['last_name']}</td>";
+            
+            /* Company column (for hierarchical views) */
+            if ($companyId == 15100 || isset($roleRow)) {
+                $companyName = isset($row['client_name']) ? $row['client_name'] : 'N/A';
+                echo "<td>" . htmlspecialchars($companyName) . "</td>";
+            }
 
             /* role column */
             if (in_array($row['access_level'], ['4','6','8'])) {
@@ -403,6 +512,23 @@
                 echo "<td></td><td></td></tr>";
                 continue;
             }
+            
+            /* Check if current user can edit this user (prevent editing higher hierarchy) */
+            $canEdit = true;
+            if ($companyId != 15100 && $row['client_id'] != $companyId) {
+                // Only allow editing if this user is under the current company's hierarchy
+                if (isset($roleRow)) {
+                    if ($roleRow['Dist_id'] === null && $roleRow['reseller_id'] === null) {
+                        // Distributor can edit resellers/clients under them
+                        $canEdit = ($row['Dist_id'] == $companyId);
+                    } elseif ($roleRow['reseller_id'] === null) {
+                        // Reseller can edit clients under them
+                        $canEdit = ($row['reseller_id'] == $companyId);
+                    } else {
+                        $canEdit = false;
+                    }
+                }
+            }
 
             /* build list with current level + its pair */
             $allowed = [$row['access_level']];
@@ -411,6 +537,7 @@
             }
 ?>
 <td>
+<?php if ($canEdit) { ?>
     <form action="user_update.php" method="post">
         <select name="edit_user" id="edit_user">
 <?php
@@ -427,11 +554,15 @@
 </td>
 <td><button class="submit_delete" type="submit">Submit</button></td>
     </form>
+<?php } else { ?>
+        <td colspan="2" style="text-align: center; color: var(--text-secondary);">Read Only</td>
+<?php } ?>
 </tr>
 <?php
         } // while
     } else {
-        echo "<tr><td colspan='7'>0 results</td></tr>";
+        $colspan = ($companyId == 15100 || isset($roleRow)) ? '8' : '7';
+        echo "<tr><td colspan='$colspan'>0 results</td></tr>";
     }
 ?>
 </tbody>
