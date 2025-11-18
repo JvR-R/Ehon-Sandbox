@@ -26,6 +26,14 @@ main.table {
   border-start-start-radius: .8rem;
   overflow-x: hidden;
 }
+
+/* Responsive adjustments for main.table */
+@media (min-width: 1081px) {
+  main.table {
+    left: 11rem;
+    width: calc(100% - 11rem);
+  }
+}
 .top-config{
   width: 100%;
   height: 80%;
