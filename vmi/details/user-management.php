@@ -334,7 +334,7 @@
 </head>
 
 <body>
-<main class="table" style="height: 93%; left: 11rem;">
+<main class="table">
 
 <?php include('top_menu.php'); ?>
 
