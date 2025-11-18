@@ -177,7 +177,15 @@ include(BORDER_PATH);
               <th>Tank Number</th>
               <th>4um</th>     
               <th>6um</th>   
-              <th>14um</th>           
+              <th>14um</th>
+              <th>Bubbles</th>
+              <th>Cutting</th>
+              <th>Sliding</th>
+              <th>Fatigue</th>
+              <th>Fibre</th>
+              <th>Air</th>
+              <th>Unknown</th>
+              <th>Temp</th>           
               <th style="border-top-right-radius: 0.5rem;">ISO</th>
             </tr>
           </thead>

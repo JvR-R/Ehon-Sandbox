@@ -29,7 +29,7 @@ $sheet = $spreadsheet->getActiveSheet();
 $filters = isset($_GET['filters']) ? $_GET['filters'] : array();
 
 // Construct the SQL query with filters
-$sql = "SELECT fq.uid, fq.fq_date, fq.fq_time, st.site_name, fq.tank_id, fq.particle_4um, fq.particle_6um, fq.particle_14um FROM fuel_quality fq JOIN Sites st on st.uid=fq.uid";
+$sql = "SELECT fq.uid, fq.fq_date, fq.fq_time, st.site_name, fq.tank_id, fq.particle_4um, fq.particle_6um, fq.particle_14um, fq.fq_bubbles, fq.fq_cutting, fq.fq_sliding, fq.fq_fatigue, fq.fq_fibre, fq.fq_air, fq.fq_unknown, fq.fq_temp FROM fuel_quality fq JOIN Sites st on st.uid=fq.uid";
 
 // Apply filters
 if (!empty($filters)) {
@@ -99,9 +99,17 @@ $sheet->setCellValue('E1', 'Tank ID');
 $sheet->setCellValue('F1', '4um Particles');
 $sheet->setCellValue('G1', '6um Particles');
 $sheet->setCellValue('H1', '14um Particles');
-$sheet->setCellValue('I1', 'Concatenated Particles');
+$sheet->setCellValue('I1', 'Bubbles');
+$sheet->setCellValue('J1', 'Cutting');
+$sheet->setCellValue('K1', 'Sliding');
+$sheet->setCellValue('L1', 'Fatigue');
+$sheet->setCellValue('M1', 'Fibre');
+$sheet->setCellValue('N1', 'Air');
+$sheet->setCellValue('O1', 'Unknown');
+$sheet->setCellValue('P1', 'Temp');
+$sheet->setCellValue('Q1', 'Concatenated Particles');
 
-$sheet->getStyle('A1:I1')->applyFromArray($headerStyle);
+$sheet->getStyle('A1:Q1')->applyFromArray($headerStyle);
 
 // Populate the sheet with data
 $row = 2;
@@ -116,12 +124,20 @@ if ($result->num_rows > 0) {
         $sheet->setCellValue('F' . $row, $row_data['particle_4um']);
         $sheet->setCellValue('G' . $row, $row_data['particle_6um']);
         $sheet->setCellValue('H' . $row, $row_data['particle_14um']);
-        $sheet->setCellValue('I' . $row, $concatenatedParticles);
+        $sheet->setCellValue('I' . $row, $row_data['fq_bubbles']);
+        $sheet->setCellValue('J' . $row, $row_data['fq_cutting']);
+        $sheet->setCellValue('K' . $row, $row_data['fq_sliding']);
+        $sheet->setCellValue('L' . $row, $row_data['fq_fatigue']);
+        $sheet->setCellValue('M' . $row, $row_data['fq_fibre']);
+        $sheet->setCellValue('N' . $row, $row_data['fq_air']);
+        $sheet->setCellValue('O' . $row, $row_data['fq_unknown']);
+        $sheet->setCellValue('P' . $row, $row_data['fq_temp']);
+        $sheet->setCellValue('Q' . $row, $concatenatedParticles);
         $row++;
     }
 }
-$sheet->getStyle('A1:I' . $row)->applyFromArray($borderStyle);
-$columns = range('A', 'I');
+$sheet->getStyle('A1:Q' . $row)->applyFromArray($borderStyle);
+$columns = range('A', 'Q');
 foreach ($columns as $column) {
     $sheet->getColumnDimension($column)->setAutoSize(true);
 }

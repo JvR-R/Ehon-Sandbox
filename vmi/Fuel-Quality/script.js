@@ -37,6 +37,14 @@ $(document).ready(function () {
                   transaction.particle_4um,
                   transaction.particle_6um,
                   transaction.particle_14um,
+                  transaction.fq_bubbles,
+                  transaction.fq_cutting,
+                  transaction.fq_sliding,
+                  transaction.fq_fatigue,
+                  transaction.fq_fibre,
+                  transaction.fq_air,
+                  transaction.fq_unknown,
+                  transaction.fq_temp,
                   concatenatedParticles
               ]);
           });

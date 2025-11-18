@@ -19,7 +19,7 @@ ini_set('memory_limit', '256M');
 $filters = isset($_GET['filters']) ? $_GET['filters'] : array();
 
 // Construct the SQL query with filters
-$sql = "SELECT fq.uid, fq.fq_date, fq.fq_time, st.site_name, fq.tank_id, fq.particle_4um, fq.particle_6um, fq.particle_14um FROM fuel_quality fq JOIN Sites st on st.uid=fq.uid";
+$sql = "SELECT fq.uid, fq.fq_date, fq.fq_time, st.site_name, fq.tank_id, fq.particle_4um, fq.particle_6um, fq.particle_14um, fq.fq_bubbles, fq.fq_cutting, fq.fq_sliding, fq.fq_fatigue, fq.fq_fibre, fq.fq_air, fq.fq_unknown, fq.fq_temp FROM fuel_quality fq JOIN Sites st on st.uid=fq.uid";
 
 // Apply filters
 if (!empty($filters)) {
@@ -66,6 +66,14 @@ $csvHeader = [
     '4um Particles',
     '6um Particles',
     '14um Particles',
+    'Bubbles',
+    'Cutting',
+    'Sliding',
+    'Fatigue',
+    'Fibre',
+    'Air',
+    'Unknown',
+    'Temp',
     'Concatenated Particles'
 ];
 
@@ -89,6 +97,14 @@ if ($result->num_rows > 0) {
             $row_data['particle_4um'],
             $row_data['particle_6um'],
             $row_data['particle_14um'],
+            $row_data['fq_bubbles'],
+            $row_data['fq_cutting'],
+            $row_data['fq_sliding'],
+            $row_data['fq_fatigue'],
+            $row_data['fq_fibre'],
+            $row_data['fq_air'],
+            $row_data['fq_unknown'],
+            $row_data['fq_temp'],
             $concatenatedParticles
         ];
         fputcsv($csvFile, $csvRow);

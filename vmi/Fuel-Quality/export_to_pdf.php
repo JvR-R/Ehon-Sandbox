@@ -23,7 +23,7 @@ $pdf->SetFont('helvetica', '', 10);
 $filters = isset($_GET['filters']) ? $_GET['filters'] : array();
 
 // Construct the SQL query with filters
-$sql = "SELECT fq.uid, fq.fq_date, fq.fq_time, st.site_name, fq.tank_id, fq.particle_4um, fq.particle_6um, fq.particle_14um FROM fuel_quality fq JOIN Sites st on st.uid=fq.uid";
+$sql = "SELECT fq.uid, fq.fq_date, fq.fq_time, st.site_name, fq.tank_id, fq.particle_4um, fq.particle_6um, fq.particle_14um, fq.fq_bubbles, fq.fq_cutting, fq.fq_sliding, fq.fq_fatigue, fq.fq_fibre, fq.fq_air, fq.fq_unknown, fq.fq_temp FROM fuel_quality fq JOIN Sites st on st.uid=fq.uid";
 $conditions = array();
 
 if (!empty($filters)) {
@@ -67,6 +67,14 @@ $header = [
     '4um Particles' => 'particle_4um',
     '6um Particles' => 'particle_6um',
     '14um Particles' => 'particle_14um',
+    'Bubbles' => 'fq_bubbles',
+    'Cutting' => 'fq_cutting',
+    'Sliding' => 'fq_sliding',
+    'Fatigue' => 'fq_fatigue',
+    'Fibre' => 'fq_fibre',
+    'Air' => 'fq_air',
+    'Unknown' => 'fq_unknown',
+    'Temp' => 'fq_temp',
     'Concatenated Particles' => 'concatenated_particles'
 ];
 

@@ -23,7 +23,7 @@ $offset = ($page - 1) * $perPage;
 $filters = isset($_GET['filters']) ? $_GET['filters'] : array();
 
 // Construct the SQL query with filters
-$sql = "SELECT fq.uid, fq.fq_date, fq.fq_time, st.site_name, fq.tank_id, fq.particle_4um, fq.particle_6um, fq.particle_14um, st.Site_name FROM fuel_quality fq JOIN Sites st on st.uid=fq.uid";
+$sql = "SELECT fq.uid, fq.fq_date, fq.fq_time, st.site_name, fq.tank_id, fq.particle_4um, fq.particle_6um, fq.particle_14um, fq.fq_bubbles, fq.fq_cutting, fq.fq_sliding, fq.fq_fatigue, fq.fq_fibre, fq.fq_air, fq.fq_unknown, fq.fq_temp, st.Site_name FROM fuel_quality fq JOIN Sites st on st.uid=fq.uid";
 
 // Apply filters
 if (!empty($filters)) {
