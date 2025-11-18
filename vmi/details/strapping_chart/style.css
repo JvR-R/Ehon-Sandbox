@@ -578,7 +578,7 @@ th img{
 }
 
 /* Enhanced Responsive Design */
-@media (min-width: 1600px) {
+@media (min-width: 1900px) {
   main.table {
     max-width: calc(100vw - 11rem);
     margin-left: 11rem;
