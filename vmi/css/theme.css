@@ -184,7 +184,11 @@
    DARK MODE TEXT OVERRIDES
    Ensure ALL text is light/readable
    ============================================ */
-[data-theme="dark"] body,
+[data-theme="dark"] body {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
 [data-theme="dark"] h1,
 [data-theme="dark"] h2,
 [data-theme="dark"] h3,
@@ -203,6 +207,51 @@
 [data-theme="dark"] textarea,
 [data-theme="dark"] select {
   color: var(--text-primary) !important;
+}
+
+/* Page wrappers and containers */
+[data-theme="dark"] .page-wrapper,
+[data-theme="dark"] .dashboard-main-section {
+  background-color: var(--bg-primary) !important;
+}
+
+[data-theme="dark"] .dashboard-content {
+  background-color: var(--bg-secondary) !important;
+}
+
+[data-theme="dark"] .dashboard-main-content {
+  background-color: var(--bg-primary) !important;
+}
+
+/* Cards and containers */
+[data-theme="dark"] .card,
+[data-theme="dark"] .card.pd-30px---36px {
+  background-color: var(--bg-card) !important;
+}
+
+/* Small dropdown lists */
+[data-theme="dark"] .small-dropdown-list {
+  color: var(--input-text) !important;
+  background-color: var(--input-bg) !important;
+  border-color: var(--input-border) !important;
+}
+
+/* Text inputs and textareas */
+[data-theme="dark"] .input,
+[data-theme="dark"] textarea.input {
+  color: var(--input-text) !important;
+  background-color: var(--input-bg) !important;
+  border-color: var(--input-border) !important;
+}
+
+/* Dividers */
+[data-theme="dark"] .divider {
+  background-color: var(--border-color) !important;
+}
+
+/* Small dots and decorative elements */
+[data-theme="dark"] .small-dot {
+  background-color: var(--accent-primary) !important;
 }
 
 /* Specific element overrides for dark mode */
