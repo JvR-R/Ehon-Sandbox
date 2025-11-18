@@ -6,10 +6,10 @@
   }
   .nav-w{
     opacity: 1;
-    color: #000;
+    color: var(--text-primary);
     -webkit-text-fill-color: inherit;
     mix-blend-mode: normal;
-    background-color: #eaeefc;
+    background-color: var(--nav-bg);
     background-clip: border-box;
     flex-wrap: nowrap;
     align-items: center;
@@ -44,37 +44,37 @@
   }
   .navigation-item{
     opacity: .6;
-  color: #000;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding-top: 9px;
-  padding-bottom: 9px;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 20px;
-  position: relative;
-  display: inline-block;
-  vertical-align: top;
-  text-decoration: none;
-  color: var(--text-primary);
-  padding: 20px;
+    color: var(--text-primary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 20px;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    text-decoration: none;
+    padding: 20px;
     padding-top: 20px;
     padding-bottom: 20px;
-  text-align: left;
-  margin-left: auto;
-  margin-right: auto;
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
   }
   .navigation-item:hover{
-    color: red;
+    color: var(--accent-danger);
+    opacity: 1;
   }
   /* Existing styles... */
   
   .dropdown-content, .lateral-dropdown, .lateral-dropdown-edit {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
+    background-color: var(--bg-card);
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px var(--shadow-md);
     z-index: 1;
 }
 
@@ -102,7 +102,7 @@
 }
 
 .navigation-item:hover {
-    background-color: #ddd;
+    background-color: var(--nav-hover);
 }
 
   .space{
