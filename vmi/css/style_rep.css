@@ -300,7 +300,7 @@ html {
   scroll-behavior: smooth;
 }
 .upload-container {
-  background: var(--bg-darker);
+  background: var(--bg-card);
   padding: 20px;
   border-radius: 8px;
   box-shadow: var(--shadow-md);
