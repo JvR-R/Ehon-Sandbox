@@ -318,7 +318,6 @@
                                             <div class="text-300 medium color-neutral-100"><i class="fas fa-edit"></i> Edit your Group</div>
                                             <div class="_2-items-wrap-container gap-12px">
                                                 <div class="icon-wrapper" style="flex: 1;">
-                                                    <i class="fas fa-list"></i>
                                                     <select id="groupDropdown" name="selected_group" class="small-dropdown-link w-dropdown-link" style="font-size: 14px; padding: 8px;">
                                                         <option value="">Select Group</option>
                                                         <?php
