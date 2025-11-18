@@ -199,7 +199,7 @@ h2 {
 
 .form label .input + span {
   position: absolute;
-  left: 16px;
+  left: 48px;
   top: -10px;
   color: var(--text-primary);
   font-size: 12px;
@@ -209,6 +209,11 @@ h2 {
   pointer-events: none;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+/* Adjust label position for non-icon labels */
+.form label:not(.icon-wrapper) .input + span {
+  left: 16px;
 }
 
 .form label .input:-webkit-autofill + span,

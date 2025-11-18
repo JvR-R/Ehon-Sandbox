@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <title>Company Information</title>
     <link rel="stylesheet" href="/vmi/css/theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         /* Page Header Enhancement */
@@ -68,6 +69,80 @@
             background-color: var(--bg-card);
             font-weight: 600;
         }
+        
+        /* Icon Styling */
+        .icon-wrapper {
+            position: relative;
+        }
+        
+        .icon-wrapper i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 16px;
+            pointer-events: none;
+            z-index: 2;
+            transition: color 0.2s ease;
+        }
+        
+        .icon-wrapper .input,
+        .icon-wrapper select {
+            padding-left: 48px;
+        }
+        
+        .icon-wrapper:focus-within i {
+            color: var(--accent-primary);
+        }
+        
+        .select-icon-wrapper {
+            position: relative;
+        }
+        
+        .select-icon-wrapper i {
+            position: absolute;
+            left: 16px;
+            bottom: 14px;
+            color: var(--text-secondary);
+            font-size: 16px;
+            pointer-events: none;
+            z-index: 2;
+            transition: color 0.2s ease;
+        }
+        
+        .select-icon-wrapper:focus-within i {
+            color: var(--accent-primary);
+        }
+        
+        .select-icon-wrapper select {
+            padding-left: 48px;
+        }
+        
+        .page-header i {
+            color: var(--accent-primary);
+            margin-right: 12px;
+            font-size: 28px;
+            vertical-align: middle;
+        }
+        
+        .form .title i {
+            color: var(--accent-primary);
+            margin-right: 10px;
+            font-size: 24px;
+            vertical-align: middle;
+        }
+        
+        .submit i {
+            margin-right: 8px;
+            font-size: 16px;
+            vertical-align: middle;
+        }
+        
+        #loading i {
+            margin-right: 8px;
+            color: var(--accent-primary);
+        }
     </style>
 </head>
 <body>
@@ -75,21 +150,23 @@
     <?php include('../top_menu.php'); ?>
         
         <div class="page-header">
-            <h1>User Invitation</h1>
+            <h1><i class="fas fa-user-plus"></i> User Invitation</h1>
             <p>Send invitations to new users to join your organization</p>
         </div>
         
         <div class="log">
             <form class="form" id="inviteForm">
-                <p class="title">Register New User</p>
+                <p class="title"><i class="fas fa-user-edit"></i> Register New User</p>
                 <p class="message">Enter the email address and access level for the new user</p>
                 
-                <label>
+                <label class="icon-wrapper">
+                    <i class="fas fa-envelope"></i>
                     <input required="" placeholder="" type="email" class="input" name="email" id="email" autocomplete="off">
                     <span>Email Address</span>
                 </label>
                 
-                <div>
+                <div class="select-icon-wrapper">
+                    <i class="fas fa-shield-alt"></i>
                     <label class="select-label">Access Level</label>
                     <select name="level" id="level">
                         <option value="2">User</option>
@@ -97,8 +174,8 @@
                     </select>
                 </div>
                 
-                <button class="submit" id="send_invite">Send Invitation</button>
-                <div id="loading" style="display: none;">Sending invitation...</div>
+                <button class="submit" id="send_invite"><i class="fas fa-paper-plane"></i> Send Invitation</button>
+                <div id="loading" style="display: none;"><i class="fas fa-spinner fa-spin"></i> Sending invitation...</div>
             </form>
         </div>
     </main>
