@@ -188,11 +188,11 @@ section.topborder {
 }
 
 .btn-primary.bg-neutral-800 {
-  background-color: #080f25;
+  background-color: var(--btn-secondary-bg);
 }
 
 .btn-primary.bg-neutral-800:hover {
-  background-color: #343b4f;
+  background-color: var(--btn-secondary-hover);
 }
 .btn-secondary {
   color: var(--btn-text);
@@ -265,29 +265,29 @@ section.topborder {
   scrollbar-color: var(--scrollbar-thumb) transparent; /* thumb and track color */
 }
 input[type="date"]{
-  background-color: #011a37;
+  background-color: var(--input-bg);
   padding: 0.5rem;
   font-family: "Roboto Mono",monospace;
-  color: #ffffff;
+  color: var(--input-text);
   font-size: 18px;
   border: none;
   outline: none;
   border-radius: 5px;
 }
 ::-webkit-calendar-picker-indicator{
-  background-color: #ffffff;
+  background-color: var(--input-text);
   padding: 5px;
   cursor: pointer;
   border-radius: 3px;
 }
 /* Targets the scrollbar track */
 ::-webkit-scrollbar-track {
-  background-color: #f0f0f0;
+  background-color: var(--scrollbar-track);
 }
 
 /* Targets the scrollbar thumb */
 ::-webkit-scrollbar-thumb {
-  background-color: #888;
+  background-color: var(--scrollbar-thumb);
   border-radius: 10px;
 }
 
@@ -300,12 +300,13 @@ html {
   scroll-behavior: smooth;
 }
 .upload-container {
-  background: #002F60;
+  background: var(--bg-darker);
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
   text-align: center;
   max-width: 20rem;
+  color: var(--text-primary);
 }
 
 input[type="file"] {
@@ -313,10 +314,10 @@ input[type="file"] {
 }
 /* Acknowledge Button CSS */
 .acknowledge-btn {
-  background-color: #1a73e8; /* Blue background */
-  color: white; /* White text */
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-text);
   border: none;
-  border-radius: 5px; /* Rounded corners */
+  border-radius: 5px;
   padding: 10px 20px;
   font-size: 16px;
   font-weight: bold;
@@ -328,16 +329,16 @@ input[type="file"] {
 }
 
 .acknowledge-btn:hover {
-  background-color: #0c57b5; /* Darker blue on hover */
-  transform: scale(1.05); /* Slightly enlarge on hover */
+  background-color: var(--btn-primary-hover);
+  transform: scale(1.05);
 }
 
 .acknowledge-btn:active {
-  background-color: #094297; /* Even darker blue on click */
-  transform: scale(1); /* Reset scale on click */
+  background-color: var(--btn-primary-hover);
+  transform: scale(1);
 }
 
 .acknowledge-btn:focus {
-  outline: none; /* Remove default outline */
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+  outline: none;
+  box-shadow: var(--shadow-md);
 }
