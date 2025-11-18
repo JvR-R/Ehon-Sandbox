@@ -27,15 +27,15 @@ $orderColumnName = isset($columns[$orderColumn]) ? $columns[$orderColumn] : 'cs.
 
 // Build base query based on companyId
 if (!empty($companyId) && $companyId != 15100) {
-    $baseQuery = "FROM Sites cs 
-                  JOIN Clients clc ON cs.client_id = clc.client_id 
-                  WHERE (cs.client_id = ? OR clc.reseller_id = ? OR clc.Dist_id = ?)";
+    $baseFrom = "FROM Sites cs 
+                 JOIN Clients clc ON cs.client_id = clc.client_id";
+    $baseWhere = "WHERE (cs.client_id = ? OR clc.reseller_id = ? OR clc.Dist_id = ?)";
     $params = [$companyId, $companyId, $companyId];
     $paramTypes = 'iii';
 } elseif ($companyId == 15100) {
-    $baseQuery = "FROM Sites cs 
-                  JOIN Clients clc ON cs.client_id = clc.client_id 
-                  WHERE cs.uid IN (SELECT uid FROM console WHERE device_type != 999)";
+    $baseFrom = "FROM Sites cs 
+                 JOIN Clients clc ON cs.client_id = clc.client_id";
+    $baseWhere = "WHERE cs.uid IN (SELECT uid FROM console WHERE device_type != 999)";
     $params = [];
     $paramTypes = '';
 } else {
@@ -49,20 +49,28 @@ if (!empty($companyId) && $companyId != 15100) {
     exit;
 }
 
+$baseQuery = $baseFrom . " " . $baseWhere;
+
+// Store base params before adding search params
+$baseParams = $params;
+$baseParamTypes = $paramTypes;
+
 // Add search filter if provided
 $searchQuery = '';
+$searchParams = [];
+$searchParamTypes = '';
 if (!empty($searchValue)) {
     $searchQuery = " AND (cs.site_id LIKE ? OR clc.client_name LIKE ? OR cs.site_name LIKE ?)";
     $searchParam = '%' . $searchValue . '%';
-    $params = array_merge($params, [$searchParam, $searchParam, $searchParam]);
-    $paramTypes .= 'sss';
+    $searchParams = [$searchParam, $searchParam, $searchParam];
+    $searchParamTypes = 'sss';
 }
 
 // Get total count (without search filter)
 $countQuery = "SELECT COUNT(*) as total " . $baseQuery;
 $stmt = $conn->prepare($countQuery);
-if (!empty($paramTypes) && strpos($paramTypes, 's') === false) {
-    $stmt->bind_param($paramTypes, ...$params);
+if (!empty($baseParamTypes)) {
+    $stmt->bind_param($baseParamTypes, ...$baseParams);
 }
 $stmt->execute();
 $totalRecords = $stmt->get_result()->fetch_assoc()['total'];
@@ -71,20 +79,26 @@ $stmt->close();
 // Get filtered count (with search filter)
 $filteredCountQuery = "SELECT COUNT(*) as total " . $baseQuery . $searchQuery;
 $stmt = $conn->prepare($filteredCountQuery);
-if (!empty($paramTypes)) {
-    $stmt->bind_param($paramTypes, ...$params);
+$filteredParams = array_merge($baseParams, $searchParams);
+$filteredParamTypes = $baseParamTypes . $searchParamTypes;
+if (!empty($filteredParamTypes)) {
+    $stmt->bind_param($filteredParamTypes, ...$filteredParams);
 }
 $stmt->execute();
 $filteredRecords = $stmt->get_result()->fetch_assoc()['total'];
 $stmt->close();
 
-// Get paginated data with LEFT JOIN to check if site is in the selected group
+// Build the data query with LEFT JOIN in the correct position
+// Create separate params array for data query since it has additional parameters
+$dataParams = array_merge($baseParams, $searchParams);
+$dataParamTypes = $baseParamTypes . $searchParamTypes;
+
 $dataQuery = "SELECT 
                 cs.site_id,
                 cs.site_name,
                 clc.client_name,
                 CASE WHEN csg.site_no IS NOT NULL THEN 1 ELSE 0 END as is_checked
-              " . $baseQuery;
+              " . $baseFrom;
 
 // Add LEFT JOIN for group membership if groupId is provided
 if ($groupId > 0) {
@@ -92,22 +106,24 @@ if ($groupId > 0) {
                     ON cs.site_id = csg.site_no 
                     AND csg.group_id = ? 
                     AND csg.client_id = ?";
-    $params[] = $groupId;
-    $params[] = $companyId;
-    $paramTypes .= 'ii';
+    $dataParams[] = $groupId;
+    $dataParams[] = $companyId;
+    $dataParamTypes .= 'ii';
 } else {
     $dataQuery .= " LEFT JOIN client_site_groups csg ON 1=0"; // Always false join
 }
 
+// Now add WHERE clause and search
+$dataQuery .= " " . $baseWhere;
 $dataQuery .= $searchQuery;
 $dataQuery .= " ORDER BY {$orderColumnName} {$orderDir} LIMIT ? OFFSET ?";
-$params[] = $length;
-$params[] = $start;
-$paramTypes .= 'ii';
+$dataParams[] = $length;
+$dataParams[] = $start;
+$dataParamTypes .= 'ii';
 
 $stmt = $conn->prepare($dataQuery);
-if (!empty($paramTypes)) {
-    $stmt->bind_param($paramTypes, ...$params);
+if (!empty($dataParamTypes)) {
+    $stmt->bind_param($dataParamTypes, ...$dataParams);
 }
 $stmt->execute();
 $result = $stmt->get_result();
