@@ -22,7 +22,8 @@ body {
   padding-top: 8rem; /* Account for top border (64px) + menu (~90px) + page title (~60px) + spacing */
   padding-left: 76px; /* Account for left border (56px) + extra spacing */
   padding-right: 20px; /* Ensure right margin */
-  color: #333;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
   position: relative;
   box-sizing: border-box;
 }
@@ -65,18 +66,17 @@ body::before {
 main.table {
   width: 100%;
   max-width: calc(100vw - 116px); /* 76px left padding + 20px right padding + 20px margin */
-  background: rgba(255, 255, 255, 0.98);
+  background: var(--bg-card);
   backdrop-filter: blur(20px);
   border-radius: 24px;
   box-shadow: 
-    0 25px 50px rgba(0, 0, 0, 0.08),
-    0 8px 32px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    0 25px 50px var(--shadow-md),
+    0 8px 32px var(--shadow-sm);
   padding: 40px;
   margin: 0;
   position: relative;
   overflow: visible;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--border-light);
   box-sizing: border-box;
 }
 .top-config{
@@ -179,7 +179,7 @@ table td {
 }
 
 table tr:hover td {
-  background-color: #f8fafc;
+  background-color: var(--table-row-hover);
 }
 
 table tr:last-child td {
@@ -198,7 +198,7 @@ table tr:last-child td {
   position: absolute;
   width: 100%;
   height: 8vh;
-  background-color: #0362bb25;
+  background-color: var(--bg-accent);
 }
 h2{
   position: absolute;
@@ -277,8 +277,9 @@ h2{
 }
 select{
   font-size: 24px;
-  color: var(--text-inverse);
-  background-color:#000000a8;
+  color: var(--input-text);
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
   border-radius: 0.4rem;
   padding: 2px;
 }
@@ -286,12 +287,12 @@ select{
 .input {
   width: 100%;
   padding: 12px 16px;
-  border: 2px solid #e2e8f0;
+  border: 2px solid var(--input-border);
   border-radius: 8px;
   font-size: 14px;
   font-family: inherit;
-  color: #ffffff;
-  background-color: #041531;
+  color: var(--input-text);
+  background-color: var(--input-bg);
   transition: all 0.2s ease-in-out;
   outline: none;
 }
