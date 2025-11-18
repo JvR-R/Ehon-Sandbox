@@ -44,7 +44,7 @@ body {
 main.table {
   width: 100%;
   max-width: calc(100vw - 116px);
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
   border-radius: 16px;
   box-shadow: 0 4px 6px var(--shadow-sm);
   padding: 40px;
