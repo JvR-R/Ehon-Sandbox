@@ -306,6 +306,8 @@ if ($isGw) {
   <meta content="summary_large_image" name="twitter:card">
   <meta content="width=device-width, initial-scale=1" name="viewport">
   
+  <!-- THEME CSS - MUST BE FIRST -->
+  <link rel="stylesheet" href="/vmi/css/theme.css">
   <!-- Standard VMI CSS Files -->
   <link href="/vmi/css/normalize.css" rel="stylesheet" type="text/css">
   <link href="/vmi/css/webflow.css" rel="stylesheet" type="text/css">
