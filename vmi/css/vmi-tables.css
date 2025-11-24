@@ -43,12 +43,16 @@ table {
 
 body {
     line-height: 1;
-    min-height: auto;
+    min-height: 100vh;
     background: var(--bg-primary) center / cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: block;
     overflow: hidden;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    /* Fixed elements: topborder (64px, z-index: 501) and border (56px, z-index: 502) */
+    /* Content should not overlap these fixed elements */
+    box-sizing: border-box;
 }
 
 /* ============================================
@@ -124,18 +128,19 @@ body {
    ============================================ */
 main.table {
     width: calc(100% - 71px); /* 56px sidebar + 15px gap */
-    height: calc(100vh - 64px); /* Full height minus topborder (style_rep.css) */
+    height: calc(100vh - 64px - 90px); /* Full height minus topborder (64px) and nav-w (~90px with padding) */
     background-color: var(--table-main-bg);
     position: absolute;
     left: 71px; /* 56px sidebar (.border from style_rep.css) + 15px gap */
-    top: 64px; /* Below topborder (64px height, fixed, style_rep.css line 6) */
+    top: 154px; /* Below topborder (64px) + nav-w (~90px with padding) */
     backdrop-filter: blur(7px);
     box-shadow: 0 0.4rem 0.8rem var(--shadow-md);
     overflow: hidden;
     border-radius: 0.8rem;
     transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
-                width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 1; /* Below topborder (501) and sidebar (502) */
+                width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1; /* Below topborder (501), border (502), and nav-w (500) */
 }
 
 /* Large screens: Sidebar always expanded (~11rem as requested) per style_rep.css line 70 */
@@ -143,6 +148,7 @@ main.table {
     main.table {
         left: 11rem; /* Expanded sidebar width (185px ≈ 11rem at 16px base) */
         width: calc(100% - 11rem - 1rem); /* Account for expanded sidebar + gap */
+        top: 154px; /* Below topborder (64px) + nav-w (~90px) */
     }
 }
 
@@ -151,7 +157,8 @@ main.table {
     main.table {
         left: 71px; /* 56px sidebar + 15px gap */
         width: calc(100% - 71px);
-        height: calc(100vh - 64px);
+        height: calc(100vh - 64px - 90px);
+        top: 154px; /* Below topborder + nav-w */
     }
 }
 
@@ -160,7 +167,8 @@ main.table {
     main.table {
         left: 71px; /* 56px sidebar + 15px gap */
         width: calc(100% - 71px);
-        height: calc(100vh - 64px);
+        height: calc(100vh - 64px - 90px);
+        top: 154px; /* Below topborder + nav-w */
         border-radius: 0.6rem;
         box-shadow: 0 0.2rem 0.4rem var(--shadow-sm);
     }

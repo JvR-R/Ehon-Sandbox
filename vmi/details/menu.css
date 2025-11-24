@@ -15,6 +15,21 @@
     align-items: center;
     padding: 30px 50px;
     display: flex;
+    position: fixed;
+    top: 64px; /* Below topborder (64px height) */
+    left: 56px; /* Right of border (56px default width) */
+    right: 0;
+    z-index: 500; /* Below topborder (501) and border (502) but above content */
+    width: calc(100% - 56px); /* Account for border width */
+    transition: left 0.3s ease, width 0.3s ease;
+  }
+  
+  /* Large screens: Account for expanded border (185px) */
+  @media (min-width: 1920px) {
+    .nav-w {
+      left: 185px; /* Expanded border width */
+      width: calc(100% - 185px);
+    }
   }
   .nav-wrap{
     flex: 1;
