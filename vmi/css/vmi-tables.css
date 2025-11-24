@@ -138,11 +138,11 @@ main.table {
     z-index: 1; /* Below topborder (501) and sidebar (502) */
 }
 
-/* Large screens: Sidebar always expanded (185px per style_rep.css line 70) */
+/* Large screens: Sidebar always expanded (~11rem as requested) per style_rep.css line 70 */
 @media (min-width: 1920px) {
     main.table {
-        left: 200px; /* 185px sidebar (.border) + 15px gap */
-        width: calc(100% - 215px); /* Account for expanded sidebar + gap */
+        left: 11rem; /* Expanded sidebar width (185px ≈ 11rem at 16px base) */
+        width: calc(100% - 11rem - 1rem); /* Account for expanded sidebar + gap */
     }
 }
 
