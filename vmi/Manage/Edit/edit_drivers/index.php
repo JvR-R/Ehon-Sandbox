@@ -17,7 +17,7 @@ include(BORDER_PATH);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Vendor Managed Inventory</title>
+    <title>Edit Drivers</title>
     <!-- THEME CSS - MUST BE FIRST -->
     <link rel="stylesheet" href="/vmi/css/theme.css">
     <!-- Other CSS files -->
@@ -34,9 +34,9 @@ include(BORDER_PATH);
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <main class="table" style="overflow: overlay;">
+  <main class="table">
     <section class="table__header">       
-      <h1><img src="/vmi/images/company_15100.png" alt="">Vendor Managed Inventory</h1>            
+      <h1><img src="/vmi/images/company_<?php echo $companyId; ?>.png" onerror="this.onerror=null;this.src='/vmi/images/company_nologo.png';" alt="" style="max-height: 4.5rem">Edit Drivers</h1>            
     </section>
     <section class="table__filters">
       <div  class="filter__button">
