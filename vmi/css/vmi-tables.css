@@ -53,6 +53,9 @@ body {
     /* Fixed elements: topborder (64px, z-index: 501) and border (56px, z-index: 502) */
     /* Content should not overlap these fixed elements */
     box-sizing: border-box;
+    /* Ensure body content doesn't interfere with fixed elements */
+    padding-top: 0;
+    padding-left: 0;
 }
 
 /* ============================================
@@ -127,12 +130,13 @@ body {
    - Sidebar z-index: 502
    ============================================ */
 main.table {
-    width: calc(100% - 71px); /* 56px sidebar + 15px gap */
-    height: calc(100vh - 64px - 90px); /* Full height minus topborder (64px) and nav-w (~90px with padding) */
+    width: calc(100vw - 76px); /* Viewport width minus border (56px) + gap (20px) */
+    height: calc(100vh - 154px); /* Full height minus topborder (64px) + nav-w (~90px) */
     background-color: var(--table-main-bg);
-    position: absolute;
-    left: 71px; /* 56px sidebar (.border from style_rep.css) + 15px gap */
-    top: 154px; /* Below topborder (64px) + nav-w (~90px with padding) */
+    position: fixed; /* Fixed positioning to prevent overlap with fixed border/topborder */
+    left: 76px; /* Start after border (56px) + 20px gap - ensures no overlap with .border */
+    top: 154px; /* Below topborder (64px) + nav-w (~90px with padding) - ensures no overlap with .topborder */
+    right: 0; /* Extend to right edge */
     backdrop-filter: blur(7px);
     box-shadow: 0 0.4rem 0.8rem var(--shadow-md);
     overflow: hidden;
@@ -140,14 +144,15 @@ main.table {
     transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
                 width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
                 top 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 1; /* Below topborder (501), border (502), and nav-w (500) */
+    z-index: 10; /* Below topborder (z-index: 501) and border (z-index: 502) */
+    /* Fixed elements from border2.php/stylerep.css must be on top */
 }
 
 /* Large screens: Sidebar always expanded (~11rem as requested) per style_rep.css line 70 */
 @media (min-width: 1920px) {
     main.table {
-        left: 11rem; /* Expanded sidebar width (185px ≈ 11rem at 16px base) */
-        width: calc(100% - 11rem - 1rem); /* Account for expanded sidebar + gap */
+        left: 11.5rem; /* 185px expanded border + 20px gap (11rem + 0.5rem) */
+        width: calc(100% - 11.5rem - 1rem); /* Account for expanded sidebar + gap */
         top: 154px; /* Below topborder (64px) + nav-w (~90px) */
     }
 }
@@ -155,9 +160,9 @@ main.table {
 /* Tablet and smaller desktop - keep default sidebar width */
 @media (max-width: 1024px) {
     main.table {
-        left: 71px; /* 56px sidebar + 15px gap */
-        width: calc(100% - 71px);
-        height: calc(100vh - 64px - 90px);
+        left: 76px; /* 56px border + 20px gap */
+        width: calc(100% - 76px);
+        height: calc(100vh - 154px);
         top: 154px; /* Below topborder + nav-w */
     }
 }
@@ -165,9 +170,9 @@ main.table {
 /* Mobile devices */
 @media (max-width: 768px) {
     main.table {
-        left: 71px; /* 56px sidebar + 15px gap */
-        width: calc(100% - 71px);
-        height: calc(100vh - 64px - 90px);
+        left: 76px; /* 56px border + 20px gap */
+        width: calc(100% - 76px);
+        height: calc(100vh - 154px);
         top: 154px; /* Below topborder + nav-w */
         border-radius: 0.6rem;
         box-shadow: 0 0.2rem 0.4rem var(--shadow-sm);

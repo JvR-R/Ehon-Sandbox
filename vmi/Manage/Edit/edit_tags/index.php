@@ -23,7 +23,6 @@ include(BORDER_PATH);
     <!-- Other CSS files -->
     <link rel="stylesheet" href="/vmi/details/menu.css">
     <link rel="stylesheet" href="/vmi/css/normalize.css">
-    
     <link rel="stylesheet" href="/vmi/css/style_rep.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
