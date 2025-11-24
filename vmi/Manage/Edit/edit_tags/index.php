@@ -21,6 +21,7 @@ include(BORDER_PATH);
     <!-- THEME CSS - MUST BE FIRST -->
     <link rel="stylesheet" href="/vmi/css/theme.css">
     <!-- Other CSS files -->
+    <link rel="stylesheet" href="/vmi/details/menu.css">
     <link rel="stylesheet" href="/vmi/css/normalize.css">
     <link rel="stylesheet" href="/vmi/clients/style.css">
     <link rel="stylesheet" href="/vmi/css/style_rep.css">
