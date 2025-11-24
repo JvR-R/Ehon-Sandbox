@@ -34,6 +34,7 @@ include(BORDER_PATH);
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
+  <?php include('../../details/top_menu.php');?>
   <main class="table">
     <section class="table__header">       
       <h1><img src="/vmi/images/company_<?php echo $companyId; ?>.png" onerror="this.onerror=null;this.src='/vmi/images/company_nologo.png';" alt="" style="max-height: 4.5rem">Edit Tags</h1>            
