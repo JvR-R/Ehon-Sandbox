@@ -367,7 +367,7 @@ thead th.asc span.icon-arrow{
     display: grid;
 }
 [class^="navigation-item1"]{
-    background-color: #e1e1e166;
+    background-color: var(--bg-accent);
     border: hidden;
     color: var(--text-primary);
     padding: 8px 20px;
@@ -376,9 +376,13 @@ thead th.asc span.icon-arrow{
     display: inline-block;
     font-size: 16px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+[class^="navigation-item1"]:hover {
+    background-color: var(--bg-secondary);
 }
 [class^="navigation-item2"]{
-    background-color: #e1e1e166;
+    background-color: var(--bg-accent);
     border: hidden;
     color: var(--text-primary);
     padding: 8px 20px;
@@ -387,9 +391,13 @@ thead th.asc span.icon-arrow{
     display: inline-block;
     font-size: 16px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+[class^="navigation-item2"]:hover {
+    background-color: var(--bg-secondary);
 }
 [class^="navigation-item3"]{
-    background-color: #e1e1e166;
+    background-color: var(--bg-accent);
     border: hidden;
     color: var(--text-primary);
     padding: 8px 20px;
@@ -398,9 +406,13 @@ thead th.asc span.icon-arrow{
     display: inline-block;
     font-size: 16px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+[class^="navigation-item3"]:hover {
+    background-color: var(--bg-secondary);
 }
 [class^="navigation-item4"]{
-    background-color: #e1e1e166;
+    background-color: var(--bg-accent);
     border: hidden;
     color: var(--text-primary);
     padding: 8px 20px;
@@ -409,6 +421,10 @@ thead th.asc span.icon-arrow{
     display: inline-block;
     font-size: 16px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+[class^="navigation-item4"]:hover {
+    background-color: var(--bg-secondary);
 }
 .alerts_div{
     position: absolute;
@@ -545,7 +561,7 @@ label img{
     text-decoration: none;
 }
 .alarm_count:hover{
-    background: #e57915;
+    background: var(--accent-warning);
     cursor: pointer;
 }
 .alarms-div a:visited {
@@ -574,12 +590,12 @@ label img{
     position: fixed; left: 50%; bottom: 1.5rem;
     transform: translateX(-50%) translateY(100%);
     padding:.6rem 1rem; border-radius:.25rem; color: var(--text-inverse);
-    background:#333; opacity:0; transition:opacity .3s,transform .3s;
+    background: var(--bg-secondary); opacity:0; transition:opacity .3s,transform .3s;
     z-index:9999; pointer-events:none;
   }
-  .toast--success { background:#2e7d32; }
-  .toast--error   { background:#c62828; }
-  .toast--info    { background:#2F96B4; }
+  .toast--success { background: var(--accent-success); }
+  .toast--error   { background: var(--accent-danger); }
+  .toast--info    { background: var(--accent-secondary); }
   .toast.show     { opacity:1; transform:translateX(-50%) translateY(0); }
 
   .inline-error {
@@ -605,7 +621,7 @@ label img{
   .loading-overlay {
     position: absolute;
     inset: 0;
-    background: rgb(255, 255, 255);
+    background: var(--bg-card);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -631,20 +647,20 @@ table.dataTable tr.dt-hasChild td.dt-control:before {
   }
   
   /* 2. (Re-)Define your plus/minus icons */
-  /* closed row: green “+” */
+  /* closed row: green "+" */
   table.dataTable tbody td.dt-control:before {
     content: "+" !important;
-    color: green;
+    color: var(--accent-success);
     font-size: 1.2em;
     border: none !important;
   }
   
-  /* open row: red “−” */
+  /* open row: red "−" */
   table.dataTable tbody tr.shown td.dt-control:before {
     content: "−" !important;
-    color: red !important;
+    color: var(--accent-danger) !important;
     border: none !important;
-    background: rgb(0, 21, 255)e !important;
+    background: none !important;
   }
 .gw-ports{
     margin-top: 30px;
@@ -673,12 +689,39 @@ table.dataTable tr.dt-hasChild td.dt-control:before {
 .button-gwalert{
     margin: 1rem;
     padding: 3px;
+    background-color: var(--btn-secondary-bg);
+    color: var(--btn-text);
+    border: 1px solid var(--input-border);
+    border-radius: 0.4rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.button-gwalert:hover {
+    background-color: var(--btn-secondary-hover);
 }
 .button-gwports {
     margin: 1rem;
     padding: 3px;
+    background-color: var(--btn-secondary-bg);
+    color: var(--btn-text);
+    border: 1px solid var(--input-border);
+    border-radius: 0.4rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.button-gwports:hover {
+    background-color: var(--btn-secondary-hover);
 }
 .button-gwsave {
     margin: 1rem;
     padding: 3px;
+    background-color: var(--btn-primary-bg);
+    color: var(--btn-text);
+    border: 1px solid var(--input-border);
+    border-radius: 0.4rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.button-gwsave:hover {
+    background-color: var(--btn-primary-hover);
 }
