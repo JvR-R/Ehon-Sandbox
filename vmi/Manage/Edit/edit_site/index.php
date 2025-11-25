@@ -86,7 +86,7 @@ include('../../../db/border.php');
                                             $stmt->bind_result($id, $timezone_name, $example_city, $utc); 
                                         
                                             while ($stmt->fetch()) {                                             
-                                                echo '<option value="' . htmlspecialchars($id) . '" ' . $selected . '>' . htmlspecialchars($timezone_name) . ' - ' . htmlspecialchars($example_city) . ' ( ' . htmlspecialchars($utc) . ' )</option>';                                    
+                                                echo '<option value="' . htmlspecialchars($id) . '">' . htmlspecialchars($timezone_name) . ' - ' . htmlspecialchars($example_city) . ' ( ' . htmlspecialchars($utc) . ' )</option>';                                    
                                             }
                                             echo '<option value="add">Add a console</option>';
                                             $stmt->close();

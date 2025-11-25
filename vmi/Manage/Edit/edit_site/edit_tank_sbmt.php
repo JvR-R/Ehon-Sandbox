@@ -1,8 +1,19 @@
 <?php
-include('../../db/dbh2.php'); 
-include('../../db/log.php');
+include('../../../db/dbh2.php'); 
+include('../../../db/log.php');
 header('Content-Type: application/json');
 ob_start();
+
+// Ensure companyId is available
+if (!isset($companyId)) {
+    $companyId = isset($_SESSION['companyId']) ? (int)$_SESSION['companyId'] : 15100;
+}
+
+// Check database connection
+if (!isset($conn) || !$conn) {
+    echo json_encode(['success' => false, 'error' => 'Database connection failed']);
+    exit;
+}
 
 // Check if the request is JSON
 $inputJSON = file_get_contents('php://input');
