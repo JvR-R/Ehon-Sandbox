@@ -131,7 +131,7 @@ if (isset($input['case'])) {
                 
                 // Fetch pumps for this tank
                 $pumps = array();
-                $pumpSql = "SELECT pump_id, Nozzle_Number, Nozzle_Walk_Time, Nozzle_Auth_Time, Nozzle_Max_Run_Time, Nozzle_No_Flow, Nozzle_Product, Pulse_Rate 
+                $pumpSql = "SELECT pump_id, Nozzle_Number, Pulse_Rate 
                             FROM pumps 
                             WHERE uid = ? AND tank_id = ? 
                             ORDER BY Nozzle_Number;";
@@ -145,11 +145,6 @@ if (isset($input['case'])) {
                         $pumps[] = array(
                             "pump_id" => $pumpRow['pump_id'],
                             "nozzle_number" => $pumpRow['Nozzle_Number'],
-                            "nozzle_walk_time" => $pumpRow['Nozzle_Walk_Time'],
-                            "nozzle_auth_time" => $pumpRow['Nozzle_Auth_Time'],
-                            "nozzle_max_run_time" => $pumpRow['Nozzle_Max_Run_Time'],
-                            "nozzle_no_flow" => $pumpRow['Nozzle_No_Flow'],
-                            "nozzle_product" => $pumpRow['Nozzle_Product'],
                             "pulse_rate" => $pumpRow['Pulse_Rate']
                         );
                     }
