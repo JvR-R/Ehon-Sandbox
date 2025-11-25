@@ -7,12 +7,12 @@
 /* Default: Border is 56px (collapsed) - when border is not expanded */
 main.table {
     position: fixed !important; /* Required for top and left to work */
-    /* Margin-top equivalent: 4.5rem from top */
+    /* Margin-top equivalent: 8rem from top */
     top: 8rem !important;
     /* Margin-left equivalent: space after border (56px ≈ 3.5rem) + gap = ~5rem */
     left: 5rem !important;
     width: calc(100vw - 5rem) !important;
-    height: calc(100vh - 4.5rem) !important;
+    height: calc(100vh - 8rem) !important;
     right: auto !important;
     bottom: auto !important;
 }
@@ -21,12 +21,12 @@ main.table {
 @media (min-width: 1920px) {
     main.table {
         position: fixed !important; /* Required for top and left to work */
-        /* Margin-top: 4.5rem from top */
-        top: 4.5rem !important;
+        /* Margin-top: 8rem from top */
+        top: 8rem !important;
         /* Margin-left: 12rem for expanded border */
         left: 12rem !important;
         width: calc(100vw - 12rem) !important;
-        height: calc(100vh - 4.5rem) !important;
+        height: calc(100vh - 8rem) !important;
         right: auto !important;
         bottom: auto !important;
     }
@@ -36,10 +36,10 @@ main.table {
 @media (max-width: 1024px) {
     main.table {
         position: fixed !important; /* Required for top and left to work */
-        top: 4.5rem !important;
+        top: 8rem !important;
         left: 5rem !important;
         width: calc(100vw - 5rem) !important;
-        height: calc(100vh - 4.5rem) !important;
+        height: calc(100vh - 8rem) !important;
         right: auto !important;
         bottom: auto !important;
     }
@@ -49,10 +49,10 @@ main.table {
 @media (max-width: 768px) {
     main.table {
         position: fixed !important; /* Required for top and left to work */
-        top: 4.5rem !important;
+        top: 8rem !important;
         left: 5rem !important;
         width: calc(100vw - 5rem) !important;
-        height: calc(100vh - 4.5rem) !important;
+        height: calc(100vh - 8rem) !important;
         right: auto !important;
         bottom: auto !important;
     }
