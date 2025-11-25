@@ -191,6 +191,7 @@ button.btn-primary:active {
 
 .mg-bottom-24px {
     margin-bottom: 1.5rem;
+    margin-top: 1.5rem; 
 }
 
 .pd-28px {

@@ -1,6 +1,6 @@
 <?php
-include('../../db/dbh2.php');
-include('../../db/log.php');
+include('../../../db/dbh2.php');
+include('../../../db/log.php');
 $inputJSON = file_get_contents('php://input');
 $input = json_decode($inputJSON, TRUE);
 // Check if the required keys are present in the input
