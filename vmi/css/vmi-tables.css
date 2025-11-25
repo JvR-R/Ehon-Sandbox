@@ -131,11 +131,11 @@ body {
    ============================================ */
 main.table {
     width: calc(100vw - 76px); /* Viewport width minus border (56px) + gap (20px) */
-    height: calc(100vh - 154px); /* Full height minus topborder (64px) + nav-w (~90px) */
+    height: calc(100vh - 6rem); /* Full height minus topborder (64px) + nav-w (~90px) */
     background-color: var(--table-main-bg);
     position: fixed; /* Fixed positioning to prevent overlap with fixed border/topborder */
     left: 76px; /* Start after border (56px) + 20px gap - ensures no overlap with .border */
-    top: 154px; /* Below topborder (64px) + nav-w (~90px with padding) - ensures no overlap with .topborder */
+    top: 6rem; /* Below topborder (64px) + nav-w (~90px with padding) - ensures no overlap with .topborder */
     right: 0; /* Extend to right edge */
     backdrop-filter: blur(7px);
     box-shadow: 0 0.4rem 0.8rem var(--shadow-md);
@@ -153,7 +153,7 @@ main.table {
     main.table {
         left: 11.5rem; /* 185px expanded border + 20px gap (11rem + 0.5rem) */
         width: calc(100% - 11.5rem - 1rem); /* Account for expanded sidebar + gap */
-        top: 154px; /* Below topborder (64px) + nav-w (~90px) */
+        top: 6rem; /* Below topborder (64px) + nav-w (~90px) */
     }
 }
 
@@ -162,8 +162,8 @@ main.table {
     main.table {
         left: 76px; /* 56px border + 20px gap */
         width: calc(100% - 76px);
-        height: calc(100vh - 154px);
-        top: 154px; /* Below topborder + nav-w */
+        height: calc(100vh - 6rem);
+        top: 6rem; /* Below topborder + nav-w */
     }
 }
 
@@ -172,8 +172,8 @@ main.table {
     main.table {
         left: 76px; /* 56px border + 20px gap */
         width: calc(100% - 76px);
-        height: calc(100vh - 154px);
-        top: 154px; /* Below topborder + nav-w */
+        height: calc(100vh - 6rem);
+        top: 6rem; /* Below topborder + nav-w */
         border-radius: 0.6rem;
         box-shadow: 0 0.2rem 0.4rem var(--shadow-sm);
     }
