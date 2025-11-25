@@ -8,7 +8,7 @@
 main.table {
     position: fixed !important; /* Required for top and left to work */
     /* Margin-top equivalent: 4.5rem from top */
-    top: 4.5rem !important;
+    top: 8rem !important;
     /* Margin-left equivalent: space after border (56px ≈ 3.5rem) + gap = ~5rem */
     left: 5rem !important;
     width: calc(100vw - 5rem) !important;

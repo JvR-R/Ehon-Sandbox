@@ -39,7 +39,7 @@ include(BORDER_PATH);
 <?php include('../../../details/top_menu.php');?>
   <main class="table">
     <section class="table__header">       
-      <h1>>Edit Tags</h1>            
+      <h1>Edit Tags</h1>            
     </section>
     <section class="table__filters">
       <div  class="filter__button">

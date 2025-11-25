@@ -39,7 +39,7 @@ include(BORDER_PATH);
 <?php include('../../../details/top_menu.php');?>
   <main class="table">
     <section class="table__header">       
-      <h1><img src="/vmi/images/company_<?php echo $companyId; ?>.png" onerror="this.onerror=null;this.src='/vmi/images/company_nologo.png';" alt="" style="max-height: 4.5rem">Edit Vehicles</h1>            
+      <h1>Edit Vehicles</h1>            
     </section>
     <section class="table__filters">
       <div  class="filter__button">
