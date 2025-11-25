@@ -18,13 +18,11 @@ include(BORDER_PATH);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Edit Drivers</title>
-    <!-- THEME CSS - MUST BE FIRST -->
     <link rel="stylesheet" href="/vmi/css/theme.css">
-    <!-- Other CSS files -->
+    <link rel="stylesheet" href="/vmi/details/menu.css">
     <link rel="stylesheet" href="/vmi/css/normalize.css">
     <link rel="stylesheet" href="/vmi/clients/style.css">
     <link rel="stylesheet" href="/vmi/css/style_rep.css">
-    <!-- Common CSS for Edit pages -->
     <link rel="stylesheet" href="../edit_common.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
