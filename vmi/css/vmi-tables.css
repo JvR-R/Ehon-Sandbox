@@ -446,7 +446,6 @@ table.dataTable tbody tr.shown td.dt-control:before {
 [class^="temp_info"] {
     min-height: 26rem;
     top: 50px;
-    position: absolute;
     background: var(--bg-primary);
     display: none;
     min-width: 90rem;
