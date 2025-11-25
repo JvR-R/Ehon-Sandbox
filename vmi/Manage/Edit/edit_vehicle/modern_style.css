@@ -510,3 +510,55 @@ main.table .tab-content {
 /* Keep border and topborder styles from style_rep.css - don't override these */
 /* section.topborder and .border should remain as defined in style_rep.css */
 
+/* Remove unwanted Bootstrap _borders.scss styles (border: 1px solid #dee2e6) */
+main.table .form-select,
+main.table .form-control,
+main.table input[type="text"],
+main.table input[type="date"] {
+    border: 1px solid var(--border-color) !important;
+    border-color: var(--border-color) !important;
+}
+
+main.table .nav-tabs {
+    border: none !important;
+    border-bottom: 2px solid var(--border-color) !important;
+}
+
+main.table .nav-tabs .nav-link {
+    border: none !important;
+    border-bottom: 3px solid transparent !important;
+}
+
+main.table .nav-tabs .nav-link.active {
+    border-bottom-color: var(--accent-primary) !important;
+}
+
+main.table .tab-content {
+    border: none !important;
+}
+
+main.table .filter__div {
+    border: 1px solid var(--border-color) !important;
+    border-color: var(--border-color) !important;
+}
+
+main.table #customers_table,
+main.table #customers_table thead th,
+main.table #customers_table tbody td {
+    border: none !important;
+    border-color: transparent !important;
+}
+
+main.table #customers_table tbody tr {
+    border: none !important;
+    border-bottom: 1px solid var(--border-light) !important;
+}
+
+main.table .btn,
+main.table button,
+main.table .btn-primary,
+main.table .btn-secondary {
+    border: none !important;
+    border-color: transparent !important;
+}
+
