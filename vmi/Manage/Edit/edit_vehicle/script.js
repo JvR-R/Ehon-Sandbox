@@ -4,10 +4,11 @@ function Filters(companyId) {
     var element = document.getElementById('filter__div');
     if (element.style.display === "none" || element.style.display === "") {
         element.style.display = "block";
+        element.classList.add('active');
     } else {
         element.style.display = "none";
+        element.classList.remove('active');
     }
-    console.log(companyId);
 }
 
 $(document).ready(function () {
@@ -15,7 +16,7 @@ $(document).ready(function () {
 
     function loadTransactions(page, filters) {
         $.ajax({
-            url: 'get_vehicles', // Adjusted to a likely path
+            url: 'get_vehicles.php', // Adjusted to a likely path
             type: 'GET',
             dataType: 'json', // Ensure jQuery expects JSON
             data: {
@@ -26,17 +27,28 @@ $(document).ready(function () {
                 var dtInstance = $('#customers_table').DataTable();
                 dtInstance.clear(); // Clear current table rows without destroying the table
 
-                data.forEach(function(transaction) { // Using forEach for clarity
+                if (data.length === 0) {
+                    // Show empty state - don't add a row, just show message
+                    $('#bodtest').html('<tr><td colspan="7" class="empty-state" style="text-align: center; padding: 3rem;">No vehicles found</td></tr>');
+                    updatePageIndicator(page);
+                    return;
+                }
+
+                data.forEach(function(vehicle) { // Using forEach for clarity
+                    var actionButtons = '<div class="action-buttons">' +
+                        '<button class="btn-edit edit-btn" data-id="' + vehicle.vehicle_id + '">Edit</button>' +
+                        '<button class="btn-delete delete-btn" data-id="' + vehicle.vehicle_id + '" data-name="' + 
+                        (vehicle.vehicle_name || vehicle.vehicle_rego || 'this vehicle') + '">Delete</button>' +
+                        '</div>';
+                    
                     dtInstance.row.add([ // Add new row
-                        '', // Adjust columns as necessary
-                        transaction.vehicle_id,
-                        transaction.vehicle_name,
-                        transaction.customer_name,
-                        transaction.vehicle_brand,
-                        transaction.vehicle_model,
-                        transaction.updated_at,
-                        '<button class="btn btn-primary edit-btn" data-id="' + transaction.vehicle_id + '">Edit</button>'
-                        // Adjust according to your actual data structure
+                        vehicle.vehicle_rego || '',
+                        vehicle.vehicle_name || '',
+                        vehicle.customer_name || '',
+                        vehicle.vehicle_brand || '',
+                        vehicle.vehicle_model || '',
+                        vehicle.updated_at ? new Date(vehicle.updated_at).toLocaleDateString() : '',
+                        actionButtons
                     ]);
                 });
 
@@ -167,21 +179,44 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Bind the function to the Reset button
     document.getElementById('resetFilters').onclick = resetFilters;
+    // Edit button handler
     $(document).on('click', '.edit-btn', function() {
         var vehicleId = $(this).data('id');
+        window.location.href = 'vehicle_edit.php?id=' + vehicleId;
+    });
 
-        $.ajax({
-            url: 'vehicle_edit.php',
-            type: 'POST',
-            data: { id: vehicleId },
-            success: function(response) {
-                console.log('vehicle edit request successful');
-                // Optionally, you can redirect or display a message
-                window.location.href = 'vehicle_edit.php?id=' + vehicleId; // Redirect if needed
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error('Error sending edit request:', textStatus, errorThrown);
-            }
-        });
+    // Delete button handler
+    $(document).on('click', '.delete-btn', function() {
+        var vehicleId = $(this).data('id');
+        var vehicleName = $(this).data('name');
+        var $btn = $(this);
+        
+        // Show confirmation dialog
+        if (confirm('Are you sure you want to delete "' + vehicleName + '"? This action cannot be undone.')) {
+            // Disable button to prevent double-click
+            $btn.prop('disabled', true).text('Deleting...');
+            
+            $.ajax({
+                url: 'delete_vehicle.php',
+                type: 'POST',
+                data: { vehicle_id: vehicleId },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        toastr.success('Vehicle deleted successfully');
+                        // Reload the current page data
+                        loadTransactions(currentPage, currentfilters);
+                    } else {
+                        toastr.error(response.error || 'Failed to delete vehicle');
+                        $btn.prop('disabled', false).text('Delete');
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('Error deleting vehicle:', textStatus, errorThrown);
+                    toastr.error('An error occurred while deleting the vehicle');
+                    $btn.prop('disabled', false).text('Delete');
+                }
+            });
+        }
     });
 });
