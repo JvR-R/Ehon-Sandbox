@@ -483,3 +483,30 @@ input[type="date"]:focus {
     background: var(--text-secondary);
 }
 
+/* Override style_rep.css filter__div styles while keeping borders intact */
+main.table .filter__div {
+    padding: 1.5rem !important; /* Override style_rep.css padding */
+    display: none !important;
+}
+
+main.table .filter__div.active,
+main.table .filter__div[style*="block"] {
+    display: block !important;
+}
+
+/* Override style_rep.css table__filters padding */
+main.table .table__filters {
+    padding: 1.5rem 2.5rem !important;
+}
+
+/* Override style_rep.css tab-content styles */
+main.table .tab-content {
+    padding: 0 !important;
+    min-height: auto !important;
+    background-color: transparent !important;
+    border-radius: 0 !important;
+}
+
+/* Keep border and topborder styles from style_rep.css - don't override these */
+/* section.topborder and .border should remain as defined in style_rep.css */
+
