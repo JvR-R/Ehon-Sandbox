@@ -17,9 +17,11 @@ $checkSql = "SELECT device_type FROM console WHERE uid = ?";
 $checkStmt = $conn->prepare($checkSql);
 $checkStmt->bind_param("i", $uid);
 $checkStmt->execute();
-$checkStmt->bind_result($device_type);
-$checkStmt->fetch();
+$checkResult = $checkStmt->get_result();
+$checkRow = $checkResult->fetch_assoc();
 $checkStmt->close();
+
+$device_type = $checkRow ? $checkRow['device_type'] : 0;
 
 if ($device_type != 10) {
     echo "This page is only available for FMS consoles (device_type = 10).";
@@ -38,9 +40,11 @@ if ($companyId != 15100) {
     $siteStmt->bind_param("i", $site_id);
 }
 $siteStmt->execute();
-$siteStmt->bind_result($site_name);
-$siteStmt->fetch();
+$siteResult = $siteStmt->get_result();
+$siteRow = $siteResult->fetch_assoc();
 $siteStmt->close();
+
+$site_name = $siteRow ? $siteRow['Site_name'] : null;
 
 if (!$site_name) {
     echo "Site not found or access denied.";
@@ -63,9 +67,21 @@ if ($companyId != 15100) {
     $tankStmt->bind_param("ii", $site_id, $uid);
 }
 $tankStmt->execute();
-$tankStmt->bind_result($tank_id, $tank_name, $capacity);
+$tankResult = $tankStmt->get_result();
 
-while ($tankStmt->fetch()) {
+// Fetch all tank rows first
+$tankRows = [];
+while ($row = $tankResult->fetch_assoc()) {
+    $tankRows[] = $row;
+}
+$tankStmt->close();
+
+// Now process each tank and get its pumps
+foreach ($tankRows as $tankRow) {
+    $tank_id = $tankRow['tank_id'];
+    $tank_name = $tankRow['Tank_name'];
+    $capacity = $tankRow['capacity'];
+    
     // Get pumps for this tank
     $pumps = [];
     $pumpSql = "SELECT pump_id, Nozzle_Number, Nozzle_Walk_Time, Nozzle_Auth_Time, Nozzle_Max_Run_Time, Nozzle_No_Flow, Nozzle_Product, Pulse_Rate 
@@ -75,18 +91,18 @@ while ($tankStmt->fetch()) {
     $pumpStmt = $conn->prepare($pumpSql);
     $pumpStmt->bind_param("ii", $uid, $tank_id);
     $pumpStmt->execute();
-    $pumpStmt->bind_result($pump_id, $nozzle_number, $nozzle_walk_time, $nozzle_auth_time, $nozzle_max_run_time, $nozzle_no_flow, $nozzle_product, $pulse_rate);
+    $pumpResult = $pumpStmt->get_result();
     
-    while ($pumpStmt->fetch()) {
+    while ($pumpRow = $pumpResult->fetch_assoc()) {
         $pumps[] = [
-            'pump_id' => $pump_id,
-            'nozzle_number' => $nozzle_number,
-            'nozzle_walk_time' => $nozzle_walk_time,
-            'nozzle_auth_time' => $nozzle_auth_time,
-            'nozzle_max_run_time' => $nozzle_max_run_time,
-            'nozzle_no_flow' => $nozzle_no_flow,
-            'nozzle_product' => $nozzle_product,
-            'pulse_rate' => $pulse_rate
+            'pump_id' => $pumpRow['pump_id'],
+            'nozzle_number' => $pumpRow['Nozzle_Number'],
+            'nozzle_walk_time' => $pumpRow['Nozzle_Walk_Time'],
+            'nozzle_auth_time' => $pumpRow['Nozzle_Auth_Time'],
+            'nozzle_max_run_time' => $pumpRow['Nozzle_Max_Run_Time'],
+            'nozzle_no_flow' => $pumpRow['Nozzle_No_Flow'],
+            'nozzle_product' => $pumpRow['Nozzle_Product'],
+            'pulse_rate' => $pumpRow['Pulse_Rate']
         ];
     }
     $pumpStmt->close();
@@ -98,7 +114,6 @@ while ($tankStmt->fetch()) {
         'pumps' => $pumps
     ];
 }
-$tankStmt->close();
 
 $success = isset($_GET['success']) && $_GET['success'] === 'true';
 $error = $_GET['error'] ?? '';
