@@ -4,10 +4,11 @@ function Filters(companyId) {
     var element = document.getElementById('filter__div');
     if (element.style.display === "none" || element.style.display === "") {
         element.style.display = "block";
+        element.classList.add('active');
     } else {
         element.style.display = "none";
+        element.classList.remove('active');
     }
-    console.log(companyId);
 }
 
 $(document).ready(function () {
@@ -15,7 +16,7 @@ $(document).ready(function () {
 
     function loadTransactions(page, filters) {
         $.ajax({
-            url: 'get_tags', // Adjusted to a likely path
+            url: 'get_tags.php', // Adjusted to a likely path
             type: 'GET',
             dataType: 'json', // Ensure jQuery expects JSON
             data: {
@@ -26,19 +27,30 @@ $(document).ready(function () {
                 var dtInstance = $('#customers_table').DataTable();
                 dtInstance.clear(); // Clear current table rows without destroying the table
 
-                data.forEach(function(transaction) { // Using forEach for clarity
+                if (data.length === 0) {
+                    // Show empty state - don't add a row, just show message
+                    $('#bodtest').html('<tr><td colspan="9" class="empty-state" style="text-align: center; padding: 3rem;">No tags found</td></tr>');
+                    updatePageIndicator(page);
+                    return;
+                }
+
+                data.forEach(function(tag) { // Using forEach for clarity
+                    var actionButtons = '<div class="action-buttons">' +
+                        '<button class="btn-edit edit-btn" data-id="' + tag.id + '">Edit</button>' +
+                        '<button class="btn-delete delete-btn" data-id="' + tag.id + '" data-name="' + 
+                        (tag.card_name || tag.card_number || 'this tag') + '">Delete</button>' +
+                        '</div>';
+                    
                     dtInstance.row.add([ // Add new row
-                        '', // Adjust columns as necessary
-                        transaction.id,
-                        transaction.card_name,
-                        transaction.customer_name,
-                        transaction.card_number,
-                        transaction.expiry_date,
-                        transaction.list_driver,
-                        transaction.list_vehicle,
-                        transaction.updated_at,
-                        '<button class="btn btn-primary edit-btn" data-id="' + transaction.id + '">Edit</button>'
-                        // Adjust according to your actual data structure
+                        tag.id || '',
+                        tag.card_name || '',
+                        tag.customer_name || '',
+                        tag.card_number || '',
+                        tag.expiry_date ? new Date(tag.expiry_date).toLocaleDateString() : '',
+                        tag.list_driver || '',
+                        tag.list_vehicle || '',
+                        tag.updated_at ? new Date(tag.updated_at).toLocaleDateString() : '',
+                        actionButtons
                     ]);
                 });
 
@@ -169,21 +181,45 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Bind the function to the Reset button
     document.getElementById('resetFilters').onclick = resetFilters;
+    
+    // Edit button handler
     $(document).on('click', '.edit-btn', function() {
         var tagId = $(this).data('id');
+        window.location.href = 'tag_edit.php?id=' + tagId;
+    });
 
-        $.ajax({
-            url: 'tag_edit.php',
-            type: 'POST',
-            data: { id: tagId },
-            success: function(response) {
-                console.log('Tag edit request successful');
-                // Optionally, you can redirect or display a message
-                window.location.href = 'tag_edit.php?id=' + tagId; // Redirect if needed
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error('Error sending edit request:', textStatus, errorThrown);
-            }
-        });
+    // Delete button handler
+    $(document).on('click', '.delete-btn', function() {
+        var tagId = $(this).data('id');
+        var tagName = $(this).data('name');
+        var $btn = $(this);
+        
+        // Show confirmation dialog
+        if (confirm('Are you sure you want to delete "' + tagName + '"? This action cannot be undone.')) {
+            // Disable button to prevent double-click
+            $btn.prop('disabled', true).text('Deleting...');
+            
+            $.ajax({
+                url: 'delete_tag.php',
+                type: 'POST',
+                data: { tag_id: tagId },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        toastr.success('Tag deleted successfully');
+                        // Reload the current page data
+                        loadTransactions(currentPage, currentfilters);
+                    } else {
+                        toastr.error(response.error || 'Failed to delete tag');
+                        $btn.prop('disabled', false).text('Delete');
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('Error deleting tag:', textStatus, errorThrown);
+                    toastr.error('An error occurred while deleting the tag');
+                    $btn.prop('disabled', false).text('Delete');
+                }
+            });
+        }
     });
 });

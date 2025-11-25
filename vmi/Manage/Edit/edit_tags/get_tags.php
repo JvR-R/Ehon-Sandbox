@@ -26,56 +26,46 @@ $offset = ($page - 1) * $perPage;
 $filters = isset($_GET['filters']) ? $_GET['filters'] : array();
 
 // Construct the SQL query with filters
-$sql = "SELECT * FROM client_tags cta JOIN Customers cms on cms.customer_id = cta.customer_id";
+// Select specific columns to avoid conflicts
+$sql = "SELECT cta.id, cta.card_name, cta.card_number, cta.expiry_date, 
+               cta.list_driver, cta.list_vehicle, cta.updated_at, 
+               cta.customer_id, cta.client_id,
+               cms.customer_name 
+        FROM client_tags cta 
+        JOIN Customers cms ON cms.customer_id = cta.customer_id 
+        WHERE cta.enabled_prompt != 999 
+        AND cta.client_id = " . intval($companyId);
 
 // Apply filters
 if (!empty($filters)) {
-    $conditions = array();
-
     if (isset($filters['sites']) && !empty($filters['sites'])) {
-        $sites = implode(',', array_map('intval', $filters['sites']));
-        $conditions[] = "st.Site_id IN ($sites)";
-    }
-
-    if (isset($filters['group']) && !empty($filters['group'])) {
-        $conditions[] = "st.Site_id IN (SELECT site_no FROM ehonener_ehon_vmi.client_site_groups where group_id =" . intval($filters['group']) . ")";
+        $siteIds = array_map('intval', $filters['sites']);
+        $sites = implode(',', $siteIds);
+        $sql .= " AND cta.customer_id IN ($sites)";
     }
 
     if (isset($filters['cardholder']) && !empty($filters['cardholder'])) {
         $cardholder = $conn->real_escape_string($filters['cardholder']);
-        $conditions[] = "ct.card_holder_name LIKE '%$cardholder%'";
+        $sql .= " AND cta.card_name LIKE '%$cardholder%'";
     }
 
     if (isset($filters['cardnumber']) && !empty($filters['cardnumber'])) {
         $cardnumber = $conn->real_escape_string($filters['cardnumber']);
-        $conditions[] = "ct.card_number = '$cardnumber'";
-    }
-
-    if (isset($filters['registration']) && !empty($filters['registration'])) {
-        $registration = $conn->real_escape_string($filters['registration']);
-        $conditions[] = "ct.registration LIKE '%$registration%'";
+        $sql .= " AND cta.card_number LIKE '%$cardnumber%'";
     }
 
     if (isset($filters['startDate']) && !empty($filters['startDate'])) {
         $startDate = $conn->real_escape_string($filters['startDate']);
-        $conditions[] = "ct.transaction_date >= '$startDate'";
+        $sql .= " AND DATE(cta.updated_at) >= '$startDate'";
     }
 
     if (isset($filters['endDate']) && !empty($filters['endDate'])) {
         $endDate = $conn->real_escape_string($filters['endDate']);
-        $conditions[] = "ct.transaction_date <= '$endDate'";
-    }
-
-    if (!empty($conditions)) {
-        $sql .= " AND " . implode(" AND ", $conditions);
+        $sql .= " AND DATE(cta.updated_at) <= '$endDate'";
     }
 }
 
-if ($companyId == 15100) {
-    $sql .= " LIMIT $offset, $perPage;";
-} else {
-    $sql .= " AND (cs.Client_id = $companyId OR cs.reseller_id = $companyId) LIMIT $offset, $perPage;";
-}
+$sql .= " ORDER BY cta.updated_at DESC LIMIT $offset, $perPage";
 
 $result = $conn->query($sql);
 $data = [];

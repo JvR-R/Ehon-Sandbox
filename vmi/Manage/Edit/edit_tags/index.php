@@ -20,9 +20,9 @@ include(BORDER_PATH);
     <title>Vendor Managed Inventory</title>
     <link rel="stylesheet" href="/vmi/css/theme.css">
     <link rel="stylesheet" href="/vmi/details/menu.css">
-    <link rel="stylesheet" href="/vmi/css/normalize.css">
-    <link rel="stylesheet" href="/vmi/css/style_rep.css">
     <link rel="stylesheet" href="../edit_common.css">
+    <link rel="stylesheet" href="modern_style.css">
+    <link rel="stylesheet" href="/vmi/css/style_rep.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -189,8 +189,7 @@ include(BORDER_PATH);
         <table id="customers_table">
           <thead>
             <tr>
-              <th style = "border-top-left-radius: 0.5rem;"></th>
-              <th>Tag Number </th>
+              <th style = "border-top-left-radius: 0.5rem;">Tag Number</th>
               <th>Card Holder</th>
               <th>Customer</th>
               <th>Card Number</th>
@@ -198,20 +197,24 @@ include(BORDER_PATH);
               <th>Associated Driver</th>
               <th>Associated Vehicle</th>
               <th>Last Modification</th>
-              <th style="border-top-right-radius: 0.5rem;">Edit Tag</th>
+              <th style="border-top-right-radius: 0.5rem;">Actions</th>
             </tr>
           </thead>
           <tbody id="bodtest">
             <!-- Data will be loaded here -->
           </tbody>
         </table>
-        <div id="pagination" style="padding:0rem 1rem; margin-bottom: 0.5rem;">
-            <button id="prevPage" class="btn-secondary">Previous</button>
-            <span id="pageIndicator"></span>
-            <button id="nextPage" class="btn-secondary">Next</button>
-            <button id="exportToExcel" class="btn btn-primary">Excel</button>
-            <button id="exportTocsv" class="btn btn-primary">CSV</button>
-            <button id="exportTopdf" class="btn btn-primary">PDF</button>
+        <div id="pagination">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <button id="prevPage" class="btn-secondary">Previous</button>
+                <span id="pageIndicator"></span>
+                <button id="nextPage" class="btn-secondary">Next</button>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+                <button id="exportToExcel" class="btn btn-primary">Excel</button>
+                <button id="exportTocsv" class="btn btn-primary">CSV</button>
+                <button id="exportTopdf" class="btn btn-primary">PDF</button>
+            </div>
         </div>
       </div>
     </section>
