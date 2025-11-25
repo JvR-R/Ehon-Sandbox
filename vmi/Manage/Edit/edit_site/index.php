@@ -123,7 +123,12 @@ include('../../../db/border.php');
                                 <div class="list-section">
                                     <h2>Tank List</h2>
                                     <div id="siteList"></div>
-                                    <button type="button" class="btn-primary w-inline-block" id="addTankButton" onclick="redirectToAddTankPage()">
+                                    <div id="tankEditSection" style="display: none; margin-top: 1rem;">
+                                        <button type="button" class="btn-primary w-inline-block" id="editTanksButton" onclick="redirectToEditTankPage()">
+                                            Edit Tanks & Pumps (FMS)
+                                        </button>
+                                    </div>
+                                    <button type="button" class="btn-primary w-inline-block" id="addTankButton" onclick="redirectToAddTankPage()" style="margin-top: 1rem;">
                                         Add Tank
                                     </button>
                                 </div>
@@ -209,6 +214,16 @@ function console_select() {
                 }
             }
         }
+        
+        // Check if device_type is 10 (FMS) and show tank edit button
+        var deviceType = data['device_type'] || 0;
+        var tankEditSection = document.getElementById('tankEditSection');
+        if (deviceType == 10) {
+            tankEditSection.style.display = 'block';
+        } else {
+            tankEditSection.style.display = 'none';
+        }
+        
         console.log(<?php echo $companyId; ?>, selectedConsoleId, selectedValue);
         loadSiteList(<?php echo $companyId; ?>, selectedConsoleId, selectedValue);
     })
@@ -227,6 +242,21 @@ function redirectToAddTankPage() {
     }
 
     const url = `add_tank.php?site_id=${selectedSiteId}`;
+    window.location.href = url;
+}
+
+function redirectToEditTankPage() {
+    const siteDropdown = document.getElementById('site_namesel');
+    const consoleDropdown = document.getElementById('consoleid');
+    const selectedSiteId = siteDropdown.value;
+    const selectedConsoleId = consoleDropdown.value;
+
+    if (selectedSiteId === "0" || selectedConsoleId === "0") {
+        alert("Please select a site and console first.");
+        return;
+    }
+
+    const url = `edit_tank.php?site_id=${selectedSiteId}&uid=${selectedConsoleId}`;
     window.location.href = url;
 }
 
