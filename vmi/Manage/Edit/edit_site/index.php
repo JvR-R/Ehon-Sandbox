@@ -124,8 +124,8 @@ include('../../../db/border.php');
                                     <h2>Tank List</h2>
                                     <div id="siteList"></div>
                                     <div id="tankEditSection" style="display: none; margin-top: 1rem;">
-                                        <button type="button" class="btn-primary w-inline-block" id="editTanksButton" onclick="redirectToEditTankPage()">
-                                            Edit Tanks & Pumps (FMS)
+                                        <button type="button" class="btn-minimal" id="editTanksButton" onclick="redirectToEditTankPage()">
+                                            Edit Tanks & Pumps
                                         </button>
                                     </div>
                                     <button type="button" class="btn-primary w-inline-block" id="addTankButton" onclick="redirectToAddTankPage()" style="margin-top: 1rem;">
