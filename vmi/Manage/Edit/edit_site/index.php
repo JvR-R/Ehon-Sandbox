@@ -1,7 +1,7 @@
 <?php
-include('../../db/dbh2.php'); 
-include('../../db/log.php');
-include('../../db/border.php');
+include('../../../db/dbh2.php'); 
+include('../../../db/log.php');
+include('../../../db/border.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,7 +29,7 @@ include('../../db/border.php');
         <div class="sidebar-spacer"></div>
         <div class="sidebar-spacer2"></div>
             <div class = "dashboard-main-content">
-            <?php include('../../details/top_menu.php');?>
+            <?php include('../../../details/top_menu.php');?>
                 <div class="container-default w-container" style="padding-top: 24px; max-width: 960px;">
                     <!-- Division for input fields -->
                     <div class="mg-bottom-24px">
