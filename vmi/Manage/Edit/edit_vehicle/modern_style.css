@@ -562,3 +562,51 @@ main.table .btn-secondary {
     border-color: transparent !important;
 }
 
+/* Override Bootstrap _borders.scss - remove border from .border class */
+/* Note: .border is used for side navigation in style_rep.css, so preserve that */
+.border {
+    border: none !important;
+    border-color: transparent !important;
+}
+
+/* But preserve the side navigation border from style_rep.css */
+section.border {
+    border: none !important;
+}
+
+/* Override Bootstrap _dropdown.scss styles */
+main.table .dropdown-item,
+.dropdown-item {
+    color: var(--text-primary) !important;
+    text-decoration: none !important;
+    background-color: transparent !important;
+}
+
+main.table .dropdown-item:hover,
+.dropdown-item:hover {
+    color: var(--accent-primary) !important;
+    background-color: rgba(108, 114, 255, 0.1) !important;
+}
+
+main.table .dropdown-item.active,
+main.table .dropdown-item:active,
+.dropdown-item.active,
+.dropdown-item:active {
+    color: var(--text-primary) !important;
+    text-decoration: none !important;
+    background-color: rgba(108, 114, 255, 0.15) !important;
+}
+
+/* Ensure dropdown styles from menu.css take precedence */
+.dropdown-content,
+.lateral-dropdown,
+.lateral-dropdown-edit {
+    border: none !important;
+}
+
+.dropdown-content .dropdown-item,
+.lateral-dropdown .dropdown-item,
+.lateral-dropdown-edit .dropdown-item {
+    border: none !important;
+}
+

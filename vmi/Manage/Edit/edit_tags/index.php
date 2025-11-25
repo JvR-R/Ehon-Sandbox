@@ -25,6 +25,25 @@ include(BORDER_PATH);
     <link rel="stylesheet" href="modern_style.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Override Bootstrap _borders.scss and _dropdown.scss - must load after Bootstrap */
+        .border {
+            border: none !important;
+            border-color: transparent !important;
+        }
+        
+        .dropdown-item.active,
+        .dropdown-item:active {
+            color: var(--text-primary) !important;
+            text-decoration: none !important;
+            background-color: rgba(108, 114, 255, 0.15) !important;
+        }
+        
+        .dropdown-item:hover {
+            color: var(--accent-primary) !important;
+            background-color: rgba(108, 114, 255, 0.1) !important;
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/vmi/clients/datatables.min.js"></script>
