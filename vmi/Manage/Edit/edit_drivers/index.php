@@ -20,12 +20,30 @@ include(BORDER_PATH);
     <title>Edit Drivers</title>
     <link rel="stylesheet" href="/vmi/css/theme.css">
     <link rel="stylesheet" href="/vmi/details/menu.css">
-    <link rel="stylesheet" href="/vmi/css/normalize.css">
-    <link rel="stylesheet" href="/vmi/clients/style.css">
-    <link rel="stylesheet" href="/vmi/css/style_rep.css">
     <link rel="stylesheet" href="../edit_common.css">
+    <link rel="stylesheet" href="/vmi/css/style_rep.css">
+    <link rel="stylesheet" href="modern_style.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Override Bootstrap _borders.scss and _dropdown.scss - must load after Bootstrap */
+        .border {
+            border: none !important;
+            border-color: transparent !important;
+        }
+        
+        .dropdown-item.active,
+        .dropdown-item:active {
+            color: var(--text-primary) !important;
+            text-decoration: none !important;
+            background-color: rgba(108, 114, 255, 0.15) !important;
+        }
+        
+        .dropdown-item:hover {
+            color: var(--accent-primary) !important;
+            background-color: rgba(108, 114, 255, 0.1) !important;
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/vmi/clients/datatables.min.js"></script>
@@ -190,28 +208,31 @@ include(BORDER_PATH);
         <table id="customers_table">
           <thead>
             <tr>
-              <th style = "border-top-left-radius: 0.5rem;"></th>
-              <th>Driver ID </th>
+              <th style = "border-top-left-radius: 0.5rem;">Driver ID</th>
               <th>Name</th>
               <th>Last Name</th>
               <th>Customer</th>
               <th>Phone</th>
               <th>License Date</th>
               <th>Last Modification</th>
-              <th style="border-top-right-radius: 0.5rem;">Edit Driver</th>
+              <th style="border-top-right-radius: 0.5rem;">Actions</th>
             </tr>
           </thead>
           <tbody id="bodtest">
             <!-- Data will be loaded here -->
           </tbody>
         </table>
-        <div id="pagination" style="padding:0rem 1rem; margin-bottom: 0.5rem;">
-            <button id="prevPage" class="btn-secondary">Previous</button>
-            <span id="pageIndicator"></span>
-            <button id="nextPage" class="btn-secondary">Next</button>
-            <button id="exportToExcel" class="btn btn-primary">Excel</button>
-            <button id="exportTocsv" class="btn btn-primary">CSV</button>
-            <button id="exportTopdf" class="btn btn-primary">PDF</button>
+        <div id="pagination">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <button id="prevPage" class="btn-secondary">Previous</button>
+                <span id="pageIndicator"></span>
+                <button id="nextPage" class="btn-secondary">Next</button>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+                <button id="exportToExcel" class="btn btn-primary">Excel</button>
+                <button id="exportTocsv" class="btn btn-primary">CSV</button>
+                <button id="exportTopdf" class="btn btn-primary">PDF</button>
+            </div>
         </div>
       </div>
     </section>

@@ -4,10 +4,11 @@ function Filters(companyId) {
     var element = document.getElementById('filter__div');
     if (element.style.display === "none" || element.style.display === "") {
         element.style.display = "block";
+        element.classList.add('active');
     } else {
         element.style.display = "none";
+        element.classList.remove('active');
     }
-    console.log(companyId);
 }
 
 $(document).ready(function () {
@@ -15,7 +16,7 @@ $(document).ready(function () {
 
     function loadTransactions(page, filters) {
         $.ajax({
-            url: 'get_drivers', // Adjusted to a likely path
+            url: 'get_drivers.php', // Adjusted to a likely path
             type: 'GET',
             dataType: 'json', // Ensure jQuery expects JSON
             data: {
@@ -26,18 +27,29 @@ $(document).ready(function () {
                 var dtInstance = $('#customers_table').DataTable();
                 dtInstance.clear(); // Clear current table rows without destroying the table
 
-                data.forEach(function(transaction) { // Using forEach for clarity
+                if (data.length === 0) {
+                    // Show empty state - don't add a row, just show message
+                    $('#bodtest').html('<tr><td colspan="8" class="empty-state" style="text-align: center; padding: 3rem;">No drivers found</td></tr>');
+                    updatePageIndicator(page);
+                    return;
+                }
+
+                data.forEach(function(driver) { // Using forEach for clarity
+                    var actionButtons = '<div class="action-buttons">' +
+                        '<button class="btn-edit edit-btn" data-id="' + driver.driver_id + '">Edit</button>' +
+                        '<button class="btn-delete delete-btn" data-id="' + driver.driver_id + '" data-name="' + 
+                        (driver.first_name + ' ' + driver.surname || driver.first_name || 'this driver') + '">Delete</button>' +
+                        '</div>';
+                    
                     dtInstance.row.add([ // Add new row
-                        '', // Adjust columns as necessary
-                        transaction.driver_id,
-                        transaction.first_name,
-                        transaction.surname,
-                        transaction.customer_name,
-                        transaction.driver_phone,
-                        transaction.license_expire,
-                        transaction.updated_at,
-                        '<button class="btn btn-primary edit-btn" data-id="' + transaction.driver_id + '">Edit</button>'
-                        // Adjust according to your actual data structure
+                        driver.driver_id || '',
+                        driver.first_name || '',
+                        driver.surname || '',
+                        driver.customer_name || '',
+                        driver.driver_phone || '',
+                        driver.license_expire ? new Date(driver.license_expire).toLocaleDateString() : '',
+                        driver.updated_at ? new Date(driver.updated_at).toLocaleDateString() : '',
+                        actionButtons
                     ]);
                 });
 
@@ -168,21 +180,45 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Bind the function to the Reset button
     document.getElementById('resetFilters').onclick = resetFilters;
+    
+    // Edit button handler
     $(document).on('click', '.edit-btn', function() {
         var driverId = $(this).data('id');
+        window.location.href = 'driver_edit.php?id=' + driverId;
+    });
 
-        $.ajax({
-            url: 'driver_edit.php',
-            type: 'POST',
-            data: { id: driverId },
-            success: function(response) {
-                console.log('driver edit request successful');
-                // Optionally, you can redirect or display a message
-                window.location.href = 'driver_edit.php?id=' + driverId; // Redirect if needed
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error('Error sending edit request:', textStatus, errorThrown);
-            }
-        });
+    // Delete button handler
+    $(document).on('click', '.delete-btn', function() {
+        var driverId = $(this).data('id');
+        var driverName = $(this).data('name');
+        var $btn = $(this);
+        
+        // Show confirmation dialog
+        if (confirm('Are you sure you want to delete "' + driverName + '"? This action cannot be undone.')) {
+            // Disable button to prevent double-click
+            $btn.prop('disabled', true).text('Deleting...');
+            
+            $.ajax({
+                url: 'delete_driver.php',
+                type: 'POST',
+                data: { driver_id: driverId },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        toastr.success('Driver deleted successfully');
+                        // Reload the current page data
+                        loadTransactions(currentPage, currentfilters);
+                    } else {
+                        toastr.error(response.error || 'Failed to delete driver');
+                        $btn.prop('disabled', false).text('Delete');
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('Error deleting driver:', textStatus, errorThrown);
+                    toastr.error('An error occurred while deleting the driver');
+                    $btn.prop('disabled', false).text('Delete');
+                }
+            });
+        }
     });
 });

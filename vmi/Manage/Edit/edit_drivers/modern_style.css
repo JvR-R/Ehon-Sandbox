@@ -1,0 +1,612 @@
+/**
+ * Modern Edit Drivers Page Styles
+ * Clean, modern design with improved UX
+ */
+
+/* Main Container */
+main.table {
+    position: fixed !important;
+    top: 8rem !important;
+    left: 5rem !important;
+    width: calc(100vw - 5rem) !important;
+    height: calc(100vh - 8rem) !important;
+    background: var(--bg-primary);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+@media (min-width: 1920px) {
+    main.table {
+        left: 12rem !important;
+        width: calc(100vw - 12rem) !important;
+    }
+}
+
+@media (max-width: 1024px) {
+    main.table {
+        left: 5rem !important;
+        width: calc(100vw - 5rem) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    main.table {
+        left: 5rem !important;
+        width: calc(100vw - 5rem) !important;
+    }
+}
+
+/* Header Section */
+.table__header {
+    padding: 2rem 2.5rem 1.5rem;
+    background: var(--bg-card);
+    border-bottom: 2px solid var(--border-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.table__header h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+/* Filters Section */
+.table__filters {
+    padding: 1.5rem 2.5rem;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.filter__button {
+    margin-bottom: 1rem;
+}
+
+.filter__button .btn {
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.filter__button .btn-secondary {
+    background: var(--accent-primary);
+    color: white;
+}
+
+.filter__button .btn-secondary:hover {
+    background: var(--accent-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(108, 114, 255, 0.3);
+}
+
+.filter__div {
+    display: none !important;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.filter__div.active,
+.filter__div[style*="block"] {
+    display: block !important;
+}
+
+/* Nav Tabs */
+.nav-tabs {
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: 1.5rem;
+}
+
+.nav-tabs .nav-item {
+    margin-bottom: -2px;
+}
+
+.nav-tabs .nav-link {
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: var(--text-secondary);
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background: transparent;
+    cursor: pointer;
+}
+
+.nav-tabs .nav-link:hover {
+    color: var(--accent-primary);
+    border-bottom-color: var(--accent-primary);
+    background: rgba(108, 114, 255, 0.05);
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--accent-primary);
+    border-bottom-color: var(--accent-primary);
+    background: transparent;
+    font-weight: 600;
+}
+
+/* Form Elements */
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.form-select,
+.form-control,
+input[type="text"],
+input[type="date"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.form-select:focus,
+.form-control:focus,
+input[type="text"]:focus,
+input[type="date"]:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(108, 114, 255, 0.1);
+}
+
+.tooltip {
+    display: inline-block;
+    margin-left: 1rem;
+    padding: 0.5rem 1rem;
+    background: rgba(108, 114, 255, 0.1);
+    color: var(--accent-primary);
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+.button-div {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.button-div .btn {
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.button-div .btn-primary {
+    background: var(--accent-primary);
+    color: white;
+}
+
+.button-div .btn-primary:hover {
+    background: var(--accent-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 114, 255, 0.3);
+}
+
+.button-div .btn-secondary {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+.button-div .btn-secondary:hover {
+    background: var(--border-color);
+}
+
+/* Table Body */
+.table__body {
+    flex: 1;
+    overflow: auto;
+    padding: 1.5rem 2.5rem;
+    background: var(--bg-primary);
+}
+
+.trans {
+    background: var(--bg-card);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+/* Modern Table Styles */
+#customers_table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--bg-card);
+}
+
+#customers_table thead {
+    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-primary-hover) 100%);
+    color: white;
+}
+
+#customers_table thead th {
+    padding: 1.25rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+}
+
+#customers_table thead th:first-child {
+    border-top-left-radius: 12px;
+    padding-left: 1.5rem;
+}
+
+#customers_table thead th:last-child {
+    border-top-right-radius: 12px;
+    padding-right: 1.5rem;
+}
+
+#customers_table tbody tr {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid var(--border-light);
+}
+
+#customers_table tbody tr:hover {
+    background: var(--table-row-hover);
+    transform: scale(1.001);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+#customers_table tbody tr:last-child {
+    border-bottom: none;
+}
+
+#customers_table tbody td {
+    padding: 1.25rem 1rem;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+#customers_table tbody td:first-child {
+    padding-left: 1.5rem;
+}
+
+#customers_table tbody td:last-child {
+    padding-right: 1.5rem;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.btn-edit,
+.btn-delete {
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-edit {
+    background: var(--accent-primary);
+    color: white;
+}
+
+.btn-edit:hover {
+    background: var(--accent-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 114, 255, 0.3);
+}
+
+.btn-delete {
+    background: var(--accent-danger);
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #c41616;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(236, 28, 28, 0.3);
+}
+
+/* Pagination */
+#pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border-color);
+}
+
+#pagination button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#pagination .btn-secondary {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+#pagination .btn-secondary:hover:not(:disabled) {
+    background: var(--border-color);
+    transform: translateY(-2px);
+}
+
+#pagination .btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#pagination .btn-primary {
+    background: var(--accent-primary);
+    color: white;
+    margin-left: 0.5rem;
+}
+
+#pagination .btn-primary:hover {
+    background: var(--accent-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 114, 255, 0.3);
+}
+
+#pageIndicator {
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin: 0 1rem;
+}
+
+/* Loading State */
+.loading {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-secondary);
+}
+
+.loading::after {
+    content: "...";
+    animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: "."; }
+    40% { content: ".."; }
+    60%, 100% { content: "..."; }
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-secondary);
+}
+
+.empty-state svg {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .table__header,
+    .table__filters,
+    .table__body {
+        padding: 1rem;
+    }
+
+    .table__header h1 {
+        font-size: 1.5rem;
+    }
+
+    #customers_table {
+        font-size: 0.85rem;
+    }
+
+    #customers_table thead th,
+    #customers_table tbody td {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .btn-edit,
+    .btn-delete {
+        width: 100%;
+        justify-content: center;
+    }
+
+    #pagination {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+}
+
+/* Toast Notifications */
+.toastr {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Smooth Scrolling */
+.table__body {
+    scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+.table__body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.table__body::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+.table__body::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.table__body::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* Override style_rep.css filter__div styles while keeping borders intact */
+main.table .filter__div {
+    padding: 1.5rem !important; /* Override style_rep.css padding */
+    display: none !important;
+}
+
+main.table .filter__div.active,
+main.table .filter__div[style*="block"] {
+    display: block !important;
+}
+
+/* Override style_rep.css table__filters padding */
+main.table .table__filters {
+    padding: 1.5rem 2.5rem !important;
+}
+
+/* Override style_rep.css tab-content styles */
+main.table .tab-content {
+    padding: 0 !important;
+    min-height: auto !important;
+    background-color: transparent !important;
+    border-radius: 0 !important;
+}
+
+/* Keep border and topborder styles from style_rep.css - don't override these */
+/* section.topborder and .border should remain as defined in style_rep.css */
+
+/* Remove unwanted Bootstrap _borders.scss styles (border: 1px solid #dee2e6) */
+main.table .form-select,
+main.table .form-control,
+main.table input[type="text"],
+main.table input[type="date"] {
+    border: 1px solid var(--border-color) !important;
+    border-color: var(--border-color) !important;
+}
+
+main.table .nav-tabs {
+    border: none !important;
+    border-bottom: 2px solid var(--border-color) !important;
+}
+
+main.table .nav-tabs .nav-link {
+    border: none !important;
+    border-bottom: 3px solid transparent !important;
+}
+
+main.table .nav-tabs .nav-link.active {
+    border-bottom-color: var(--accent-primary) !important;
+}
+
+main.table .tab-content {
+    border: none !important;
+}
+
+main.table .filter__div {
+    border: 1px solid var(--border-color) !important;
+    border-color: var(--border-color) !important;
+}
+
+main.table #customers_table,
+main.table #customers_table thead th,
+main.table #customers_table tbody td {
+    border: none !important;
+    border-color: transparent !important;
+}
+
+main.table #customers_table tbody tr {
+    border: none !important;
+    border-bottom: 1px solid var(--border-light) !important;
+}
+
+main.table .btn,
+main.table button,
+main.table .btn-primary,
+main.table .btn-secondary {
+    border: none !important;
+    border-color: transparent !important;
+}
+
+/* Override Bootstrap _borders.scss - remove border from .border class */
+/* Note: .border is used for side navigation in style_rep.css, so preserve that */
+.border {
+    border: none !important;
+    border-color: transparent !important;
+}
+
+/* But preserve the side navigation border from style_rep.css */
+section.border {
+    border: none !important;
+}
+
+/* Override Bootstrap _dropdown.scss styles */
+main.table .dropdown-item,
+.dropdown-item {
+    color: var(--text-primary) !important;
+    text-decoration: none !important;
+    background-color: transparent !important;
+}
+
+main.table .dropdown-item:hover,
+.dropdown-item:hover {
+    color: var(--accent-primary) !important;
+    background-color: rgba(108, 114, 255, 0.1) !important;
+}
+
+main.table .dropdown-item.active,
+main.table .dropdown-item:active,
+.dropdown-item.active,
+.dropdown-item:active {
+    color: var(--text-primary) !important;
+    text-decoration: none !important;
+    background-color: rgba(108, 114, 255, 0.15) !important;
+}
+
+/* Ensure dropdown styles from menu.css take precedence */
+.dropdown-content,
+.lateral-dropdown,
+.lateral-dropdown-edit {
+    border: none !important;
+}
+
+.dropdown-content .dropdown-item,
+.lateral-dropdown .dropdown-item,
+.lateral-dropdown-edit .dropdown-item {
+    border: none !important;
+}
+
