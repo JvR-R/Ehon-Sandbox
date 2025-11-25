@@ -95,7 +95,7 @@ if (isset($input['case'])) {
         $tanks = array();
         
         if($companyId==15100){
-            $sql = "SELECT t.tank_id, t.Tank_name, t.capacity 
+            $sql = "SELECT t.tank_id, t.Tank_name, t.capacity, t.product_id 
                     FROM Tanks t 
                     WHERE t.Site_id = ? AND t.uid = ? AND t.enabled = 1
                     ORDER BY t.tank_id;";
@@ -103,7 +103,7 @@ if (isset($input['case'])) {
             $sqlexec->bind_param("ii", $siteid_tank, $uid_tank);
         }
         else{
-            $sql = "SELECT t.tank_id, t.Tank_name, t.capacity 
+            $sql = "SELECT t.tank_id, t.Tank_name, t.capacity, t.product_id 
                     FROM Tanks t 
                     WHERE t.Site_id = ? AND t.uid = ? AND t.client_id = ? AND t.enabled = 1
                     ORDER BY t.tank_id;";
@@ -113,7 +113,7 @@ if (isset($input['case'])) {
         
         if ($sqlexec) {
             $sqlexec->execute();
-            $sqlexec->bind_result($tank_id, $tank_name, $capacity);
+            $sqlexec->bind_result($tank_id, $tank_name, $capacity, $product_id);
             while ($sqlexec->fetch()) {
                 // Fetch pumps for this tank
                 $pumps = array();
@@ -143,6 +143,7 @@ if (isset($input['case'])) {
                     "tank_id" => $tank_id,
                     "tank_name" => $tank_name ? $tank_name : "Tank " . $tank_id,
                     "capacity" => $capacity,
+                    "product_id" => $product_id ? $product_id : 0,
                     "pumps" => $pumps
                 );
             }

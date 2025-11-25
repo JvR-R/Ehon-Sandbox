@@ -124,11 +124,14 @@ include('../../../db/border.php');
                                     <h2>Tank List</h2>
                                     <div id="siteList"></div>
                                     <div id="tankEditSection" style="display: none; margin-top: 1rem;">
-                                        <button type="button" class="btn-minimal" id="editTanksButton" onclick="redirectToEditTankPage()">
-                                            Edit Tanks & Pumps
-                                        </button>
+                                        <div id="tankButtonsContainer" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1rem;">
+                                            <!-- Tank buttons will be dynamically generated here -->
+                                        </div>
+                                        <div id="totalPumpsInfo" style="margin-bottom: 1rem; color: var(--text-secondary);">
+                                            Total Pumps: <span id="totalPumpsCount">0</span> / 4
+                                        </div>
                                     </div>
-                                    <button type="button" class="btn-primary w-inline-block" id="addTankButton" onclick="redirectToAddTankPage()" style="margin-top: 1rem;">
+                                    <button type="button" class="btn-primary w-inline-block" id="addTankButton" onclick="redirectToAddTankPage()" style="margin-top: 1rem; display: none;">
                                         Add Tank
                                     </button>
                                 </div>
@@ -151,6 +154,148 @@ include('../../../db/border.php');
         </div>
     </div>
 </div>
+
+<!-- Tank Edit Modal -->
+<div id="tankEditModal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
+        <div class="modal-header">
+            <h2 id="modalTankTitle">Edit Tank</h2>
+            <span class="modal-close" onclick="closeTankModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="tankEditForm">
+                <input type="hidden" id="modalTankId" value="">
+                <input type="hidden" id="modalUid" value="">
+                <input type="hidden" id="modalSiteId" value="">
+                
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label>Tank Capacity (Liters):</label>
+                    <input type="number" class="input" id="modalTankCapacity" min="0" required>
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label>Product:</label>
+                    <select class="small-dropdown-toggle" id="modalTankProduct" required>
+                        <option value="">Select Product</option>
+                        <!-- Products will be loaded dynamically -->
+                    </select>
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label>Number of Pumps:</label>
+                    <select class="small-dropdown-toggle" id="modalPumpCount" onchange="updatePumpFields()">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                    <small style="color: var(--text-secondary);">Note: Console can hold maximum 4 pumps total across all tanks</small>
+                </div>
+                
+                <div id="pumpFieldsContainer" style="margin-top: 1.5rem;">
+                    <!-- Pump fields will be dynamically generated here -->
+                </div>
+                
+                <div class="buttons-row" style="margin-top: 1.5rem; justify-content: flex-end;">
+                    <button type="button" class="btn-minimal" onclick="closeTankModal()">Cancel</button>
+                    <button type="button" class="btn-primary" onclick="saveTankData()">Save Tank</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: var(--bg-card, #fff);
+    margin: 5% auto;
+    padding: 0;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color, #e0e0e0);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.modal-close {
+    color: var(--text-secondary, #aaa);
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+    color: var(--text-primary, #000);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.pump-field-group {
+    background: var(--bg-primary, #f5f5f5);
+    border: 1px solid var(--border-light, #ddd);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.pump-field-group h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.tank-button {
+    padding: 1rem;
+    background: var(--bg-card, #fff);
+    border: 2px solid var(--border-color, #e0e0e0);
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tank-button:hover {
+    border-color: var(--primary-color, #007bff);
+    background: var(--bg-primary, #f5f5f5);
+}
+
+.tank-button.active {
+    border-color: var(--primary-color, #007bff);
+    background: var(--primary-light, rgba(0,123,255,0.1));
+}
+</style>
+
 </body>
 </html>
 <script>
@@ -260,9 +405,11 @@ function redirectToEditTankPage() {
     window.location.href = url;
 }
 
+var tanksData = {}; // Store tank data globally
+var productsData = []; // Store products globally
+
 function loadSiteList(companyId, uid, siteid) {
     var dataToTank = JSON.stringify({ siteid_tank: siteid, case: 2, companyId_tank: companyId, uid_tank: uid });
-    console.log("Sending data to Tank:", dataToTank);
     fetch('edit', {
         method: 'POST',
         headers: {
@@ -274,7 +421,6 @@ function loadSiteList(companyId, uid, siteid) {
     .then(data => {
         const siteListElement = document.getElementById('siteList');
         siteListElement.innerHTML = ''; // Clear existing content
-        console.log("Response from server:", data);
         data.forEach(site => {
             siteListElement.innerHTML += `
                 <div class="site-item">
@@ -282,8 +428,324 @@ function loadSiteList(companyId, uid, siteid) {
                 </div>
             `;
         });
+        
+        // Load detailed tank data with pumps
+        loadTanksData(companyId, uid, siteid);
     })
     .catch(error => console.error('Error:', error));
+}
+
+function loadTanksData(companyId, uid, siteid) {
+    var dataToTank = JSON.stringify({ siteid_tank: siteid, case: 4, companyId_tank: companyId, uid_tank: uid });
+    fetch('edit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: dataToTank
+    })
+    .then(response => response.json())
+    .then(data => {
+        tanksData = {};
+        const tankButtonsContainer = document.getElementById('tankButtonsContainer');
+        tankButtonsContainer.innerHTML = '';
+        
+        // Create buttons for up to 4 tanks
+        for (let i = 1; i <= 4; i++) {
+            const tank = data.find(t => t.tank_id == i);
+            const tankButton = document.createElement('button');
+            tankButton.type = 'button';
+            tankButton.className = 'tank-button';
+            tankButton.id = `tankButton_${i}`;
+            tankButton.onclick = () => openTankModal(i, uid, siteid);
+            
+            if (tank) {
+                tanksData[i] = tank;
+                tankButton.innerHTML = `
+                    <strong>Tank ${i}</strong><br>
+                    <small>${tank.tank_name || 'Unnamed'}</small><br>
+                    <small>${tank.pumps ? tank.pumps.length : 0} pump(s)</small>
+                `;
+            } else {
+                tankButton.innerHTML = `
+                    <strong>Tank ${i}</strong><br>
+                    <small>Not configured</small>
+                `;
+                tankButton.style.opacity = '0.5';
+            }
+            
+            tankButtonsContainer.appendChild(tankButton);
+        }
+        
+        updateTotalPumpsCount();
+        
+        // Load products for later use
+        if (productsData.length === 0) {
+            loadProducts();
+        }
+    })
+    .catch(error => console.error('Error loading tanks:', error));
+}
+
+function loadProducts(callback) {
+    fetch('product_sel.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                productsData = data.data;
+                if (callback) callback();
+            }
+        })
+        .catch(error => {
+            console.error('Error loading products:', error);
+            // Try alternative path
+            fetch('../product_sel.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        productsData = data.data;
+                        if (callback) callback();
+                    }
+                })
+                .catch(err => console.error('Error loading products from alternative path:', err));
+        });
+}
+
+function populateProductDropdown(selectedProductId) {
+    const productSelect = document.getElementById('modalTankProduct');
+    if (productSelect && productsData.length > 0) {
+        // Clear existing options
+        productSelect.innerHTML = '<option value="">Select Product</option>';
+        productsData.forEach(product => {
+            const option = document.createElement('option');
+            option.value = product.id;
+            option.textContent = product.name;
+            if (selectedProductId && product.id == selectedProductId) {
+                option.selected = true;
+            }
+            productSelect.appendChild(option);
+        });
+    }
+}
+
+function openTankModal(tankId, uid, siteId) {
+    const modal = document.getElementById('tankEditModal');
+    const tank = tanksData[tankId] || { tank_id: tankId, capacity: 0, product_id: 0, pumps: [] };
+    
+    document.getElementById('modalTankId').value = tankId;
+    document.getElementById('modalUid').value = uid;
+    document.getElementById('modalSiteId').value = siteId;
+    document.getElementById('modalTankTitle').textContent = `Edit Tank ${tankId}`;
+    document.getElementById('modalTankCapacity').value = tank.capacity || 0;
+    
+    // Set pump count first
+    const pumpCount = tank.pumps ? tank.pumps.length : 0;
+    document.getElementById('modalPumpCount').value = pumpCount;
+    
+    // Update pump fields - this will create the pump input fields
+    updatePumpFields();
+    
+    // Populate existing pump data after fields are created
+    setTimeout(() => {
+        if (tank.pumps && tank.pumps.length > 0) {
+            const container = document.getElementById('pumpFieldsContainer');
+            tank.pumps.forEach((pump, index) => {
+                const pumpGroup = container.querySelector(`.pump-field-group[data-pump-index="${index}"]`);
+                if (pumpGroup) {
+                    const nozzleInput = pumpGroup.querySelector(`input[name="nozzle_number"]`);
+                    const pulseInput = pumpGroup.querySelector(`input[name="pulse_rate"]`);
+                    if (nozzleInput) nozzleInput.value = pump.nozzle_number || '';
+                    if (pulseInput) pulseInput.value = pump.pulse_rate || '';
+                    if (pump.pump_id) {
+                        const hiddenId = document.createElement('input');
+                        hiddenId.type = 'hidden';
+                        hiddenId.name = 'pump_id';
+                        hiddenId.value = pump.pump_id;
+                        pumpGroup.appendChild(hiddenId);
+                    }
+                }
+            });
+        }
+    }, 50);
+    
+    // Load products into dropdown
+    modal.style.display = 'block';
+    if (productsData.length === 0) {
+        loadProducts(() => {
+            populateProductDropdown(tank.product_id || 0);
+        });
+    } else {
+        populateProductDropdown(tank.product_id || 0);
+    }
+}
+
+function closeTankModal() {
+    document.getElementById('tankEditModal').style.display = 'none';
+}
+
+function updatePumpFields() {
+    const pumpCount = parseInt(document.getElementById('modalPumpCount').value) || 0;
+    const container = document.getElementById('pumpFieldsContainer');
+    container.innerHTML = '';
+    
+    // Validate total pumps
+    if (!validatePumpCount(pumpCount)) {
+        alert('Total pumps cannot exceed 4 across all tanks!');
+        document.getElementById('modalPumpCount').value = getCurrentTankPumpCount();
+        return;
+    }
+    
+    for (let i = 0; i < pumpCount; i++) {
+        const pumpGroup = document.createElement('div');
+        pumpGroup.className = 'pump-field-group';
+        pumpGroup.setAttribute('data-pump-index', i);
+        pumpGroup.innerHTML = `
+            <h4>Pump ${i + 1}</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label>Nozzle Number:</label>
+                    <input type="number" class="input" name="nozzle_number" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label>Pulse Rate:</label>
+                    <input type="number" class="input" step="0.01" name="pulse_rate" min="0">
+                </div>
+            </div>
+        `;
+        container.appendChild(pumpGroup);
+    }
+    
+    updateTotalPumpsCount();
+}
+
+function getCurrentTankPumpCount() {
+    const currentTankId = parseInt(document.getElementById('modalTankId').value);
+    const currentTank = tanksData[currentTankId];
+    return currentTank && currentTank.pumps ? currentTank.pumps.length : 0;
+}
+
+function validatePumpCount(newPumpCount) {
+    const currentTankId = parseInt(document.getElementById('modalTankId').value);
+    const currentPumpCount = getCurrentTankPumpCount();
+    const otherTanksPumpCount = Object.keys(tanksData).reduce((total, tankId) => {
+        if (parseInt(tankId) !== currentTankId && tanksData[tankId] && tanksData[tankId].pumps) {
+            return total + tanksData[tankId].pumps.length;
+        }
+        return total;
+    }, 0);
+    
+    const totalPumps = otherTanksPumpCount + newPumpCount;
+    return totalPumps <= 4;
+}
+
+function updateTotalPumpsCount() {
+    const total = Object.keys(tanksData).reduce((sum, tankId) => {
+        if (tanksData[tankId] && tanksData[tankId].pumps) {
+            return sum + tanksData[tankId].pumps.length;
+        }
+        return sum;
+    }, 0);
+    const totalPumpsElement = document.getElementById('totalPumpsCount');
+    if (totalPumpsElement) {
+        totalPumpsElement.textContent = total;
+    }
+}
+
+function saveTankData() {
+    const tankId = parseInt(document.getElementById('modalTankId').value);
+    const uid = parseInt(document.getElementById('modalUid').value);
+    const siteId = parseInt(document.getElementById('modalSiteId').value);
+    const capacity = parseInt(document.getElementById('modalTankCapacity').value);
+    const productId = parseInt(document.getElementById('modalTankProduct').value);
+    const pumpCount = parseInt(document.getElementById('modalPumpCount').value) || 0;
+    
+    if (!capacity || capacity <= 0) {
+        alert('Please enter a valid tank capacity.');
+        return;
+    }
+    
+    if (!productId || productId <= 0) {
+        alert('Please select a product.');
+        return;
+    }
+    
+    // Collect pump data
+    const pumps = [];
+    const pumpGroups = document.querySelectorAll('#pumpFieldsContainer .pump-field-group');
+    pumpGroups.forEach(group => {
+        const nozzleNumber = parseInt(group.querySelector('input[name="nozzle_number"]').value);
+        const pulseRate = parseFloat(group.querySelector('input[name="pulse_rate"]').value) || 0;
+        const pumpIdInput = group.querySelector('input[name="pump_id"]');
+        const pumpId = pumpIdInput ? parseInt(pumpIdInput.value) : 0;
+        
+        if (nozzleNumber > 0) {
+            pumps.push({
+                pump_id: pumpId,
+                nozzle_number: nozzleNumber,
+                pulse_rate: pulseRate
+            });
+        }
+    });
+    
+    // Validate pump count - get current total excluding this tank
+    const currentTankId = parseInt(document.getElementById('modalTankId').value);
+    const otherTanksPumpCount = Object.keys(tanksData).reduce((total, tankId) => {
+        if (parseInt(tankId) !== currentTankId && tanksData[tankId] && tanksData[tankId].pumps) {
+            return total + tanksData[tankId].pumps.length;
+        }
+        return total;
+    }, 0);
+    
+    if (otherTanksPumpCount + pumps.length > 4) {
+        alert('Total pumps cannot exceed 4 across all tanks! Currently other tanks have ' + otherTanksPumpCount + ' pump(s).');
+        return;
+    }
+    
+    // Prepare data to send
+    const dataToSend = JSON.stringify({
+        case: 5,
+        tank_id: tankId,
+        uid: uid,
+        site_id: siteId,
+        capacity: capacity,
+        product_id: productId,
+        pumps: pumps
+    });
+    
+    fetch('edit_tank_sbmt.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: dataToSend
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            closeTankModal();
+            // Reload tank data
+            const siteDropdown = document.getElementById("site_namesel");
+            const siteId = siteDropdown.value;
+            const consoleDropdown = document.getElementById("consoleid");
+            const uid = consoleDropdown.value;
+            loadTanksData(<?php echo $companyId; ?>, uid, siteId);
+            alert('Tank saved successfully!');
+        } else {
+            alert('Error saving tank: ' + (data.error || 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error saving tank. Please try again.');
+    });
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('tankEditModal');
+    if (event.target == modal) {
+        closeTankModal();
+    }
 }
 
 
