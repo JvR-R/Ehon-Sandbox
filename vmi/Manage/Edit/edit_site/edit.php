@@ -113,8 +113,22 @@ if (isset($input['case'])) {
         
         if ($sqlexec) {
             $sqlexec->execute();
-            $sqlexec->bind_result($tank_id, $tank_name, $capacity, $product_id);
-            while ($sqlexec->fetch()) {
+            $result = $sqlexec->get_result();
+            $tankRows = array();
+            
+            // Store all tank rows first
+            while ($row = $result->fetch_assoc()) {
+                $tankRows[] = $row;
+            }
+            $sqlexec->close();
+            
+            // Now fetch pumps for each tank
+            foreach ($tankRows as $tankRow) {
+                $tank_id = $tankRow['tank_id'];
+                $tank_name = $tankRow['Tank_name'];
+                $capacity = $tankRow['capacity'];
+                $product_id = $tankRow['product_id'];
+                
                 // Fetch pumps for this tank
                 $pumps = array();
                 $pumpSql = "SELECT pump_id, Nozzle_Number, Nozzle_Walk_Time, Nozzle_Auth_Time, Nozzle_Max_Run_Time, Nozzle_No_Flow, Nozzle_Product, Pulse_Rate 
@@ -122,22 +136,25 @@ if (isset($input['case'])) {
                             WHERE uid = ? AND tank_id = ? 
                             ORDER BY Nozzle_Number;";
                 $pumpStmt = $conn->prepare($pumpSql);
-                $pumpStmt->bind_param("ii", $uid_tank, $tank_id);
-                $pumpStmt->execute();
-                $pumpStmt->bind_result($pump_id, $nozzle_number, $nozzle_walk_time, $nozzle_auth_time, $nozzle_max_run_time, $nozzle_no_flow, $nozzle_product, $pulse_rate);
-                while ($pumpStmt->fetch()) {
-                    $pumps[] = array(
-                        "pump_id" => $pump_id,
-                        "nozzle_number" => $nozzle_number,
-                        "nozzle_walk_time" => $nozzle_walk_time,
-                        "nozzle_auth_time" => $nozzle_auth_time,
-                        "nozzle_max_run_time" => $nozzle_max_run_time,
-                        "nozzle_no_flow" => $nozzle_no_flow,
-                        "nozzle_product" => $nozzle_product,
-                        "pulse_rate" => $pulse_rate
-                    );
+                if ($pumpStmt) {
+                    $pumpStmt->bind_param("ii", $uid_tank, $tank_id);
+                    $pumpStmt->execute();
+                    $pumpResult = $pumpStmt->get_result();
+                    
+                    while ($pumpRow = $pumpResult->fetch_assoc()) {
+                        $pumps[] = array(
+                            "pump_id" => $pumpRow['pump_id'],
+                            "nozzle_number" => $pumpRow['Nozzle_Number'],
+                            "nozzle_walk_time" => $pumpRow['Nozzle_Walk_Time'],
+                            "nozzle_auth_time" => $pumpRow['Nozzle_Auth_Time'],
+                            "nozzle_max_run_time" => $pumpRow['Nozzle_Max_Run_Time'],
+                            "nozzle_no_flow" => $pumpRow['Nozzle_No_Flow'],
+                            "nozzle_product" => $pumpRow['Nozzle_Product'],
+                            "pulse_rate" => $pumpRow['Pulse_Rate']
+                        );
+                    }
+                    $pumpStmt->close();
                 }
-                $pumpStmt->close();
                 
                 $tanks[] = array(
                     "tank_id" => $tank_id,
@@ -147,7 +164,6 @@ if (isset($input['case'])) {
                     "pumps" => $pumps
                 );
             }
-            $sqlexec->close();
         } else {
             $tanks['error'] = "SQL preparation failed.";
         }
