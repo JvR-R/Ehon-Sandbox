@@ -27,7 +27,8 @@
   /* Large screens: Account for expanded border (185px) */
   @media (min-width: 1920px) {
     .nav-w {
-      left: 185px; /* Expanded border width */
+      left: 12rem; /* Expanded border width */
+      top: 3rem;
       width: calc(100% - 185px);
     }
   }
