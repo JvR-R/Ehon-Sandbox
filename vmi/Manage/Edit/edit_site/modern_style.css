@@ -1,0 +1,250 @@
+/**
+ * Modern Edit Site & Tank Pages Styles
+ * Clean, modern design for form-based pages
+ */
+
+/* Override Bootstrap _borders.scss and _dropdown.scss - must load after Bootstrap */
+.border {
+    border: none !important;
+    border-color: transparent !important;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+    color: var(--text-primary) !important;
+    text-decoration: none !important;
+    background-color: rgba(108, 114, 255, 0.15) !important;
+}
+
+.dropdown-item:hover {
+    color: var(--accent-primary) !important;
+    background-color: rgba(108, 114, 255, 0.1) !important;
+}
+
+/* Modern Form Styles */
+.card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+.card h1,
+.card .display-4 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.5px;
+}
+
+/* Grid Layout */
+.grid-2-columns {
+    display: grid;
+    gap: 1.25rem;
+    align-items: center;
+}
+
+.grid-2-columns label {
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    margin-bottom: 0;
+}
+
+/* Form Inputs */
+.input,
+input[type="text"],
+input[type="number"],
+input[type="tel"],
+input[type="email"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.input:focus,
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="tel"]:focus,
+input[type="email"]:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(108, 114, 255, 0.1);
+}
+
+.input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.6;
+}
+
+/* Select Dropdowns */
+.small-dropdown-toggle,
+select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+.small-dropdown-toggle:focus,
+select:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(108, 114, 255, 0.1);
+}
+
+/* Checkboxes */
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--accent-primary);
+}
+
+/* Buttons */
+.btn-primary,
+button.btn-primary {
+    background: var(--accent-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 2rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary:hover,
+button.btn-primary:hover {
+    background: var(--accent-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 114, 255, 0.3);
+}
+
+.btn-primary:active,
+button.btn-primary:active {
+    transform: translateY(0);
+}
+
+.buttons-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* List Section */
+.list-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.list-section h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.site-item {
+    padding: 0.75rem 1rem;
+    background: var(--bg-primary);
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    border: 1px solid var(--border-light);
+}
+
+.site-item:hover {
+    background: var(--table-row-hover);
+}
+
+/* Container */
+.container-default {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.mg-bottom-24px {
+    margin-bottom: 1.5rem;
+}
+
+.pd-28px {
+    padding: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .card {
+        padding: 1.5rem;
+    }
+
+    .card h1,
+    .card .display-4 {
+        font-size: 1.5rem;
+    }
+
+    .grid-2-columns {
+        grid-template-columns: 1fr !important;
+        gap: 1rem;
+    }
+
+    .buttons-row {
+        flex-direction: column;
+    }
+
+    .btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Remove Bootstrap borders from form elements */
+.input,
+.small-dropdown-toggle,
+select,
+input[type="text"],
+input[type="number"],
+input[type="tel"],
+input[type="email"] {
+    border: 1px solid var(--border-color) !important;
+    border-color: var(--border-color) !important;
+}
+
+/* Ensure dropdown styles from menu.css take precedence */
+.dropdown-content,
+.lateral-dropdown,
+.lateral-dropdown-edit {
+    border: none !important;
+}
+
+.dropdown-content .dropdown-item,
+.lateral-dropdown .dropdown-item,
+.lateral-dropdown-edit .dropdown-item {
+    border: none !important;
+}
+
