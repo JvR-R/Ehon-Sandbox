@@ -306,7 +306,6 @@ thead th.asc span.icon-arrow{
     border-radius: 0.8rem;
     padding: 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    max-width: 19rem;
 }
 .tanks_div{
     display: flex;
@@ -325,10 +324,11 @@ thead th.asc span.icon-arrow{
     display: flex;
 }
 .minfo{
-    position: absolute;
+    position: relative;
     display: flex;
     overflow: hidden;
-    top: 50px;
+    top: 0;
+    margin-top: 1rem;
 }
 .recip{
     margin-bottom:5px;
@@ -360,6 +360,7 @@ thead th.asc span.icon-arrow{
     margin-left: 100px;
     border-radius: 0.8rem;
     justify-content: center;
+    background-color: var(--bg-primary);
 }
 .alert-upd{
     width: 15rem;
@@ -427,13 +428,16 @@ thead th.asc span.icon-arrow{
     background-color: var(--bg-secondary);
 }
 .alerts_div{
-    position: absolute;
+    position: relative;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
     max-width: 32rem;
-    top: 20px;
-    left: 50px;
+    margin-top: 20px;
+    margin-left: 50px;
+    margin-bottom: 1rem;
+    padding: 1rem;
     border-radius: 0.8rem;
     justify-content: start;
+    background-color: var(--bg-primary);
 }
 .recip1{
     margin-bottom: 5px;
@@ -715,7 +719,7 @@ table.dataTable tr.dt-hasChild td.dt-control:before {
 .button-gwsave {
     margin: 1rem;
     padding: 3px;
-    background-color: var(--btn-primary-bg);
+    background-color: var(--btn-secondary-bg);
     color: var(--btn-text);
     border: 1px solid var(--input-border);
     border-radius: 0.4rem;
@@ -723,5 +727,5 @@ table.dataTable tr.dt-hasChild td.dt-control:before {
     transition: background-color 0.3s ease;
 }
 .button-gwsave:hover {
-    background-color: var(--btn-primary-hover);
+    background-color: var(--btn-secondary-hover);
 }

@@ -2,6 +2,9 @@
 include('../db/dbh2.php');
 include('../db/log.php'); 
 
+// Set JSON header first to prevent any output before JSON
+header('Content-Type: application/json; charset=UTF-8');
+
 // $sitename = $_GET['sitename'];
 $tank_id = (int)($_GET['tank_no'] ?? 0);
 // $companyId = $_GET['companyId'];
@@ -212,7 +215,6 @@ $__prof = [];
 
 $conn->close();
 // Return the response as JSON
-header('Content-Type: application/json');
 echo json_encode($response);
 exit();
 ?>

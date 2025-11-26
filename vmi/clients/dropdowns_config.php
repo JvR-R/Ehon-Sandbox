@@ -1,46 +1,54 @@
 <?php
     include('../db/dbh2.php');
     include('../db/log.php'); 
-    ini_set('display_errors', 1);
-    error_reporting(E_ALL);
     
-    // $sitename = $_GET['sitename'];
-    $case = $_GET['case'];
-    $response=array();
+    // Set JSON header first to prevent any output before JSON
+    header('Content-Type: application/json; charset=UTF-8');
+    
+    // Get parameters
+    $case = $_GET['case'] ?? null;
+    $client_id = $_GET['client_id'] ?? null;
+    $response = array();
+    
+    if (!$case) {
+        echo json_encode(['error' => 'Missing case parameter']);
+        exit();
+    }
     
     //Products db call*****************
-        if($case == 1){
-            $sqldev="SELECT * FROM products";
-            $resultdev = $conn->query($sqldev);
-            if ($resultdev->num_rows > 0) {
-                while ($row = $resultdev->fetch_assoc()) {
-                    $response['products'][] = array(
-                        "product_id" => $row['product_id'],
-                        "product_name" => $row['product_name'],
-                    );
-                }
+    if($case == 1){
+        $sqldev="SELECT * FROM products";
+        $resultdev = $conn->query($sqldev);
+        if ($resultdev && $resultdev->num_rows > 0) {
+            while ($row = $resultdev->fetch_assoc()) {
+                $response['products'][] = array(
+                    "product_id" => $row['product_id'],
+                    "product_name" => $row['product_name'],
+                );
             }
         }
+    }
 
     //Charts DB Call
-        else if($case == 2){
-            if($companyId == 15100){
-                $sqlsch="SELECT * FROM strapping_chart;";
-            }
-            else{
+    else if($case == 2){
+        $companyId = $client_id ? intval($client_id) : 15100;
+        if($companyId == 15100){
+            $sqlsch="SELECT * FROM strapping_chart;";
+        }
+        else{
             $sqlsch="SELECT * FROM strapping_chart as sc JOIN Console_Asociation as ca on ca.Client_id = sc.client_id 
             WHERE sc.client_id in ($companyId, 15100) group by chart_id";
-            }
-            $resultsch = $conn->query($sqlsch);
-            if ($resultsch->num_rows > 0) {
-                while ($row = $resultsch->fetch_assoc()) {
-                    $response['schart'][] = array(
-                        "chart_id" => $row['chart_id'],
-                        "chart_name" => $row['chart_name'],
-                    );
-                }
+        }
+        $resultsch = $conn->query($sqlsch);
+        if ($resultsch && $resultsch->num_rows > 0) {
+            while ($row = $resultsch->fetch_assoc()) {
+                $response['schart'][] = array(
+                    "chart_id" => $row['chart_id'],
+                    "chart_name" => $row['chart_name'],
+                );
             }
         }
+    }
         else if($case == 3){
             $uid = $_GET['uid'];
             $uart = $_GET['selectedValue'];
@@ -163,12 +171,12 @@
             $response['devices'] = $devices;
         }
         
-        else    {
-            $response['error'] = "Invalid";
-        }
+    else {
+        $response['error'] = "Invalid case parameter";
+    }
+    
     $conn->close();
     // Return the response as JSON
-    header('Content-Type: application/json');
     echo json_encode($response);
     exit();
 ?>

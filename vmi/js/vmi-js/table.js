@@ -81,7 +81,7 @@ export async function initTable() {
 
     try {
       const { response: sites = [] } =
-        await postJSON('/vmi/clients/updte_table', { group_id: g });
+        await postJSON('/vmi/clients/updte_table.php', { group_id: g });
 
       if (!sites.length) {
         dataTable.columns([4,5]).search('').draw();

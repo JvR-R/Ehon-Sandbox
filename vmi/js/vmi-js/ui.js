@@ -78,12 +78,15 @@ export function buildStatusIcon(d) {
 
 /*-------- highlight nav button -----------------------------------*/
 export function navColor(row, active) {
+  const isDarkTheme = document.documentElement.getAttribute('data-theme') === 'dark';
+  const inactiveColor = isDarkTheme ? '#ffffff' : '#222';
+  
   document.querySelectorAll(`.navigation-item1${row},
                               .navigation-item2${row},
                               .navigation-item3${row},
                               .navigation-item4${row}`)
     .forEach(btn => {
       btn.style.color = (btn.className.includes(`navigation-item${active}`))
-                          ? 'red' : '#222';
+                          ? 'red' : inactiveColor;
     });
 }

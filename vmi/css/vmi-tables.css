@@ -62,59 +62,48 @@ body {
    BUTTON STYLES
    ============================================ */
 .button-js {
-    font-weight: bold;
-    font-size: 18px;
-    background-color: var(--bg-dark);
-    cursor: pointer;
-    color: var(--text-inverse);
-    transition: 0.4s;
-    border-radius: 0.4rem;
-    padding: 0.25rem;
     margin: 1rem;
-    border: none;
+    padding: 3px;
+    background-color: var(--btn-secondary-bg);
+    color: var(--btn-text);
+    border: 1px solid var(--input-border);
+    border-radius: 0.4rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .button-js:hover {
-    transform: scale(1.1);
+    background-color: var(--btn-secondary-hover);
 }
 
 .button-js2 {
-    font-weight: bold;
-    font-size: 18px;
-    position: absolute;
-    background-color: var(--bg-dark);
-    cursor: pointer;
-    color: var(--text-inverse);
-    transition: 0.4s;
-    border-radius: 0.4rem;
-    padding: 4px;
-    left: 13rem;
-    height: 1.8rem;
     margin: 1rem;
-    border: none;
+    padding: 3px;
+    background-color: var(--btn-secondary-bg);
+    color: var(--btn-text);
+    border: 1px solid var(--input-border);
+    border-radius: 0.4rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .button-js2:hover {
-    font-size: 20px;
+    background-color: var(--btn-secondary-hover);
 }
 
 .button-js3 {
-    font-weight: bold;
-    font-size: 18px;
-    background-color: var(--bg-dark);
-    cursor: pointer;
-    color: var(--text-inverse);
-    transition: 0.4s;
+    margin: 1rem;
+    padding: 3px;
+    background-color: var(--btn-secondary-bg);
+    color: var(--btn-text);
+    border: 1px solid var(--input-border);
     border-radius: 0.4rem;
-    padding: 4px;
-    margin-top: 13rem;
-    margin-left: 12rem;
-    max-height: 2rem;
-    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .button-js3:hover {
-    font-size: 20px;
+    background-color: var(--btn-secondary-hover);
 }
 
 /* ============================================
@@ -443,10 +432,12 @@ table.dataTable tbody tr.shown td.dt-control:before {
 
 [class^="alert_info"],
 [class^="tank_info"],
-[class^="temp_info"] {
+[class^="temp_info"],
+[class^="tx_info"] {
     min-height: 26rem;
-    top: 50px;
-    background: var(--bg-primary);
+    position: relative;
+    top: 0;
+    margin-top: 1rem;
     display: none;
     min-width: 90rem;
 }
@@ -454,6 +445,8 @@ table.dataTable tbody tr.shown td.dt-control:before {
 .nav-items {
     border-collapse: collapse;
     padding: 5px;
+    position: relative;
+    z-index: 1;
 }
 
 /* ============================================

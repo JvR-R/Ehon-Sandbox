@@ -244,11 +244,11 @@ async function fetchGatewayChart(uid, tankId) {
 }
 
 async function fetchObjects(uid, tank_no) {
-  return fetchJSON('/vmi/clients/objects?' + qs({ uid, tank_no }), {}, 20_000);
+  return fetchJSON('/vmi/clients/objects.php?' + qs({ uid, tank_no }), {}, 20_000);
 }
 
 async function fetchObjectsTemp(uid, tank_no) {
-  return fetchJSON('/vmi/clients/objectsTemp?' + qs({ uid, tank_no }));
+  return fetchJSON('/vmi/clients/objectsTemp.php?' + qs({ uid, tank_no }));
 }
 
 /* Back-compat exports expected by main.js — now just trigger the
@@ -660,7 +660,7 @@ export function buildChild(d, ctx) {
     <div class="alert_info${row}" style="display:none">
       <div class="loading-overlay"><div class="spinner"></div></div>
       <div class="alerts_div" style="visibility:hidden">
-        <div class="card pd-28px">
+        <div>
           <div class="grid-2-columns" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:center;">
             ${alarmNoRelay('Critical High Alarm','chigha')}
             ${alarmNoRelay('High Alarm','higha')}
@@ -692,13 +692,13 @@ export function buildChild(d, ctx) {
               </div>
             </div>
           </div>
+          <button class="button-js3"
+                  data-uid="${uid}" data-tank_no="${tank_no}"
+                  data-site_id="${site_id}" data-client_id="${client_id}"
+                  data-capacity="${capacity}" data-row-index="${row}">
+            Update
+          </button>
         </div>
-        <button class="button-js3"
-                data-uid="${uid}" data-tank_no="${tank_no}"
-                data-site_id="${site_id}" data-client_id="${client_id}"
-                data-capacity="${capacity}" data-row-index="${row}">
-          Update
-        </button>
       </div>`);
   } else {
     alertsTab = html(`
@@ -713,13 +713,13 @@ export function buildChild(d, ctx) {
               ${alarmRow('critlow_icon.png' ,'Critical Low Alarm','clowa','ll')}
             </div>
           </div>
+          <button class="button-js3"
+                  data-uid="${uid}" data-tank_no="${tank_no}"
+                  data-site_id="${site_id}" data-client_id="${client_id}"
+                  data-capacity="${capacity}" data-row-index="${row}">
+            Update
+          </button>
         </div>
-        <button class="button-js3"
-                data-uid="${uid}" data-tank_no="${tank_no}"
-                data-site_id="${site_id}" data-client_id="${client_id}"
-                data-capacity="${capacity}" data-row-index="${row}">
-          Update
-        </button>
       </div>`);
   }
 
@@ -735,8 +735,8 @@ export function buildChild(d, ctx) {
     cfgTab = html(`
       <div class="tank_info${row}" style="display:none">
         <div class="loading-overlay"><div class="spinner"></div></div>
-          <div class="card pd-28px" style="min-height:8rem; display:flex; margin-top:1rem; gap:3rem;">
-            <div class="gw-tanksinfo">
+          <div style="min-height:8rem; display:flex; margin-top:1rem; gap:3rem;">
+            <div class="gw-tanksinfo" style="margin-left: 2rem;">
               <div class="gw-merged">              
                 <div style="display: grid; grid-template-columns: 0.82fr 1fr;">
                   <label>Tank Number:</label>
@@ -814,8 +814,8 @@ export function buildChild(d, ctx) {
       <div class="tank_info${row}" style="display:none">
         <div class="loading-overlay"><div class="spinner"></div></div>
         <div style="display:flex;">
-          <div class="info_text" style="max-width:28rem;">
-            <div class="card pd-28px">
+          <div class="info_text">
+            <div>
               <div style="display:flex;flex-direction:column;gap:8px;">
                 <div><strong>Configuration</strong></div>
                 <div>Configuration for MCS devices is managed in the MCS portal.</div>
@@ -831,8 +831,8 @@ export function buildChild(d, ctx) {
       <div class="tank_info${row}" style="display:none">
         <div class="loading-overlay"><div class="spinner"></div></div>
         <div style="display:flex;">
-          <div class="info_text" style="max-width:20rem;max-height:13.5rem">
-            <div class="card pd-28px">
+          <div class="info_text">
+            <div>
               <div class="grid-2-columns" style="display:grid;grid-template-columns:0.82fr 1fr;">
                 <label>Tank Number:</label>
                 <input class="recip" name="tank_number" type="number" value="${tank_no}">
@@ -854,7 +854,7 @@ export function buildChild(d, ctx) {
 
           <div class="right-info">
             <div class="tankginfo_text" id="tg-${row}">
-              <div class="card pd-28px">
+              <div>
                 <div class="grid-2-columns" style="display:grid;grid-template-columns:0.82fr 1fr;">
                   <label>TG Port:</label>
                   <select class="recip" id="tg_port-${row}" name="tg_port" data-uid="${uid}"></select>
@@ -874,7 +874,7 @@ export function buildChild(d, ctx) {
 
         <div class="fms-container-${row}"></div>
         <div class="tanks_div"></div>
-        <div style="margin-bottom:4rem">
+        <div style="margin: 1rem 0 1rem 85px;">
           <button class="button-js2"
                   data-uid="${uid}" data-tank_no="${tank_no}"
                   data-site_id="${site_id}" data-row-index="${row}" disabled>Update</button>
@@ -1122,7 +1122,7 @@ async function product_select(data, row, cs) {
     const client_id = nav?.dataset?.clientId || '';
     const key = `${cs}:${client_id}`; // cache per case+client
     if (!ddCache[key]) {
-      ddCache[key] = fetchJSON('/vmi/clients/dropdowns_config?' + qs({ rowIndex: row, case: cs, client_id }));
+      ddCache[key] = fetchJSON('/vmi/clients/dropdowns_config.php?' + qs({ rowIndex: row, case: cs, client_id }));
     }
     const r = await ddCache[key];
     if (r.products) product_dd(data, r.products, row);

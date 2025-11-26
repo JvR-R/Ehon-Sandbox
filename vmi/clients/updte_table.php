@@ -4,6 +4,13 @@ include('../db/log.php');
 
 header('Content-Type: application/json; charset=UTF-8');
 
+/* ── only accept POST requests ──────────────────────────────────── */
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(['error' => 'Method not allowed. POST required.']);
+    exit;
+}
+
 /* ── accept both JSON and regular form posts ────────────────────── */
 $payload = [];
 if (stripos($_SERVER['CONTENT_TYPE'] ?? '', 'application/json') === 0) {

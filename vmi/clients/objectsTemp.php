@@ -1,6 +1,9 @@
 <?php
 include('../db/dbh2.php');
 
+// Set JSON header first to prevent any output before JSON
+header('Content-Type: application/json; charset=UTF-8');
+
 $uid     = (int)($_GET['uid']      ?? 0);
 $tank_id = (int)($_GET['tank_no']  ?? 0);
 
@@ -32,7 +35,6 @@ while ($row = $rows->fetch_assoc()) {
     ];
 }
 
-header('Content-Type: application/json');
 echo json_encode(['response3' => $data], JSON_NUMERIC_CHECK);
 exit();
 ?>
