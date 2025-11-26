@@ -16,12 +16,10 @@
     <link href="/vmi/css/webflow.css" rel="stylesheet" type="text/css">
     <link href="/vmi/css/style_rep.css" rel="stylesheet" type="text/css">
     <link href="/vmi/css/test-site-de674e.webflow.css" rel="stylesheet" type="text/css">
-    
-    <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-    
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../menu.css">
+
+    <link rel="stylesheet" href="/vmi/details/style.css">
+    <link rel="stylesheet" href="/vmi/details/menu.css">
     <link rel="stylesheet" href="/vmi/css/theme.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -29,8 +27,19 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
+        /* Account for fixed nav-w 
+         * nav-w position: top: 64px (below topborder)
+         * nav-w padding: 30px top + 30px bottom = 60px
+         * nav-w content height: ~60-80px
+         * Total space needed: 64px + 60px + ~70px = ~194px
+         */
+        main.table {
+            padding-top: 4rem !important; /* Space for nav-w above content */
+        }
+        
         /* Page Header */
         .page-header {
+            margin-top: 20px; /* Add some space after nav-w */
             margin-bottom: 30px;
             padding: 24px 32px;
             background-color: var(--bg-card);
@@ -402,15 +411,23 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: 'groups_data.php',
+                    url: '/vmi/details/groups/groups_data.php',
                     type: 'POST',
+                    xhrFields: {
+                        withCredentials: true
+                    },
                     data: function(d) {
                         d.companyId = companyId;
                         d.groupId = groupId;
                     },
                     error: function(xhr, error, code) {
                         console.error('DataTables error:', error, code);
-                        alert('Error loading data. Please refresh the page.');
+                        if (xhr.responseText && xhr.responseText.includes('<html')) {
+                            alert('Session expired. Please refresh the page to login.');
+                            window.location.href = '/vmi/login/';
+                        } else {
+                            alert('Error loading data. Please refresh the page.');
+                        }
                     }
                 },
                 columns: [

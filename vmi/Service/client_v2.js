@@ -56,7 +56,7 @@ $(document).ready(function () {
             table.column(7).search('').draw();
         } else {
             $.ajax({
-                url: 'update_table',
+                url: 'update_table.php',
                 method: 'POST',
                 data: { group_id: selectedGroup },
                 success: function(response) {

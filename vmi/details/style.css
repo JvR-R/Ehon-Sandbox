@@ -17,7 +17,6 @@ main.table {
   height: 95%;
   background-color: var(--bg-secondary);
   background-size:cover;
-  position: absolute;
   left: 70px;
   top: 61px;
   display: block;

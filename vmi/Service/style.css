@@ -4,7 +4,7 @@ body {
 }
 #customers_table_filter{
     width: 20%;
-    height: 100%;
+    height: auto;
     background-color: var(--table-main-bg)!important;
     padding: 0 .8rem;
     border-radius: 2rem;

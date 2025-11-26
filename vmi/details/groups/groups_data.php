@@ -1,13 +1,23 @@
 <?php
+// Set error reporting to prevent HTML errors from breaking JSON response
+error_reporting(0);
+ini_set('display_errors', 0);
+
+// Set JSON header first
+header('Content-Type: application/json');
+
 include('../../db/dbh2.php');
 include('../../db/log.php');
 
 // Only accept POST requests
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
-    exit(json_encode(['error' => 'Method not allowed']));
+    echo json_encode(['error' => 'Method not allowed']);
+    exit;
 }
 
+// Wrap everything in try-catch to return JSON errors
+try {
 // Get DataTables parameters
 $draw = isset($_POST['draw']) ? intval($_POST['draw']) : 1;
 $start = isset($_POST['start']) ? intval($_POST['start']) : 0;
@@ -147,12 +157,23 @@ while ($row = $result->fetch_assoc()) {
 $stmt->close();
 
 // Return JSON response for DataTables
-header('Content-Type: application/json');
 echo json_encode([
     'draw' => $draw,
     'recordsTotal' => $totalRecords,
     'recordsFiltered' => $filteredRecords,
     'data' => $data
 ]);
+
+} catch (Exception $e) {
+    // Return JSON error instead of HTML
+    http_response_code(500);
+    echo json_encode([
+        'draw' => isset($draw) ? $draw : 1,
+        'error' => 'Database error: ' . $e->getMessage(),
+        'recordsTotal' => 0,
+        'recordsFiltered' => 0,
+        'data' => []
+    ]);
+}
 ?>
 
