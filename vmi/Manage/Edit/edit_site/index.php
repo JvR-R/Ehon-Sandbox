@@ -444,10 +444,20 @@ function loadTanksData(companyId, uid, siteid) {
         },
         body: dataToTank
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
     .then(data => {
+        console.log('Loaded tanks data:', data);
         tanksData = {};
         const tankButtonsContainer = document.getElementById('tankButtonsContainer');
+        if (!tankButtonsContainer) {
+            console.error('tankButtonsContainer not found!');
+            return;
+        }
         tankButtonsContainer.innerHTML = '';
         
         // Create buttons for up to 4 tanks
@@ -719,8 +729,14 @@ function saveTankData() {
         },
         body: dataToSend
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
     .then(data => {
+        console.log('Save response:', data);
         if (data.success) {
             closeTankModal();
             // Reload tank data
@@ -728,15 +744,21 @@ function saveTankData() {
             const siteId = siteDropdown.value;
             const consoleDropdown = document.getElementById("consoleid");
             const uid = consoleDropdown.value;
-            loadTanksData(<?php echo $companyId; ?>, uid, siteId);
+            
+            // Wait a moment for the modal to close, then reload data
+            setTimeout(() => {
+                loadTanksData(<?php echo $companyId; ?>, uid, siteId);
+                console.log('Tank data reloaded after save');
+            }, 100);
+            
             alert('Tank saved successfully!');
         } else {
             alert('Error saving tank: ' + (data.error || 'Unknown error'));
         }
     })
     .catch(error => {
-        console.error('Error:', error);
-        alert('Error saving tank. Please try again.');
+        console.error('Error saving tank:', error);
+        alert('Error saving tank. Please check the console for details.');
     });
 }
 

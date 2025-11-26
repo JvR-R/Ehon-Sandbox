@@ -75,15 +75,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors = [];
         
         try {
-            // Update tank capacity and product_id
-            $updateTankSql = "UPDATE Tanks SET capacity = ?, product_id = ? WHERE uid = ? AND Site_id = ? AND tank_id = ?";
+            // Update tank capacity, product_id, and ensure it's enabled
+            $updateTankSql = "UPDATE Tanks SET capacity = ?, product_id = ?, enabled = 1 WHERE uid = ? AND Site_id = ? AND tank_id = ?";
             if ($companyId != 15100) {
                 $updateTankSql .= " AND client_id = ?";
             }
             $updateTankStmt = $conn->prepare($updateTankSql);
             
             if ($companyId != 15100) {
-                $updateTankStmt->bind_param("iiiii", $capacity, $product_id, $uid, $site_id, $tank_id, $companyId);
+                $updateTankStmt->bind_param("iiiiii", $capacity, $product_id, $uid, $site_id, $tank_id, $companyId);
             } else {
                 $updateTankStmt->bind_param("iiiii", $capacity, $product_id, $uid, $site_id, $tank_id);
             }
