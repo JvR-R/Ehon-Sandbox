@@ -29,13 +29,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $capacity = isset($input['capacity']) ? (int)$input['capacity'] : 0;
         $product_id = isset($input['product_id']) ? (int)$input['product_id'] : 0;
         $pumps = isset($input['pumps']) ? $input['pumps'] : [];
+        $is_gateway = isset($input['is_gateway']) ? (bool)$input['is_gateway'] : false;
+        $enabled = isset($input['enabled']) ? (int)$input['enabled'] : 0;
         
         if ($uid <= 0 || $site_id <= 0 || $tank_id <= 0) {
             echo json_encode(['success' => false, 'error' => 'Invalid parameters']);
             exit;
         }
         
-        // Verify console device_type is 10 (FMS)
+        // Verify console device_type is 10 (FMS) or 30 (Gateway)
         $checkSql = "SELECT device_type FROM console WHERE uid = ?";
         $checkStmt = $conn->prepare($checkSql);
         $checkStmt->bind_param("i", $uid);
@@ -44,13 +46,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $checkStmt->fetch();
         $checkStmt->close();
         
-        if ($device_type != 10) {
-            echo json_encode(['success' => false, 'error' => 'This page is only available for FMS consoles']);
+        if ($device_type != 10 && $device_type != 30) {
+            echo json_encode(['success' => false, 'error' => 'This page is only available for FMS (type 10) or Gateway (type 30) consoles']);
             exit;
         }
         
-        // Verify site access
-        $siteSql = "SELECT Site_id FROM Sites WHERE Site_id = ?";
+        // Verify site access and get client_id
+        $siteSql = "SELECT Site_id, Client_id FROM Sites WHERE Site_id = ?";
         if ($companyId != 15100) {
             $siteSql .= " AND Client_id = ?";
         }
@@ -61,10 +63,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $siteStmt->bind_param("i", $site_id);
         }
         $siteStmt->execute();
-        $siteResult = $siteStmt->get_result();
+        $siteStmt->bind_result($site_id_result, $client_id);
+        $siteStmt->fetch();
         $siteStmt->close();
         
-        if ($siteResult->num_rows == 0) {
+        if (!$site_id_result) {
             echo json_encode(['success' => false, 'error' => 'Site not found or access denied']);
             exit;
         }
@@ -75,50 +78,95 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors = [];
         
         try {
-            // Update tank capacity, product_id, and ensure it's enabled
-            $updateTankSql = "UPDATE Tanks SET capacity = ?, product_id = ?, enabled = 1 WHERE uid = ? AND Site_id = ? AND tank_id = ?";
-            if ($companyId != 15100) {
-                $updateTankSql .= " AND client_id = ?";
-            }
-            $updateTankStmt = $conn->prepare($updateTankSql);
-            
-            if ($companyId != 15100) {
-                $updateTankStmt->bind_param("iiiiii", $capacity, $product_id, $uid, $site_id, $tank_id, $companyId);
-            } else {
-                $updateTankStmt->bind_param("iiiii", $capacity, $product_id, $uid, $site_id, $tank_id);
-            }
-            
-            if (!$updateTankStmt->execute()) {
-                $success = false;
-                $errors[] = "Failed to update tank $tank_id: " . $conn->error;
-            }
-            $updateTankStmt->close();
-            
-            // Delete existing pumps for this tank
-            $deletePumpSql = "DELETE FROM pumps WHERE uid = ? AND tank_id = ?";
-            $deletePumpStmt = $conn->prepare($deletePumpSql);
-            $deletePumpStmt->bind_param("ii", $uid, $tank_id);
-            if (!$deletePumpStmt->execute()) {
-                $success = false;
-                $errors[] = "Failed to delete existing pumps: " . $conn->error;
-            }
-            $deletePumpStmt->close();
-            
-            // Insert new pumps
-            foreach ($pumps as $pump) {
-                $nozzle_number = isset($pump['nozzle_number']) ? (int)$pump['nozzle_number'] : 0;
-                $pulse_rate = isset($pump['pulse_rate']) ? (float)$pump['pulse_rate'] : 0.0;
+            if ($is_gateway) {
+                // Gateway: Insert or update tank with enabled status
+                // First check if tank exists
+                $checkTankSql = "SELECT tank_uid FROM Tanks WHERE uid = ? AND Site_id = ? AND tank_id = ?";
+                $checkTankStmt = $conn->prepare($checkTankSql);
+                $checkTankStmt->bind_param("iii", $uid, $site_id, $tank_id);
+                $checkTankStmt->execute();
+                $checkTankResult = $checkTankStmt->get_result();
+                $tankExists = $checkTankResult->num_rows > 0;
+                $checkTankStmt->close();
                 
-                if ($nozzle_number > 0) {
-                    $insertPumpSql = "INSERT INTO pumps (uid, tank_id, Nozzle_Number, Pulse_Rate) VALUES (?, ?, ?, ?)";
-                    $insertPumpStmt = $conn->prepare($insertPumpSql);
-                    $insertPumpStmt->bind_param("iiid", $uid, $tank_id, $nozzle_number, $pulse_rate);
-                    
-                    if (!$insertPumpStmt->execute()) {
-                        $success = false;
-                        $errors[] = "Failed to insert pump with nozzle $nozzle_number: " . $conn->error;
+                if ($tankExists) {
+                    // Update existing tank
+                    $updateTankSql = "UPDATE Tanks SET capacity = ?, product_id = ?, enabled = ? WHERE uid = ? AND Site_id = ? AND tank_id = ?";
+                    if ($companyId != 15100) {
+                        $updateTankSql .= " AND client_id = ?";
                     }
-                    $insertPumpStmt->close();
+                    $updateTankStmt = $conn->prepare($updateTankSql);
+                    
+                    if ($companyId != 15100) {
+                        $updateTankStmt->bind_param("iiiiiii", $capacity, $product_id, $enabled, $uid, $site_id, $tank_id, $companyId);
+                    } else {
+                        $updateTankStmt->bind_param("iiiiii", $capacity, $product_id, $enabled, $uid, $site_id, $tank_id);
+                    }
+                    
+                    if (!$updateTankStmt->execute()) {
+                        $success = false;
+                        $errors[] = "Failed to update tank $tank_id: " . $conn->error;
+                    }
+                    $updateTankStmt->close();
+                } else {
+                    // Insert new tank
+                    $insertTankSql = "INSERT INTO Tanks (uid, Site_id, tank_id, client_id, capacity, product_id, enabled, Tank_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    $tank_name = "Tank " . $tank_id;
+                    $insertTankStmt = $conn->prepare($insertTankSql);
+                    $insertTankStmt->bind_param("iiiiiisi", $uid, $site_id, $tank_id, $client_id, $capacity, $product_id, $enabled, $tank_name);
+                    
+                    if (!$insertTankStmt->execute()) {
+                        $success = false;
+                        $errors[] = "Failed to insert tank $tank_id: " . $conn->error;
+                    }
+                    $insertTankStmt->close();
+                }
+            } else {
+                // FMS: Update tank capacity, product_id, and ensure it's enabled
+                $updateTankSql = "UPDATE Tanks SET capacity = ?, product_id = ?, enabled = 1 WHERE uid = ? AND Site_id = ? AND tank_id = ?";
+                if ($companyId != 15100) {
+                    $updateTankSql .= " AND client_id = ?";
+                }
+                $updateTankStmt = $conn->prepare($updateTankSql);
+                
+                if ($companyId != 15100) {
+                    $updateTankStmt->bind_param("iiiiii", $capacity, $product_id, $uid, $site_id, $tank_id, $companyId);
+                } else {
+                    $updateTankStmt->bind_param("iiiii", $capacity, $product_id, $uid, $site_id, $tank_id);
+                }
+                
+                if (!$updateTankStmt->execute()) {
+                    $success = false;
+                    $errors[] = "Failed to update tank $tank_id: " . $conn->error;
+                }
+                $updateTankStmt->close();
+                
+                // Delete existing pumps for this tank
+                $deletePumpSql = "DELETE FROM pumps WHERE uid = ? AND tank_id = ?";
+                $deletePumpStmt = $conn->prepare($deletePumpSql);
+                $deletePumpStmt->bind_param("ii", $uid, $tank_id);
+                if (!$deletePumpStmt->execute()) {
+                    $success = false;
+                    $errors[] = "Failed to delete existing pumps: " . $conn->error;
+                }
+                $deletePumpStmt->close();
+                
+                // Insert new pumps
+                foreach ($pumps as $pump) {
+                    $nozzle_number = isset($pump['nozzle_number']) ? (int)$pump['nozzle_number'] : 0;
+                    $pulse_rate = isset($pump['pulse_rate']) ? (float)$pump['pulse_rate'] : 0.0;
+                    
+                    if ($nozzle_number > 0) {
+                        $insertPumpSql = "INSERT INTO pumps (uid, tank_id, Nozzle_Number, Pulse_Rate) VALUES (?, ?, ?, ?)";
+                        $insertPumpStmt = $conn->prepare($insertPumpSql);
+                        $insertPumpStmt->bind_param("iiid", $uid, $tank_id, $nozzle_number, $pulse_rate);
+                        
+                        if (!$insertPumpStmt->execute()) {
+                            $success = false;
+                            $errors[] = "Failed to insert pump with nozzle $nozzle_number: " . $conn->error;
+                        }
+                        $insertPumpStmt->close();
+                    }
                 }
             }
             

@@ -183,7 +183,17 @@ include('../../../db/border.php');
                     </select>
                 </div>
                 
-                <div class="form-group" style="margin-bottom: 1rem;">
+                <!-- Gateway-specific: Enable/Disable Toggle -->
+                <div class="form-group" id="gatewayEnableGroup" style="margin-bottom: 1rem; display: none;">
+                    <label>
+                        <input type="checkbox" id="modalTankEnabled" style="margin-right: 8px;">
+                        Enable Tank
+                    </label>
+                    <small style="color: var(--text-secondary); display: block; margin-top: 4px;">Enable or disable this tank for the gateway</small>
+                </div>
+                
+                <!-- FMS-specific: Pump Configuration -->
+                <div class="form-group" id="fmsPumpGroup" style="margin-bottom: 1rem; display: none;">
                     <label>Number of Pumps:</label>
                     <select class="small-dropdown-toggle" id="modalPumpCount" onchange="updatePumpFields()">
                         <option value="0">0</option>
@@ -362,13 +372,33 @@ function console_select() {
             }
         }
         
-        // Check if device_type is 10 (FMS) and show tank edit button
+        // Check if device_type is 10 (FMS) or 30 (Gateway) and show tank edit button
         var deviceType = data['device_type'] || 0;
         var tankEditSection = document.getElementById('tankEditSection');
-        if (deviceType == 10) {
+        var totalPumpsInfo = document.getElementById('totalPumpsInfo');
+        var siteListElement = document.getElementById('siteList');
+        if (deviceType == 10 || deviceType == 30) {
             tankEditSection.style.display = 'block';
+            // Store device type globally for later use
+            window.currentDeviceType = deviceType;
+            // Show total pumps info only for FMS devices
+            if (totalPumpsInfo) {
+                totalPumpsInfo.style.display = (deviceType == 10) ? 'block' : 'none';
+            }
+            // Hide the simple siteList when showing detailed tank cards
+            if (siteListElement) {
+                siteListElement.style.display = 'none';
+            }
         } else {
             tankEditSection.style.display = 'none';
+            window.currentDeviceType = null;
+            if (totalPumpsInfo) {
+                totalPumpsInfo.style.display = 'none';
+            }
+            // Show the simple siteList when not using detailed tank cards
+            if (siteListElement) {
+                siteListElement.style.display = 'block';
+            }
         }
         
         console.log(<?php echo $companyId; ?>, selectedConsoleId, selectedValue);
@@ -422,16 +452,21 @@ function loadSiteList(companyId, uid, siteid) {
     .then(response2 => response2.json())
     .then(data => {
         const siteListElement = document.getElementById('siteList');
-        siteListElement.innerHTML = ''; // Clear existing content
-        data.forEach(site => {
-            siteListElement.innerHTML += `
-                <div class="site-item">
-                    ${site.name}
-                </div>
-            `;
-        });
+        const isGatewayOrFMS = window.currentDeviceType == 10 || window.currentDeviceType == 30;
         
-        // Load detailed tank data with pumps
+        // Only populate simple list if not using detailed tank cards
+        if (!isGatewayOrFMS && siteListElement) {
+            siteListElement.innerHTML = ''; // Clear existing content
+            data.forEach(site => {
+                siteListElement.innerHTML += `
+                    <div class="site-item">
+                        ${site.name}
+                    </div>
+                `;
+            });
+        }
+        
+        // Load detailed tank data with pumps (for FMS) or tanks (for Gateways)
         loadTanksData(companyId, uid, siteid);
     })
     .catch(error => console.error('Error:', error));
@@ -473,11 +508,21 @@ function loadTanksData(companyId, uid, siteid) {
             
             if (tank) {
                 tanksData[i] = tank;
+                const isGateway = window.currentDeviceType == 30;
+                let statusText = '';
+                if (isGateway) {
+                    statusText = tank.enabled ? '<small style="color: green;">Enabled</small>' : '<small style="color: red;">Disabled</small>';
+                } else {
+                    statusText = `<small>${tank.pumps ? tank.pumps.length : 0} pump(s)</small>`;
+                }
                 tankButton.innerHTML = `
                     <strong>Tank ${i}</strong><br>
                     <small>${tank.tank_name || 'Unnamed'}</small><br>
-                    <small>${tank.pumps ? tank.pumps.length : 0} pump(s)</small>
+                    ${statusText}
                 `;
+                if (isGateway && !tank.enabled) {
+                    tankButton.style.opacity = '0.6';
+                }
             } else {
                 tankButton.innerHTML = `
                     <strong>Tank ${i}</strong><br>
@@ -542,7 +587,8 @@ function populateProductDropdown(selectedProductId) {
 
 function openTankModal(tankId, uid, siteId) {
     const modal = document.getElementById('tankEditModal');
-    const tank = tanksData[tankId] || { tank_id: tankId, capacity: 0, product_id: 0, pumps: [] };
+    const isGateway = window.currentDeviceType == 30;
+    const tank = tanksData[tankId] || { tank_id: tankId, capacity: 0, product_id: 0, pumps: [], enabled: 0 };
     
     document.getElementById('modalTankId').value = tankId;
     document.getElementById('modalUid').value = uid;
@@ -550,35 +596,52 @@ function openTankModal(tankId, uid, siteId) {
     document.getElementById('modalTankTitle').textContent = `Edit Tank ${tankId}`;
     document.getElementById('modalTankCapacity').value = tank.capacity || 0;
     
-    // Set pump count first
-    const pumpCount = tank.pumps ? tank.pumps.length : 0;
-    document.getElementById('modalPumpCount').value = pumpCount;
+    // Show/hide appropriate sections based on device type
+    const gatewayGroup = document.getElementById('gatewayEnableGroup');
+    const fmsGroup = document.getElementById('fmsPumpGroup');
+    const pumpContainer = document.getElementById('pumpFieldsContainer');
     
-    // Update pump fields - this will create the pump input fields
-    updatePumpFields();
-    
-    // Populate existing pump data after fields are created
-    setTimeout(() => {
-        if (tank.pumps && tank.pumps.length > 0) {
-            const container = document.getElementById('pumpFieldsContainer');
-            tank.pumps.forEach((pump, index) => {
-                const pumpGroup = container.querySelector(`.pump-field-group[data-pump-index="${index}"]`);
-                if (pumpGroup) {
-                    const nozzleInput = pumpGroup.querySelector(`input[name="nozzle_number"]`);
-                    const pulseInput = pumpGroup.querySelector(`input[name="pulse_rate"]`);
-                    if (nozzleInput) nozzleInput.value = pump.nozzle_number || '';
-                    if (pulseInput) pulseInput.value = pump.pulse_rate || '';
-                    if (pump.pump_id) {
-                        const hiddenId = document.createElement('input');
-                        hiddenId.type = 'hidden';
-                        hiddenId.name = 'pump_id';
-                        hiddenId.value = pump.pump_id;
-                        pumpGroup.appendChild(hiddenId);
+    if (isGateway) {
+        // Gateway: show enable/disable toggle, hide pump fields
+        gatewayGroup.style.display = 'block';
+        fmsGroup.style.display = 'none';
+        pumpContainer.style.display = 'none';
+        document.getElementById('modalTankEnabled').checked = tank.enabled == 1;
+    } else {
+        // FMS: show pump fields, hide enable/disable toggle
+        gatewayGroup.style.display = 'none';
+        fmsGroup.style.display = 'block';
+        pumpContainer.style.display = 'block';
+        
+        // Set pump count first
+        const pumpCount = tank.pumps ? tank.pumps.length : 0;
+        document.getElementById('modalPumpCount').value = pumpCount;
+        
+        // Update pump fields - this will create the pump input fields
+        updatePumpFields();
+        
+        // Populate existing pump data after fields are created
+        setTimeout(() => {
+            if (tank.pumps && tank.pumps.length > 0) {
+                tank.pumps.forEach((pump, index) => {
+                    const pumpGroup = pumpContainer.querySelector(`.pump-field-group[data-pump-index="${index}"]`);
+                    if (pumpGroup) {
+                        const nozzleInput = pumpGroup.querySelector(`input[name="nozzle_number"]`);
+                        const pulseInput = pumpGroup.querySelector(`input[name="pulse_rate"]`);
+                        if (nozzleInput) nozzleInput.value = pump.nozzle_number || '';
+                        if (pulseInput) pulseInput.value = pump.pulse_rate || '';
+                        if (pump.pump_id) {
+                            const hiddenId = document.createElement('input');
+                            hiddenId.type = 'hidden';
+                            hiddenId.name = 'pump_id';
+                            hiddenId.value = pump.pump_id;
+                            pumpGroup.appendChild(hiddenId);
+                        }
                     }
-                }
-            });
-        }
-    }, 50);
+                });
+            }
+        }, 50);
+    }
     
     // Load products into dropdown
     modal.style.display = 'block';
@@ -669,7 +732,7 @@ function saveTankData() {
     const siteId = parseInt(document.getElementById('modalSiteId').value);
     const capacity = parseInt(document.getElementById('modalTankCapacity').value);
     const productId = parseInt(document.getElementById('modalTankProduct').value);
-    const pumpCount = parseInt(document.getElementById('modalPumpCount').value) || 0;
+    const isGateway = window.currentDeviceType == 30;
     
     if (!capacity || capacity <= 0) {
         alert('Please enter a valid tank capacity.');
@@ -681,48 +744,67 @@ function saveTankData() {
         return;
     }
     
-    // Collect pump data
-    const pumps = [];
-    const pumpGroups = document.querySelectorAll('#pumpFieldsContainer .pump-field-group');
-    pumpGroups.forEach(group => {
-        const nozzleNumber = parseInt(group.querySelector('input[name="nozzle_number"]').value);
-        const pulseRate = parseFloat(group.querySelector('input[name="pulse_rate"]').value) || 0;
-        const pumpIdInput = group.querySelector('input[name="pump_id"]');
-        const pumpId = pumpIdInput ? parseInt(pumpIdInput.value) : 0;
-        
-        if (nozzleNumber > 0) {
-            pumps.push({
-                pump_id: pumpId,
-                nozzle_number: nozzleNumber,
-                pulse_rate: pulseRate
-            });
-        }
-    });
-    
-    // Validate pump count - get current total excluding this tank
-    const currentTankId = parseInt(document.getElementById('modalTankId').value);
-    const otherTanksPumpCount = Object.keys(tanksData).reduce((total, tankId) => {
-        if (parseInt(tankId) !== currentTankId && tanksData[tankId] && tanksData[tankId].pumps) {
-            return total + tanksData[tankId].pumps.length;
-        }
-        return total;
-    }, 0);
-    
-    if (otherTanksPumpCount + pumps.length > 4) {
-        alert('Total pumps cannot exceed 4 across all tanks! Currently other tanks have ' + otherTanksPumpCount + ' pump(s).');
-        return;
-    }
-    
     // Prepare data to send
-    const dataToSend = JSON.stringify({
-        case: 5,
-        tank_id: tankId,
-        uid: uid,
-        site_id: siteId,
-        capacity: capacity,
-        product_id: productId,
-        pumps: pumps
-    });
+    let dataToSend;
+    
+    if (isGateway) {
+        // Gateway: send enabled status instead of pumps
+        const enabled = document.getElementById('modalTankEnabled').checked ? 1 : 0;
+        dataToSend = JSON.stringify({
+            case: 5,
+            tank_id: tankId,
+            uid: uid,
+            site_id: siteId,
+            capacity: capacity,
+            product_id: productId,
+            enabled: enabled,
+            is_gateway: true
+        });
+    } else {
+        // FMS: collect pump data
+        const pumpCount = parseInt(document.getElementById('modalPumpCount').value) || 0;
+        const pumps = [];
+        const pumpGroups = document.querySelectorAll('#pumpFieldsContainer .pump-field-group');
+        pumpGroups.forEach(group => {
+            const nozzleNumber = parseInt(group.querySelector('input[name="nozzle_number"]').value);
+            const pulseRate = parseFloat(group.querySelector('input[name="pulse_rate"]').value) || 0;
+            const pumpIdInput = group.querySelector('input[name="pump_id"]');
+            const pumpId = pumpIdInput ? parseInt(pumpIdInput.value) : 0;
+            
+            if (nozzleNumber > 0) {
+                pumps.push({
+                    pump_id: pumpId,
+                    nozzle_number: nozzleNumber,
+                    pulse_rate: pulseRate
+                });
+            }
+        });
+        
+        // Validate pump count - get current total excluding this tank
+        const currentTankId = parseInt(document.getElementById('modalTankId').value);
+        const otherTanksPumpCount = Object.keys(tanksData).reduce((total, tankId) => {
+            if (parseInt(tankId) !== currentTankId && tanksData[tankId] && tanksData[tankId].pumps) {
+                return total + tanksData[tankId].pumps.length;
+            }
+            return total;
+        }, 0);
+        
+        if (otherTanksPumpCount + pumps.length > 4) {
+            alert('Total pumps cannot exceed 4 across all tanks! Currently other tanks have ' + otherTanksPumpCount + ' pump(s).');
+            return;
+        }
+        
+        dataToSend = JSON.stringify({
+            case: 5,
+            tank_id: tankId,
+            uid: uid,
+            site_id: siteId,
+            capacity: capacity,
+            product_id: productId,
+            pumps: pumps,
+            is_gateway: false
+        });
+    }
     
     fetch('edit_tank_sbmt.php', {
         method: 'POST',

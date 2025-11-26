@@ -94,21 +94,55 @@ if (isset($input['case'])) {
         $uid_tank = $input['uid_tank'];
         $tanks = array();
         
+        // First, get the device_type to determine if it's a gateway (30) or FMS (10)
+        $deviceTypeSql = "SELECT device_type FROM console WHERE uid = ?";
+        $deviceTypeStmt = $conn->prepare($deviceTypeSql);
+        $deviceTypeStmt->bind_param("i", $uid_tank);
+        $deviceTypeStmt->execute();
+        $deviceTypeStmt->bind_result($device_type);
+        $deviceTypeStmt->fetch();
+        $deviceTypeStmt->close();
+        
+        $isGateway = ($device_type == 30);
+        
+        // For gateways, fetch all tanks (including disabled ones). For FMS, only enabled tanks.
         if($companyId==15100){
-            $sql = "SELECT t.tank_id, t.Tank_name, t.capacity, t.product_id 
-                    FROM Tanks t 
-                    WHERE t.Site_id = ? AND t.uid = ? AND t.enabled = 1
-                    ORDER BY t.tank_id;";
-            $sqlexec = $conn->prepare($sql);
-            $sqlexec->bind_param("ii", $siteid_tank, $uid_tank);
+            if ($isGateway) {
+                // Gateway: fetch all tanks with enabled status
+                $sql = "SELECT t.tank_id, t.Tank_name, t.capacity, t.product_id, t.enabled 
+                        FROM Tanks t 
+                        WHERE t.Site_id = ? AND t.uid = ?
+                        ORDER BY t.tank_id;";
+                $sqlexec = $conn->prepare($sql);
+                $sqlexec->bind_param("ii", $siteid_tank, $uid_tank);
+            } else {
+                // FMS: only enabled tanks
+                $sql = "SELECT t.tank_id, t.Tank_name, t.capacity, t.product_id 
+                        FROM Tanks t 
+                        WHERE t.Site_id = ? AND t.uid = ? AND t.enabled = 1
+                        ORDER BY t.tank_id;";
+                $sqlexec = $conn->prepare($sql);
+                $sqlexec->bind_param("ii", $siteid_tank, $uid_tank);
+            }
         }
         else{
-            $sql = "SELECT t.tank_id, t.Tank_name, t.capacity, t.product_id 
-                    FROM Tanks t 
-                    WHERE t.Site_id = ? AND t.uid = ? AND t.client_id = ? AND t.enabled = 1
-                    ORDER BY t.tank_id;";
-            $sqlexec = $conn->prepare($sql);
-            $sqlexec->bind_param("iii", $siteid_tank, $uid_tank, $companyId);
+            if ($isGateway) {
+                // Gateway: fetch all tanks with enabled status
+                $sql = "SELECT t.tank_id, t.Tank_name, t.capacity, t.product_id, t.enabled 
+                        FROM Tanks t 
+                        WHERE t.Site_id = ? AND t.uid = ? AND t.client_id = ?
+                        ORDER BY t.tank_id;";
+                $sqlexec = $conn->prepare($sql);
+                $sqlexec->bind_param("iii", $siteid_tank, $uid_tank, $companyId);
+            } else {
+                // FMS: only enabled tanks
+                $sql = "SELECT t.tank_id, t.Tank_name, t.capacity, t.product_id 
+                        FROM Tanks t 
+                        WHERE t.Site_id = ? AND t.uid = ? AND t.client_id = ? AND t.enabled = 1
+                        ORDER BY t.tank_id;";
+                $sqlexec = $conn->prepare($sql);
+                $sqlexec->bind_param("iii", $siteid_tank, $uid_tank, $companyId);
+            }
         }
         
         if ($sqlexec) {
@@ -122,42 +156,84 @@ if (isset($input['case'])) {
             }
             $sqlexec->close();
             
-            // Now fetch pumps for each tank
+            // Create a map of existing tanks for quick lookup
+            $tankMap = array();
             foreach ($tankRows as $tankRow) {
-                $tank_id = $tankRow['tank_id'];
-                $tank_name = $tankRow['Tank_name'];
-                $capacity = $tankRow['capacity'];
-                $product_id = $tankRow['product_id'];
-                
-                // Fetch pumps for this tank
-                $pumps = array();
-                $pumpSql = "SELECT pump_id, Nozzle_Number, Pulse_Rate 
-                            FROM pumps 
-                            WHERE uid = ? AND tank_id = ? 
-                            ORDER BY Nozzle_Number;";
-                $pumpStmt = $conn->prepare($pumpSql);
-                if ($pumpStmt) {
-                    $pumpStmt->bind_param("ii", $uid_tank, $tank_id);
-                    $pumpStmt->execute();
-                    $pumpResult = $pumpStmt->get_result();
-                    
-                    while ($pumpRow = $pumpResult->fetch_assoc()) {
-                        $pumps[] = array(
-                            "pump_id" => $pumpRow['pump_id'],
-                            "nozzle_number" => $pumpRow['Nozzle_Number'],
-                            "pulse_rate" => $pumpRow['Pulse_Rate']
-                        );
+                $tankMap[$tankRow['tank_id']] = $tankRow;
+            }
+            
+            // For gateways, always return all 4 tanks (1-4), even if they don't exist yet
+            // For FMS, only return existing enabled tanks
+            if ($isGateway) {
+                // Gateway: return all 4 slots
+                for ($tank_id = 1; $tank_id <= 4; $tank_id++) {
+                    if (isset($tankMap[$tank_id])) {
+                        $tankRow = $tankMap[$tank_id];
+                        $tank_name = $tankRow['Tank_name'];
+                        $capacity = $tankRow['capacity'];
+                        $product_id = $tankRow['product_id'];
+                        $enabled = isset($tankRow['enabled']) ? $tankRow['enabled'] : 0;
+                    } else {
+                        // Tank doesn't exist yet - create default entry
+                        $tank_name = null;
+                        $capacity = 0;
+                        $product_id = 0;
+                        $enabled = 0;
                     }
-                    $pumpStmt->close();
+                    
+                    $tankData = array(
+                        "tank_id" => $tank_id,
+                        "tank_name" => $tank_name ? $tank_name : "Tank " . $tank_id,
+                        "capacity" => $capacity,
+                        "product_id" => $product_id ? $product_id : 0,
+                        "enabled" => $enabled,
+                        "pumps" => array() // Gateways don't have pumps
+                    );
+                    
+                    $tanks[] = $tankData;
                 }
-                
-                $tanks[] = array(
-                    "tank_id" => $tank_id,
-                    "tank_name" => $tank_name ? $tank_name : "Tank " . $tank_id,
-                    "capacity" => $capacity,
-                    "product_id" => $product_id ? $product_id : 0,
-                    "pumps" => $pumps
-                );
+            } else {
+                // FMS: process only existing tanks
+                foreach ($tankRows as $tankRow) {
+                    $tank_id = $tankRow['tank_id'];
+                    $tank_name = $tankRow['Tank_name'];
+                    $capacity = $tankRow['capacity'];
+                    $product_id = $tankRow['product_id'];
+                    $enabled = isset($tankRow['enabled']) ? $tankRow['enabled'] : 1;
+                    
+                    $tankData = array(
+                        "tank_id" => $tank_id,
+                        "tank_name" => $tank_name ? $tank_name : "Tank " . $tank_id,
+                        "capacity" => $capacity,
+                        "product_id" => $product_id ? $product_id : 0,
+                        "enabled" => $enabled
+                    );
+                    
+                    // Fetch pumps for FMS devices
+                    $pumps = array();
+                    $pumpSql = "SELECT pump_id, Nozzle_Number, Pulse_Rate 
+                                FROM pumps 
+                                WHERE uid = ? AND tank_id = ? 
+                                ORDER BY Nozzle_Number;";
+                    $pumpStmt = $conn->prepare($pumpSql);
+                    if ($pumpStmt) {
+                        $pumpStmt->bind_param("ii", $uid_tank, $tank_id);
+                        $pumpStmt->execute();
+                        $pumpResult = $pumpStmt->get_result();
+                        
+                        while ($pumpRow = $pumpResult->fetch_assoc()) {
+                            $pumps[] = array(
+                                "pump_id" => $pumpRow['pump_id'],
+                                "nozzle_number" => $pumpRow['Nozzle_Number'],
+                                "pulse_rate" => $pumpRow['Pulse_Rate']
+                            );
+                        }
+                        $pumpStmt->close();
+                    }
+                    $tankData["pumps"] = $pumps;
+                    
+                    $tanks[] = $tankData;
+                }
             }
         } else {
             $tanks['error'] = "SQL preparation failed.";
