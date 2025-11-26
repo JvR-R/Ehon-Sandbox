@@ -14,34 +14,44 @@
    * Theme Manager Object
    */
   const ThemeManager = {
-    /**
-     * Initialize the theme system
-     */
-    init: function() {
-      // Apply saved theme or default to light
+  /**
+   * Initialize the theme system
+   */
+  init: function() {
+    // Check if theme was already initialized by theme-init.js
+    const alreadyInitialized = document.documentElement.hasAttribute('data-theme-initialized');
+    
+    if (!alreadyInitialized) {
+      // Apply saved theme or default to system preference
       const savedTheme = this.getSavedTheme();
       this.applyTheme(savedTheme);
+      document.documentElement.setAttribute('data-theme-initialized', 'true');
+    } else {
+      // Theme already set, just ensure toggle button state is correct
+      const currentTheme = this.getCurrentTheme();
+      this.updateToggleButton(currentTheme);
+    }
 
-      // Listen for theme toggle events
-      this.attachEventListeners();
+    // Listen for theme toggle events
+    this.attachEventListeners();
 
-      // Listen for system theme changes (optional - respects OS preference)
-      this.listenToSystemTheme();
-    },
+    // Listen for system theme changes (only if user hasn't manually set preference)
+    this.listenToSystemTheme();
+  },
 
-    /**
-     * Get the saved theme from localStorage
-     */
-    getSavedTheme: function() {
-      const saved = localStorage.getItem(THEME_KEY);
-      
-      // If no saved preference, check system preference
-      if (!saved) {
-        return this.getSystemTheme();
-      }
-      
-      return saved === THEME_DARK ? THEME_DARK : THEME_LIGHT;
-    },
+  /**
+   * Get the saved theme from localStorage
+   */
+  getSavedTheme: function() {
+    const saved = localStorage.getItem(THEME_KEY);
+    
+    // If no saved preference, check system preference
+    if (!saved) {
+      return this.getSystemTheme();
+    }
+    
+    return saved === THEME_DARK ? THEME_DARK : THEME_LIGHT;
+  },
 
     /**
      * Get system/OS theme preference

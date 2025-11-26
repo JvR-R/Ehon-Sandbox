@@ -13,7 +13,8 @@
     <title>Call List</title>
     <script src="script.js"></script>
     <link rel="stylesheet" href="style.css">
-    
+    <!-- THEME INIT - Must be BEFORE theme.css for automatic browser dark mode detection -->
+    <script src="/vmi/js/theme-init.js"></script>
     <link rel="stylesheet" href="/vmi/css/theme.css">
 </head>
 

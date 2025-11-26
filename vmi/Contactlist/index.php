@@ -26,7 +26,9 @@ if (isset($_SESSION['loggedin'])) {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Call List</title>
     <script src="script.js"></script>
-      <!-- THEME CSS - MUST BE FIRST -->
+      <!-- THEME INIT - Must be BEFORE theme.css for automatic browser dark mode detection -->
+  <script src="/vmi/js/theme-init.js"></script>
+  <!-- THEME CSS - MUST BE FIRST -->
   <link rel="stylesheet" href="/vmi/css/theme.css">
   <!-- Other CSS files -->
 <link rel="stylesheet" href="style.css">

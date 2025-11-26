@@ -13,6 +13,8 @@
     <!-- Include jQuery UI library -->
     <link rel="stylesheet" href="style.css">
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+    <!-- THEME INIT - Must be BEFORE theme.css for automatic browser dark mode detection -->
+    <script src="/vmi/js/theme-init.js"></script>
     <link rel="stylesheet" href="/vmi/css/theme.css">
 </head>
 <body>

@@ -20,6 +20,8 @@
 
     <link rel="stylesheet" href="/vmi/details/style.css">
     <link rel="stylesheet" href="/vmi/details/menu.css">
+    <!-- THEME INIT - Must be BEFORE theme.css for automatic browser dark mode detection -->
+    <script src="/vmi/js/theme-init.js"></script>
     <link rel="stylesheet" href="/vmi/css/theme.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     

@@ -34,6 +34,8 @@ if (isset($_GET['console-id'])) {
   <meta charset="UTF-8">
   <title>EHON Energy Tech - Calibration</title>
     <!-- THEME CSS - MUST BE FIRST -->
+  <!-- THEME INIT - Must be BEFORE theme.css for automatic browser dark mode detection -->
+  <script src="/vmi/js/theme-init.js"></script>
   <link rel="stylesheet" href="/vmi/css/theme.css">
   <!-- Other CSS files -->
 <link rel="stylesheet" href="/vmi/css/normalize.css">

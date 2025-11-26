@@ -13,6 +13,8 @@ function safe_html($string) {
   <meta charset="UTF-8">
   <meta name="csrf" content="<?= htmlspecialchars($_SESSION['csrf'] ?? bin2hex(random_bytes(16)), ENT_QUOTES) ?>">
   <title>EHON Energy Tech - VMI</title>
+  <!-- THEME INIT - Must be BEFORE theme.css for automatic browser dark mode detection -->
+  <script src="/vmi/js/theme-init.js"></script>
   <!-- THEME CSS - MUST BE FIRST -->
   <link rel="stylesheet" href="/vmi/css/theme.css">
   <!-- Other CSS files -->

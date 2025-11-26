@@ -26,6 +26,8 @@
     <!-- Chart.js (unrelated, keep if you need it) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <!-- THEME INIT - Must be BEFORE theme.css for automatic browser dark mode detection -->
+    <script src="/vmi/js/theme-init.js"></script>
     <!-- Local CSS files -->
     <link rel="stylesheet" href="/vmi/css/theme.css">
     <link rel="stylesheet" href="style.css">

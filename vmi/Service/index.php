@@ -14,6 +14,8 @@ if($accessLevel !== 1){
 <head>
   <meta charset="UTF-8">
   <title>EHON Energy Tech - Service</title>
+  <!-- THEME INIT - Must be BEFORE theme.css for automatic browser dark mode detection -->
+  <script src="/vmi/js/theme-init.js"></script>
   <!-- THEME CSS - MUST BE FIRST -->
   <link rel="stylesheet" href="/vmi/css/theme.css">
   <!-- Include CSS stylesheets -->

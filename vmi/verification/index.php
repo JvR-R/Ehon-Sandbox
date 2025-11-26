@@ -8,7 +8,9 @@
 <head>
     <meta charset="UTF-8">
     <title>User Login</title>
-      <!-- THEME CSS - MUST BE FIRST -->
+      <!-- THEME INIT - Must be BEFORE theme.css for automatic browser dark mode detection -->
+  <script src="/vmi/js/theme-init.js"></script>
+  <!-- THEME CSS - MUST BE FIRST -->
   <link rel="stylesheet" href="/vmi/css/theme.css">
   <!-- Other CSS files -->
 <link rel="stylesheet" href="/vmi/css/style_rep.css">

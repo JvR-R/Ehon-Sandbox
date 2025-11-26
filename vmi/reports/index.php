@@ -353,6 +353,8 @@ $chartTxJson  = json_encode($chartTx , JSON_THROW_ON_ERROR);
 <title>Reports</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="/vmi/images/favicon.ico">
+<!-- THEME INIT - Must be BEFORE theme.css for automatic browser dark mode detection -->
+<script src="/vmi/js/theme-init.js"></script>
 <!-- THEME CSS - MUST BE FIRST -->
 <link rel="stylesheet" href="/vmi/css/theme.css">
 <!-- Other CSS files -->

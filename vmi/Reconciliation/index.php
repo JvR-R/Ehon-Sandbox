@@ -21,7 +21,9 @@ $companyId = $_SESSION['companyId'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>EHON - Reconciliation</title>
-      <!-- THEME CSS - MUST BE FIRST -->
+      <!-- THEME INIT - Must be BEFORE theme.css for automatic browser dark mode detection -->
+  <script src="/vmi/js/theme-init.js"></script>
+  <!-- THEME CSS - MUST BE FIRST -->
   <link rel="stylesheet" href="/vmi/css/theme.css">
   <!-- Other CSS files -->
 <link rel="stylesheet" href="/vmi/css/normalize.css">

@@ -2,9 +2,110 @@
  * EHON VMI - Theme System
  * Light/Dark Mode CSS Variables
  * 
- * Usage: This file should be included BEFORE all other CSS files
- * Add this to your PHP pages: <link href="/vmi/css/theme.css" rel="stylesheet" type="text/css">
+ * Usage: 
+ * 1. Include theme-init.js in <head> BEFORE theme.css for automatic browser dark mode detection:
+ *    <script src="/vmi/js/theme-init.js"></script>
+ * 
+ * 2. Include theme.css BEFORE all other CSS files:
+ *    <link href="/vmi/css/theme.css" rel="stylesheet" type="text/css">
+ * 
+ * 3. Include theme-toggle.js before </body> for interactive theme switching:
+ *    <script src="/vmi/js/theme-toggle.js"></script>
+ * 
+ * The system will automatically detect and apply the browser's dark mode preference
+ * on first visit, and remember the user's manual preference for future visits.
  */
+
+/* ============================================
+   BROWSER PREFERENCE FALLBACK (CSS-only)
+   Automatically applies dark mode if browser prefers it and no manual preference is set
+   ============================================ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]):not([data-theme-initialized]) {
+    /* This will be overridden by JavaScript, but provides a CSS fallback */
+    /* Background Colors */
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --bg-tertiary: #252525;
+    --bg-accent: rgba(255, 255, 255, 0.05);
+    --bg-card: #1e1e1e;
+    --bg-dark: #0d0d0d;
+    --bg-darker: #000000;
+    
+    /* Table-specific Colors */
+    --table-main-bg: rgba(30, 30, 30, 0.95);
+    --table-body-bg: rgba(25, 25, 25, 0.85);
+    --table-header-bg: #2a2a2a;
+    --table-row-even: rgba(255, 255, 255, 0.03);
+    --table-row-hover: rgba(0, 0, 0, 0);
+    
+    /* Text Colors */
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    --text-tertiary: #d0d0d0;
+    --text-inverse: #ffffff;
+    --text-muted: #606060;
+    --text-link: #8a8fff;
+    
+    /* Border Colors */
+    --border-color: #3a3b3f;
+    --border-light: #2a2b2f;
+    --border-dark: #606060;
+    
+    /* Brand Colors */
+    --accent-primary: #8a8fff;
+    --accent-primary-hover: #a0a6ff;
+    --accent-secondary: #70d0ff;
+    --accent-danger: #ff4444;
+    --accent-success: #00e676;
+    --accent-warning: #ffa726;
+    
+    /* Button Colors */
+    --btn-primary-bg: #8a8fff;
+    --btn-primary-hover: #a0a6ff;
+    --btn-secondary-bg: #3a3b4f;
+    --btn-secondary-hover: #8a8fff;
+    --btn-text: #ffffff;
+    
+    /* Input/Form Colors */
+    --input-bg: #2a2b2f;
+    --input-text: #ffffff;
+    --input-border: #4a4b4f;
+    
+    /* Navigation Colors */
+    --nav-bg: #1f2023;
+    --nav-text: #b0b0b0;
+    --nav-hover: #2a2b2f;
+    
+    /* Scrollbar Colors */
+    --scrollbar-track: #2a2b2f;
+    --scrollbar-thumb: #505050;
+    
+    /* Shadow Colors */
+    --shadow-sm: rgba(0, 0, 0, 0.3);
+    --shadow-md: rgba(0, 0, 0, 0.5);
+    --shadow-lg: rgba(0, 0, 0, 0.7);
+    
+    /* Input Shadow Colors */
+    --input-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+    --input-shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.5);
+    --input-shadow-focus: 0 6px 20px rgba(138, 143, 255, 0.3);
+    
+    /* Status Badge Colors */
+    --status-green-bg: #00e676;
+    --status-green-text: #000000;
+    --status-red-bg: #ff4444;
+    --status-red-text: #ffffff;
+    
+    /* Chart Colors */
+    --chart-bar: #8a8fff;
+    --chart-line: #70d0ff;
+    
+    /* Special Purpose */
+    --overlay-bg: rgba(0, 0, 0, 0.7);
+    --divider-color: #3a3b3f;
+  }
+}
 
 /* ============================================
    DEFAULT THEME (LIGHT MODE)
