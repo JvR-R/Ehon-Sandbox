@@ -300,10 +300,11 @@ html {
   scroll-behavior: smooth;
 }
 .upload-container {
-  background: var(--bg-darker);
+  background-color: var(--bg-darker);
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: var(--shadow-md);
+  border: .6px solid #343b4f;
+  border-radius: 12px;
+  box-shadow: 0 2px 7px rgba(20, 20, 43, .06);
   text-align: center;
   max-width: 20rem;
   color: var(--text-primary);
