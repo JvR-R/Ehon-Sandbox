@@ -8,8 +8,6 @@ if (isset($input['case'])) {
    
     $case = $input['case'];
    
-
-
     if ($case == 1) {
         $siteid = $input['siteid'];
         $response = array();

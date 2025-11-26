@@ -89,13 +89,6 @@ footer, header, hgroup, menu, nav, section {
   width:100%!important;
   height:auto;
 }
-.report-card {
-  background-color: var(--bg-card);
-  border: .6px solid #343b4f;
-  border-radius: 12px;
-  box-shadow: 0 2px 7px rgba(20, 20, 43, .06);
-  padding: 1rem;
-}
 .text-100{
     color: var(--text-inverse);
 }

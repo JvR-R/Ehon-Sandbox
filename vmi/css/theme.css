@@ -328,7 +328,11 @@
 [data-theme="dark"] .card,
 [data-theme="dark"] .card.pd-30px---36px,
 [data-theme="dark"] .upload-container {
-  background-color: var(--bg-card) !important;
+  background-color: var(--bg-darker) !important;
+}
+
+[data-theme="dark"] .report-card {
+  background-color: var(--bg-darker) !important;
 }
 
 /* Small dropdown lists */
@@ -502,6 +506,17 @@ select:focus {
   background-color: var(--input-bg);
   color: var(--input-text);
   border-color: var(--input-border);
+}
+
+/* ============================================
+   REPORT CARD STYLING
+   ============================================ */
+.report-card {
+  background-color: var(--bg-darker);
+  border: .6px solid #343b4f;
+  border-radius: 12px;
+  box-shadow: 0 2px 7px rgba(20, 20, 43, .06);
+  padding: 1rem;
 }
 
 /* ============================================
