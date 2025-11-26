@@ -42,15 +42,23 @@
             color: var(--text-primary);
         }
         
+        /* Account for fixed nav-w 
+         * nav-w position: top: 64px (below topborder)
+         * nav-w padding: 30px top + 30px bottom = 60px
+         * nav-w content height: ~60-80px
+         * Total space needed: 64px + 60px + ~70px = ~194px
+         */
         main.table {
             background-color: var(--bg-secondary);
             padding: 30px;
+            padding-top: 4rem !important; /* Space for nav-w above content */
             border-radius: 12px;
             box-shadow: 0 4px 6px var(--shadow-sm);
         }
         
         /* Page Header */
         .page-header {
+            margin-top: 20px; /* Add some space after nav-w */
             margin-bottom: 30px;
             padding-bottom: 20px;
             border-bottom: 2px solid var(--border-color);

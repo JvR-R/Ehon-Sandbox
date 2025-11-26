@@ -29,7 +29,7 @@ main.table {
 /* Responsive adjustments for main.table */
 @media (min-width: 1900px) {
   main.table {
-    left: 11rem;
+    margin-left: 11rem;
     width: calc(100% - 11rem);
   }
 }
