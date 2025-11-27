@@ -313,7 +313,7 @@ select{
 }
 
 .form-body {
-  padding: 24px;
+  padding: 12px;
   background: var(--bg-card);
   color: var(--text-primary);
 }
