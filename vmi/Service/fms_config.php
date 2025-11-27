@@ -40,10 +40,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $max_pulse_duration_timeout_ms = isset($_POST['max_pulse_duration_timeout_ms']) ? intval($_POST['max_pulse_duration_timeout_ms']) : 900000;
     $driver_auth_timeout_ms = isset($_POST['driver_auth_timeout_ms']) ? intval($_POST['driver_auth_timeout_ms']) : 30000;
     $pump_selection_timeout_ms = isset($_POST['pump_selection_timeout_ms']) ? intval($_POST['pump_selection_timeout_ms']) : 30000;
-    $tank_gauging_method = isset($_POST['tank_gauging_method']) ? $_POST['tank_gauging_method'] : 'MODBUS';
+    $tank_gauging_method = isset($_POST['tank_gauging_method']) ? trim($_POST['tank_gauging_method']) : 'MODBUS';
     $tank_ocio_number = isset($_POST['tank_ocio_number']) ? intval($_POST['tank_ocio_number']) : 0;
     
-    // Sanitize tank_gauging_method to allowed values
+    // Sanitize tank_gauging_method to allowed values (convert to uppercase for consistency)
+    $tank_gauging_method = strtoupper(trim($tank_gauging_method));
     $allowed_methods = ['MODBUS', 'OCIO', 'NONE'];
     if (!in_array($tank_gauging_method, $allowed_methods)) {
         $tank_gauging_method = 'MODBUS';
@@ -68,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 tank_ocio_number = ?
                 WHERE idconfig_ehon_fms = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iiiiiisi", 
+        $stmt->bind_param("iiiiisii", 
             $nozzle_trigger_timeout_ms,
             $pulse_inactive_timeout_ms,
             $max_pulse_duration_timeout_ms,
@@ -98,15 +99,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     if ($stmt->execute()) {
-        // Create CSV file
+        // Create CSV file - using public_html directory to comply with open_basedir restrictions
         $csv_dir = "/home/ehon/files/fms/cfg/{$uid}";
         
-        // Create directory if it doesn't exist
+        // Create directory if it doesn't exist with group-writable permissions
         if (!is_dir($csv_dir)) {
-            if (!mkdir($csv_dir, 0755, true)) {
-                echo json_encode(['success' => false, 'error' => 'Failed to create directory']);
+            $old_umask = umask(0);
+            if (!mkdir($csv_dir, 0775, true)) {
+                umask($old_umask);
+                $error = error_get_last();
+                echo json_encode(['success' => false, 'error' => 'Failed to create directory: ' . ($error ? $error['message'] : 'Unknown error')]);
                 exit;
             }
+            umask($old_umask);
+            // Ensure the directory is group-writable
+            chmod($csv_dir, 0775);
         }
         
         // Build CSV content
