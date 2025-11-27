@@ -272,36 +272,72 @@ $(document).ready(function () {
         // FMS Tab Content - Similar to Gateway Tab ***********************************************
         var fmsContainer = $('<div class="fmsinfo"></div>');
         var fmsHtml = `
-        <div class="fms-actions-container" style="display: flex; gap: 20px;">
-            <div class="fms-actions-left" style="flex: 1; display: flex; flex-direction: column;">
-                <div class="fms-actions" style="background: var(--bg-secondary); padding: 15px; border-radius: 5px;">
-                    <h3 style="margin-top: 0;">FMS Firmware</h3>
-                    <label><strong>Firmware file:</strong></label>
-                    <input type="text" id="fms_fw_file_${uid}" placeholder="fms_v2.3.bin" style="width: 100%; padding: 5px; margin: 5px 0;">
-                    <button class="button-js btn-fms-fw-upgrade" data-uid="${uid}">Send</button>
+        <div class="fms-tab-layout">
+            <!-- Left Column: Input Sections -->
+            <div class="fms-left-column">
+                <div class="fms-card">
+                    <div class="fms-card-header">
+                        <span class="fms-card-icon">⚙️</span>
+                        <h4>Firmware Update</h4>
+                    </div>
+                    <div class="fms-card-body">
+                        <label>Firmware file:</label>
+                        <div class="fms-input-group">
+                            <input type="text" id="fms_fw_file_${uid}" placeholder="fms_v2.3.bin">
+                            <button class="button-js btn-fms-fw-upgrade fms-btn-primary" data-uid="${uid}">Send</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="fms-card">
+                    <div class="fms-card-header">
+                        <span class="fms-card-icon">💻</span>
+                        <h4>Custom Command</h4>
+                    </div>
+                    <div class="fms-card-body">
+                        <label>Command:</label>
+                        <div class="fms-input-group">
+                            <input type="text" id="fms_custom_cmd_${uid}" placeholder="Enter command">
+                            <button class="button-js btn-fms-command-custom fms-btn-primary" data-uid="${uid}">Send</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="fms-custom-cmd-actions" style="flex: 1; background: var(--bg-tertiary); padding: 15px; border-radius: 5px; max-height: 10rem;">
-                <h3 style="margin-top: 0;">Custom Command</h3>
-                <label><strong>Command:</strong></label>
-                <input type="text" id="fms_custom_cmd_${uid}" placeholder="Enter command" style="width: 100%; padding: 5px; margin: 5px 0;">
-                <button class="button-js btn-fms-command-custom" data-uid="${uid}">Send</button>
+            
+            <!-- Right Column: Command Buttons -->
+            <div class="fms-right-column">
+                <div class="fms-card">
+                    <div class="fms-card-header">
+                        <span class="fms-card-icon">🔧</span>
+                        <h4>System Commands</h4>
+                    </div>
+                    <div class="fms-card-body">
+                        <div class="fms-btn-grid">
+                            <button class="button-js btn-fms-command fms-btn-system" data-uid="${uid}" data-cmmd="RESTART">Restart</button>
+                            <button class="button-js btn-fms-command fms-btn-system" data-uid="${uid}" data-cmmd="PING">Ping</button>
+                            <button class="button-js btn-fms-command fms-btn-system" data-uid="${uid}" data-cmmd="STATE">State</button>
+                            <button class="button-js btn-fms-command fms-btn-system" data-uid="${uid}" data-cmmd="ENV">Env</button>
+                            <button class="button-js btn-fms-command fms-btn-lock" data-uid="${uid}" data-cmmd="LOCK">🔒 Lock</button>
+                            <button class="button-js btn-fms-command fms-btn-unlock" data-uid="${uid}" data-cmmd="UNLOCK">🔓 Unlock</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="fms-card">
+                    <div class="fms-card-header">
+                        <span class="fms-card-icon">📡</span>
+                        <h4>Data Sync</h4>
+                    </div>
+                    <div class="fms-card-body">
+                        <div class="fms-btn-grid">
+                            <button class="button-js btn-fms-url-command fms-btn-data" data-uid="${uid}" data-cmmd="auth">Auth</button>
+                            <button class="button-js btn-fms-url-command fms-btn-data" data-uid="${uid}" data-cmmd="vehicles">Vehicles</button>
+                            <button class="button-js btn-fms-url-command fms-btn-data" data-uid="${uid}" data-cmmd="drivers">Drivers</button>
+                            <button class="button-js btn-fms-url-command fms-btn-data" data-uid="${uid}" data-cmmd="tanks">Tanks</button>
+                            <button class="button-js btn-fms-url-command fms-btn-data" data-uid="${uid}" data-cmmd="pumps">Pumps</button>
+                            <button class="button-js btn-fms-config fms-btn-config" data-uid="${uid}">⚡ Config</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="fms-cmd-buttons">
-            <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'RESTART'}">Restart</button>
-            <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'PING'}">Ping</button>
-            <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'STATE'}">STATE</button>
-            <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'ENV'}">ENV</button>
-            <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'LOCK'}">Lock</button>
-            <button class="button-js btn-fms-command" data-uid="${uid}" data-cmmd="${'UNLOCK'}">Unlock</button>
-        </div>
-        <div class="fms-cmd-buttons">
-            <button class="button-js btn-fms-url-command" data-uid="${uid}" data-cmmd="auth">Auth</button>
-            <button class="button-js btn-fms-url-command" data-uid="${uid}" data-cmmd="vehicles">Vehicles</button>
-            <button class="button-js btn-fms-url-command" data-uid="${uid}" data-cmmd="drivers">Drivers</button>
-            <button class="button-js btn-fms-url-command" data-uid="${uid}" data-cmmd="tanks">Tanks</button>
-            <button class="button-js btn-fms-url-command" data-uid="${uid}" data-cmmd="pumps">Pumps</button>
         </div>
         `;
         fmsContainer.html(fmsHtml);
@@ -355,38 +391,82 @@ $(document).ready(function () {
         var gatewayContainer = $('<div class="gwinfo"></div>');
         var logsContainer = $('<div class="logsinfo" style="display:none;"></div>');
         var gwHtml = `
-        <div class="gw-actions-container" style="display: flex; gap: 20px;">
-            <div class="gw-actions-left" style="flex: 1; display: flex; flex-direction: column;">
-                <div class="gw-actions" style="background: var(--bg-secondary); padding: 15px; border-radius: 5px;">
-                    <h3 style="margin-top: 0;">Gateway actions</h3>
-                    <label><strong>Firmware file:</strong></label>
-                    <input type="text" id="fw_file_${mac}" placeholder="gw_v2.3.bin" style="width: 100%; padding: 5px; margin: 5px 0;">
-                    <button class="button-js btn-fw-upgrade" data-mac="${mac}">Send</button>
+        <div class="gw-tab-layout">
+            <!-- Left Column: Input Sections -->
+            <div class="gw-left-column">
+                <div class="gw-card">
+                    <div class="gw-card-header">
+                        <span class="gw-card-icon">⚙️</span>
+                        <h4>Firmware Update</h4>
+                    </div>
+                    <div class="gw-card-body">
+                        <label>Firmware file:</label>
+                        <div class="gw-input-group">
+                            <input type="text" id="fw_file_${mac}" placeholder="gw_v2.3.bin">
+                            <button class="button-js btn-fw-upgrade gw-btn-primary" data-mac="${mac}">Send</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="sc-actions" style="background: var(--bg-secondary); padding: 15px; border-radius: 5px;">
-                    <h3 style="margin-top: 0;">Chart actions</h3>
-                    <label><strong>Chart file:</strong></label>
-                    <input type="text" id="sc_file_${mac}" placeholder="sc_v2.3.json" style="width: 100%; padding: 5px; margin: 5px 0;">
-                    <button class="button-js btn-SC-upgrade" data-mac="${mac}">Send</button>
+                <div class="gw-card">
+                    <div class="gw-card-header">
+                        <span class="gw-card-icon">📊</span>
+                        <h4>Chart Update</h4>
+                    </div>
+                    <div class="gw-card-body">
+                        <label>Chart file:</label>
+                        <div class="gw-input-group">
+                            <input type="text" id="sc_file_${mac}" placeholder="sc_v2.3.json">
+                            <button class="button-js btn-SC-upgrade gw-btn-primary" data-mac="${mac}">Send</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="gw-card">
+                    <div class="gw-card-header">
+                        <span class="gw-card-icon">💻</span>
+                        <h4>Custom Command</h4>
+                    </div>
+                    <div class="gw-card-body">
+                        <label>Command:</label>
+                        <div class="gw-input-group">
+                            <input type="text" id="custom_cmd_${mac}" placeholder="Enter command">
+                            <button class="button-js btn-gw-command-custom gw-btn-primary" data-mac="${mac}">Send</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="custom-cmd-actions" style="flex: 1; background: var(--bg-tertiary); padding: 15px; border-radius: 5px; max-height: 10rem;">
-                <h3 style="margin-top: 0;">Custom Command</h3>
-                <label><strong>Command:</strong></label>
-                <input type="text" id="custom_cmd_${mac}" placeholder="Enter command" style="width: 100%; padding: 5px; margin: 5px 0;">
-                <button class="button-js btn-gw-command-custom" data-mac="${mac}">Send</button>
+            
+            <!-- Right Column: Command Buttons -->
+            <div class="gw-right-column">
+                <div class="gw-card">
+                    <div class="gw-card-header">
+                        <span class="gw-card-icon">🔧</span>
+                        <h4>System Commands</h4>
+                    </div>
+                    <div class="gw-card-body">
+                        <div class="gw-btn-grid">
+                            <button class="button-js btn-gw-command gw-btn-system" data-mac="${mac}" data-cmmd="RESTART">Restart</button>
+                            <button class="button-js btn-gw-command gw-btn-system" data-mac="${mac}" data-cmmd="PING">Ping</button>
+                            <button class="button-js btn-gw-command gw-btn-system" data-mac="${mac}" data-cmmd="DIPS">DIPS</button>
+                            <button class="button-js btn-gw-command gw-btn-system" data-mac="${mac}" data-cmmd="STATUS">Status</button>
+                            <button class="button-js btn-gw-command gw-btn-system" data-mac="${mac}" data-cmmd="ENV">Env</button>
+                            <button class="button-js btn-gw-command gw-btn-system" data-mac="${mac}" data-cmmd="LISTSD">List SD</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="gw-card">
+                    <div class="gw-card-header">
+                        <span class="gw-card-icon">🔄</span>
+                        <h4>Firmware Actions</h4>
+                    </div>
+                    <div class="gw-card-body">
+                        <div class="gw-btn-grid gw-btn-grid-3">
+                            <button class="button-js btn-gw-command gw-btn-fw" data-mac="${mac}" data-cmmd="UPDATEFW">Update FW</button>
+                            <button class="button-js btn-gw-command gw-btn-rollback" data-mac="${mac}" data-cmmd="ROLLBACKFW">Rollback FW</button>
+                            <button class="button-js btn-gw-command gw-btn-danger" data-mac="${mac}" data-cmmd="FORMAT">⚠️ Format</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="cmd-buttons">
-            <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'RESTART'}">Restart</button>
-            <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'PING'}">Ping</button>
-            <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'DIPS'}">DIPS</button>
-            <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'STATUS'}">STATUS</button>
-            <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'ENV'}">ENV</button>
-            <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'FORMAT'}">Format</button>
-            <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'ROLLBACKFW'}">ROLLBACKFW</button>
-            <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'UPDATEFW'}">UPDATEFW</button>
-            <button class="button-js btn-gw-command" data-mac="${mac}" data-cmmd="${'LISTSD'}">LISTSD</button>
         </div>
         `;
         gatewayContainer.html(gwHtml);
@@ -1103,5 +1183,135 @@ $(document).ready(function () {
         .done(() => alert(cmmd.toUpperCase() + " Command sent"))
         .fail(xhr =>
             alert("Error: " + (xhr.responseText || xhr.statusText)));
+    });
+
+    /* FMS Configuration Modal */
+    // Create the modal HTML and append to body if it doesn't exist
+    if (!$('#fms-config-modal').length) {
+        const modalHtml = `
+        <div id="fms-config-modal" class="fms-modal-overlay" style="display: none;">
+            <div class="fms-modal-content">
+                <div class="fms-modal-header">
+                    <h3>FMS Configuration</h3>
+                    <button class="fms-modal-close">&times;</button>
+                </div>
+                <div class="fms-modal-body">
+                    <input type="hidden" id="fms_config_uid">
+                    <div class="fms-config-field">
+                        <label for="fms_nozzle_trigger_timeout">Nozzle Trigger Timeout (ms):</label>
+                        <input type="number" id="fms_nozzle_trigger_timeout" value="30000">
+                    </div>
+                    <div class="fms-config-field">
+                        <label for="fms_pulse_inactive_timeout">Pulse Inactive Timeout (ms):</label>
+                        <input type="number" id="fms_pulse_inactive_timeout" value="30000">
+                    </div>
+                    <div class="fms-config-field">
+                        <label for="fms_max_pulse_duration_timeout">Max Pulse Duration Timeout (ms):</label>
+                        <input type="number" id="fms_max_pulse_duration_timeout" value="900000">
+                    </div>
+                    <div class="fms-config-field">
+                        <label for="fms_driver_auth_timeout">Driver Auth Timeout (ms):</label>
+                        <input type="number" id="fms_driver_auth_timeout" value="30000">
+                    </div>
+                    <div class="fms-config-field">
+                        <label for="fms_pump_selection_timeout">Pump Selection Timeout (ms):</label>
+                        <input type="number" id="fms_pump_selection_timeout" value="30000">
+                    </div>
+                    <div class="fms-config-field">
+                        <label for="fms_tank_gauging_method">Tank Gauging Method:</label>
+                        <select id="fms_tank_gauging_method">
+                            <option value="MODBUS">MODBUS</option>
+                            <option value="OCIO">OCIO</option>
+                            <option value="NONE">NONE</option>
+                        </select>
+                    </div>
+                    <div class="fms-config-field">
+                        <label for="fms_tank_ocio_number">Tank OCIO Number:</label>
+                        <input type="number" id="fms_tank_ocio_number" value="0">
+                    </div>
+                </div>
+                <div class="fms-modal-footer">
+                    <button class="button-js fms-modal-cancel">Cancel</button>
+                    <button class="button-js fms-modal-save">Save Configuration</button>
+                </div>
+            </div>
+        </div>`;
+        $('body').append(modalHtml);
+    }
+
+    /* FMS Configuration button click - open modal */
+    $(document).on("click", ".btn-fms-config", function () {
+        const uid = $(this).data("uid");
+        $('#fms_config_uid').val(uid);
+        
+        // Load existing configuration from database
+        $.ajax({
+            url: "/vmi/Service/fms_config.php",
+            type: "GET",
+            data: { uid: uid },
+            dataType: "json"
+        })
+        .done(function(response) {
+            if (response.success && response.data) {
+                $('#fms_nozzle_trigger_timeout').val(response.data.nozzle_trigger_timeout_ms || 30000);
+                $('#fms_pulse_inactive_timeout').val(response.data.pulse_inactive_timeout_ms || 30000);
+                $('#fms_max_pulse_duration_timeout').val(response.data.max_pulse_duration_timeout_ms || 900000);
+                $('#fms_driver_auth_timeout').val(response.data.driver_auth_timeout_ms || 30000);
+                $('#fms_pump_selection_timeout').val(response.data.pump_selection_timeout_ms || 30000);
+                $('#fms_tank_gauging_method').val(response.data.tank_gauging_method || 'MODBUS');
+                $('#fms_tank_ocio_number').val(response.data.tank_ocio_number || 0);
+            }
+        })
+        .fail(function() {
+            // Use default values if load fails
+            console.log("No existing configuration found, using defaults");
+        });
+        
+        $('#fms-config-modal').fadeIn(200);
+    });
+
+    /* FMS Configuration modal close */
+    $(document).on("click", ".fms-modal-close, .fms-modal-cancel, .fms-modal-overlay", function (e) {
+        if (e.target === this) {
+            $('#fms-config-modal').fadeOut(200);
+        }
+    });
+
+    /* Prevent modal content click from closing modal */
+    $(document).on("click", ".fms-modal-content", function (e) {
+        e.stopPropagation();
+    });
+
+    /* FMS Configuration save */
+    $(document).on("click", ".fms-modal-save", function () {
+        const uid = $('#fms_config_uid').val();
+        const configData = {
+            uid: uid,
+            nozzle_trigger_timeout_ms: parseInt($('#fms_nozzle_trigger_timeout').val()) || 30000,
+            pulse_inactive_timeout_ms: parseInt($('#fms_pulse_inactive_timeout').val()) || 30000,
+            max_pulse_duration_timeout_ms: parseInt($('#fms_max_pulse_duration_timeout').val()) || 900000,
+            driver_auth_timeout_ms: parseInt($('#fms_driver_auth_timeout').val()) || 30000,
+            pump_selection_timeout_ms: parseInt($('#fms_pump_selection_timeout').val()) || 30000,
+            tank_gauging_method: $('#fms_tank_gauging_method').val() || 'MODBUS',
+            tank_ocio_number: parseInt($('#fms_tank_ocio_number').val()) || 0
+        };
+
+        $.ajax({
+            url: "/vmi/Service/fms_config.php",
+            type: "POST",
+            data: configData,
+            dataType: "json"
+        })
+        .done(function(response) {
+            if (response.success) {
+                alert("Configuration saved successfully!");
+                $('#fms-config-modal').fadeOut(200);
+            } else {
+                alert("Error saving configuration: " + (response.error || "Unknown error"));
+            }
+        })
+        .fail(function(xhr) {
+            alert("Error saving configuration: " + (xhr.responseText || xhr.statusText));
+        });
     });
 });
