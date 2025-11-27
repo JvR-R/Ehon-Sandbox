@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         // Build CSV content
-        $csv_content = "sound_enabled,1\n\n";
+        $csv_content = "sound_enabled,1\n";
         $csv_content .= "nozzle_trigger_timeout_ms,{$nozzle_trigger_timeout_ms}\n";
         $csv_content .= "pulse_inactive_timeout_ms,{$pulse_inactive_timeout_ms}\n";
         $csv_content .= "max_pulse_duration_timeout_ms,{$max_pulse_duration_timeout_ms}\n";
