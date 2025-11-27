@@ -1,6 +1,6 @@
 /* /vmi/reports/map.js – Enhanced map with modern styling and animations */
 
-// Initialize map with dark-themed tiles
+// Initialize map
 const map = L.map('map', {
   zoomControl: false,  // We'll add custom positioned controls
   attributionControl: true
@@ -11,12 +11,53 @@ L.control.zoom({
   position: 'topright'
 }).addTo(map);
 
-// Use CartoDB dark matter tiles for a sleek look
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+// Tile layers for light and dark modes
+const darkTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
   maxZoom: 19,
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
   subdomains: 'abcd'
-}).addTo(map);
+});
+
+const lightTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  maxZoom: 19,
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+  subdomains: 'abcd'
+});
+
+// Detect current theme and add appropriate tiles
+function getCurrentTheme() {
+  return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+}
+
+let currentTileLayer = null;
+
+function updateMapTiles() {
+  const theme = getCurrentTheme();
+  
+  if (currentTileLayer) {
+    map.removeLayer(currentTileLayer);
+  }
+  
+  currentTileLayer = theme === 'dark' ? darkTiles : lightTiles;
+  currentTileLayer.addTo(map);
+}
+
+// Initialize tiles
+updateMapTiles();
+
+// Watch for theme changes
+const observer = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    if (mutation.attributeName === 'data-theme') {
+      updateMapTiles();
+    }
+  });
+});
+
+observer.observe(document.documentElement, {
+  attributes: true,
+  attributeFilter: ['data-theme']
+});
 
 /* Helper: Get status class based on alert level */
 function getStatusClass(alert) {
