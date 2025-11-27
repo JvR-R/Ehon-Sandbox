@@ -491,7 +491,6 @@ $(document).ready(function () {
                     <div class="logs-filter-group">
                         <button class="logs-filter-btn active" data-filter="all">All</button>
                         <button class="logs-filter-btn filter-error" data-filter="error">Error</button>
-                        <button class="logs-filter-btn filter-warn" data-filter="warn">Warning</button>
                         <button class="logs-filter-btn filter-info" data-filter="info">Info</button>
                     </div>
                     <div class="logs-count">
@@ -1065,15 +1064,33 @@ $(document).ready(function () {
     // Function to parse log level from log line
     function parseLogLevel(logLine) {
         var lowerLine = logLine.toLowerCase();
-        if (lowerLine.includes('error') || lowerLine.includes('fail') || lowerLine.includes('exception')) {
+        
+        // Error indicators
+        if (lowerLine.includes('error') || 
+            lowerLine.includes('fail') || 
+            lowerLine.includes('exception') ||
+            lowerLine.includes('busy') ||
+            lowerLine.includes('timeout') ||
+            lowerLine.includes('denied') ||
+            lowerLine.includes('invalid') ||
+            lowerLine.includes('refused') ||
+            lowerLine.includes('disconnect')) {
             return 'error';
-        } else if (lowerLine.includes('warn') || lowerLine.includes('warning')) {
-            return 'warn';
-        } else if (lowerLine.includes('debug')) {
+        }
+        
+        // Debug indicators
+        if (lowerLine.includes('debug')) {
             return 'debug';
-        } else if (lowerLine.includes('success') || lowerLine.includes('ok')) {
+        }
+        
+        // Success indicators
+        if (lowerLine.includes('success') || 
+            lowerLine.includes('connected') ||
+            lowerLine.includes('complete') ||
+            lowerLine.includes('updated')) {
             return 'success';
         }
+        
         return 'info';
     }
 
