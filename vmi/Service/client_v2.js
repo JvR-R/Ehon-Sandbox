@@ -1092,12 +1092,11 @@ $(document).ready(function () {
             message = logLine.substring(timestampMatch[0].length);
         }
         
-        // Highlight paths, numbers, and quoted strings in the message
+        // Escape HTML to prevent XSS and display issues
         message = message
-            .replace(/\/[\w\/\-.]+/g, '<span class="log-message-path">$&</span>')
-            .replace(/\b\d+(\.\d+)?\b/g, '<span class="log-message-number">$&</span>')
-            .replace(/"([^"]+)"/g, '<span class="log-message-highlight">"$1"</span>')
-            .replace(/'([^']+)'/g, '<span class="log-message-highlight">\'$1\'</span>');
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
         
         return `
             <div class="log-entry" data-level="${level}">
