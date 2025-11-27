@@ -1303,9 +1303,30 @@ $(document).ready(function () {
             dataType: "json"
         })
         .done(function(response) {
+            // Only proceed if both database save AND file creation succeeded
             if (response.success) {
-                alert("Configuration saved successfully!");
-                $('#fms-config-modal').fadeOut(200);
+                // Sync the configuration file after successful save and file creation
+                const syncUrl = `https://ehonenergytech.com.au/api-v1/download.php?f=fms/cfg/${uid}/CONFIG.CSV`;
+                
+                $.ajax({
+                    url: "/backend/fms/command/",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        uid: uid,
+                        cmd: "config",
+                        value: syncUrl
+                    }),
+                    headers: { "X-CSRFToken": getCookie("csrftoken") }
+                })
+                .done(() => {
+                    alert("Configuration saved and synced successfully!");
+                    $('#fms-config-modal').fadeOut(200);
+                })
+                .fail(function(xhr) {
+                    alert("Configuration saved but sync failed: " + (xhr.responseText || xhr.statusText));
+                    $('#fms-config-modal').fadeOut(200);
+                });
             } else {
                 alert("Error saving configuration: " + (response.error || "Unknown error"));
             }
