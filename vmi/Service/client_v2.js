@@ -1083,29 +1083,17 @@ $(document).ready(function () {
         var levelClass = 'log-level-' + level;
         var levelLabel = level.toUpperCase();
         
-        // Try to extract timestamp (common formats: [2024-01-01 12:00:00] or 2024-01-01T12:00:00)
-        var timestamp = '';
-        var message = logLine;
-        var timestampMatch = logLine.match(/^\[?(\d{4}-\d{2}-\d{2}[\sT]\d{2}:\d{2}:\d{2})\]?\s*/);
-        if (timestampMatch) {
-            timestamp = timestampMatch[1];
-            message = logLine.substring(timestampMatch[0].length);
-        }
-        
         // Escape HTML to prevent XSS and display issues
-        message = message
+        var message = logLine
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;');
         
-        return `
-            <div class="log-entry" data-level="${level}">
-                <div class="log-line-number">${lineNumber}</div>
-                ${timestamp ? '<div class="log-timestamp">' + timestamp + '</div>' : ''}
-                <div class="log-level ${levelClass}">${levelLabel}</div>
-                <div class="log-message">${message}</div>
-            </div>
-        `;
+        return '<div class="log-entry" data-level="' + level + '">' +
+                   '<div class="log-line-number">' + lineNumber + '</div>' +
+                   '<div class="log-level ' + levelClass + '">' + levelLabel + '</div>' +
+                   '<div class="log-message">' + message + '</div>' +
+               '</div>';
     }
 
     // Function to load device logs
