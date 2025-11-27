@@ -125,8 +125,9 @@
         
         /* Modern styling for DataTables with theme support */
         #sitesTable_wrapper {
-            padding: 0;
+            padding: 1rem;
             background-color: var(--bg-card);
+            border-radius: 1rem;
         }
         
         #sitesTable {
