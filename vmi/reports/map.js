@@ -189,7 +189,12 @@ function animateMarker(marker, delay) {
 }
 
 /* Main: Fetch data and populate map */
-fetch('gps_call', { method: 'POST' })
+fetch('gps_call.php', { 
+  credentials: 'same-origin',
+  headers: {
+    'Accept': 'application/json'
+  }
+})
   .then(r => r.json())
   .then(({ locations }) => {
     if (!locations || locations.length === 0) {
