@@ -473,22 +473,47 @@ $(document).ready(function () {
 
         var logsHtml = `
         <div class="logs-content">
-            <h3>Device Logs</h3>
-            <div class="logs-header">
-                <p>Last 25 log entries for device: ${mac}</p>
-                <button class="button-js btn-refresh-logs" data-mac="${mac}" data-cs-type="${cs_type}">Refresh</button>
-            </div>
-            <div class="logs-display" id="logs_display_${mac}" style="
-                background: var(--bg-secondary); 
-                border: 1px solid var(--border-color); 
-                padding: 10px; 
-                height: 400px; 
-                overflow-y: auto; 
-                font-family: 'Courier New', monospace; 
-                font-size: 12px;
-                white-space: pre-wrap;
-            " data-cs-type="${cs_type}">
-                <div class="loading">Loading logs...</div>
+            <div class="logs-card">
+                <div class="logs-card-header">
+                    <div class="logs-card-header-left">
+                        <div class="logs-card-icon">📋</div>
+                        <div>
+                            <h3>Device Logs</h3>
+                            <div class="logs-device-id">${mac}</div>
+                        </div>
+                    </div>
+                    <button class="button-js btn-refresh-logs logs-btn-refresh" data-mac="${mac}" data-cs-type="${cs_type}">
+                        <span class="refresh-icon">🔄</span>
+                        Refresh
+                    </button>
+                </div>
+                <div class="logs-toolbar">
+                    <div class="logs-filter-group">
+                        <button class="logs-filter-btn active" data-filter="all">All</button>
+                        <button class="logs-filter-btn filter-error" data-filter="error">Error</button>
+                        <button class="logs-filter-btn filter-warn" data-filter="warn">Warning</button>
+                        <button class="logs-filter-btn filter-info" data-filter="info">Info</button>
+                    </div>
+                    <div class="logs-count">
+                        Showing <span class="logs-count-badge" id="logs_count_${mac}">0</span> entries
+                    </div>
+                </div>
+                <div class="logs-display" id="logs_display_${mac}" data-cs-type="${cs_type}">
+                    <div class="logs-loading">
+                        <div class="logs-loading-spinner"></div>
+                        <div class="logs-loading-text">Loading logs...</div>
+                    </div>
+                </div>
+                <div class="logs-footer">
+                    <div class="logs-footer-info">
+                        <div class="logs-footer-stat">📊 Last 25 entries</div>
+                        <div class="logs-footer-stat" id="logs_updated_${mac}">⏱️ --</div>
+                    </div>
+                    <div class="logs-auto-scroll">
+                        <span>Auto-scroll</span>
+                        <div class="logs-auto-scroll-toggle active" id="logs_autoscroll_${mac}"></div>
+                    </div>
+                </div>
             </div>
         </div>
         `;
@@ -1037,9 +1062,59 @@ $(document).ready(function () {
             data: { uid: uid }
         });
     }
-     // Function to load device logs
+    // Function to parse log level from log line
+    function parseLogLevel(logLine) {
+        var lowerLine = logLine.toLowerCase();
+        if (lowerLine.includes('error') || lowerLine.includes('fail') || lowerLine.includes('exception')) {
+            return 'error';
+        } else if (lowerLine.includes('warn') || lowerLine.includes('warning')) {
+            return 'warn';
+        } else if (lowerLine.includes('debug')) {
+            return 'debug';
+        } else if (lowerLine.includes('success') || lowerLine.includes('ok')) {
+            return 'success';
+        }
+        return 'info';
+    }
+
+    // Function to format a single log entry with styling
+    function formatLogEntry(logLine, lineNumber) {
+        var level = parseLogLevel(logLine);
+        var levelClass = 'log-level-' + level;
+        var levelLabel = level.toUpperCase();
+        
+        // Try to extract timestamp (common formats: [2024-01-01 12:00:00] or 2024-01-01T12:00:00)
+        var timestamp = '';
+        var message = logLine;
+        var timestampMatch = logLine.match(/^\[?(\d{4}-\d{2}-\d{2}[\sT]\d{2}:\d{2}:\d{2})\]?\s*/);
+        if (timestampMatch) {
+            timestamp = timestampMatch[1];
+            message = logLine.substring(timestampMatch[0].length);
+        }
+        
+        // Highlight paths, numbers, and quoted strings in the message
+        message = message
+            .replace(/\/[\w\/\-.]+/g, '<span class="log-message-path">$&</span>')
+            .replace(/\b\d+(\.\d+)?\b/g, '<span class="log-message-number">$&</span>')
+            .replace(/"([^"]+)"/g, '<span class="log-message-highlight">"$1"</span>')
+            .replace(/'([^']+)'/g, '<span class="log-message-highlight">\'$1\'</span>');
+        
+        return `
+            <div class="log-entry" data-level="${level}">
+                <div class="log-line-number">${lineNumber}</div>
+                ${timestamp ? '<div class="log-timestamp">' + timestamp + '</div>' : ''}
+                <div class="log-level ${levelClass}">${levelLabel}</div>
+                <div class="log-message">${message}</div>
+            </div>
+        `;
+    }
+
+    // Function to load device logs
     function loadDeviceLogs(device_id, cs_type) {
         var $logsDisplay = $('#logs_display_' + device_id);
+        var $logsCount = $('#logs_count_' + device_id);
+        var $logsUpdated = $('#logs_updated_' + device_id);
+        var $refreshBtn = $('.btn-refresh-logs[data-mac="' + device_id + '"]');
         
         if ($logsDisplay.length === 0) {
             console.error('Logs display element not found for device:', device_id);
@@ -1054,7 +1129,14 @@ $(document).ready(function () {
             device_type = 'gateway';
         }
         
-        $logsDisplay.html('<div class="loading">Loading logs...</div>');
+        // Show loading state
+        $refreshBtn.addClass('loading');
+        $logsDisplay.html(`
+            <div class="logs-loading">
+                <div class="logs-loading-spinner"></div>
+                <div class="logs-loading-text">Loading logs...</div>
+            </div>
+        `);
         
         $.ajax({
             url: 'get_device_logs.php',
@@ -1065,25 +1147,96 @@ $(document).ready(function () {
             },
             dataType: 'json',
             success: function(response) {
+                $refreshBtn.removeClass('loading');
+                
                 if (response.success && response.logs) {
                     if (response.logs.length === 0) {
-                        $logsDisplay.html('<div class="no-logs">No logs found for this device.</div>');
+                        $logsDisplay.html(`
+                            <div class="logs-empty">
+                                <div class="logs-empty-icon">📭</div>
+                                <div class="logs-empty-text">No logs found</div>
+                                <div class="logs-empty-subtext">This device hasn't generated any log entries yet.</div>
+                            </div>
+                        `);
+                        $logsCount.text('0');
                     } else {
-                        var logsText = response.logs.join('\n');
-                        $logsDisplay.html(logsText);
-                        // Scroll to bottom to show most recent logs
-                        $logsDisplay.scrollTop($logsDisplay[0].scrollHeight);
+                        var logsHtml = '';
+                        response.logs.forEach(function(log, index) {
+                            logsHtml += formatLogEntry(log, index + 1);
+                        });
+                        $logsDisplay.html(logsHtml);
+                        $logsCount.text(response.logs.length);
+                        
+                        // Check auto-scroll toggle
+                        var $autoScroll = $('#logs_autoscroll_' + device_id);
+                        if ($autoScroll.hasClass('active')) {
+                            $logsDisplay.scrollTop($logsDisplay[0].scrollHeight);
+                        }
                     }
+                    
+                    // Update timestamp
+                    var now = new Date();
+                    $logsUpdated.text('⏱️ Updated ' + now.toLocaleTimeString());
                 } else {
-                    $logsDisplay.html('<div class="error">Error: ' + (response.error || 'Failed to load logs') + '</div>');
+                    $logsDisplay.html(`
+                        <div class="logs-error">
+                            <div class="logs-error-icon">⚠️</div>
+                            <div class="logs-error-text">${response.error || 'Failed to load logs'}</div>
+                            <button class="logs-error-retry btn-refresh-logs" data-mac="${device_id}" data-cs-type="${cs_type}">
+                                Try Again
+                            </button>
+                        </div>
+                    `);
+                    $logsCount.text('0');
                 }
             },
             error: function(xhr, status, error) {
-                $logsDisplay.html('<div class="error">Error loading logs: ' + error + '</div>');
+                $refreshBtn.removeClass('loading');
+                $logsDisplay.html(`
+                    <div class="logs-error">
+                        <div class="logs-error-icon">❌</div>
+                        <div class="logs-error-text">Error loading logs: ${error}</div>
+                        <button class="logs-error-retry btn-refresh-logs" data-mac="${device_id}" data-cs-type="${cs_type}">
+                            Try Again
+                        </button>
+                    </div>
+                `);
+                $logsCount.text('0');
                 console.error('AJAX Error:', xhr.responseText);
             }
         });
     }
+    
+    // Log filter functionality
+    $(document).on('click', '.logs-filter-btn', function() {
+        var $btn = $(this);
+        var filter = $btn.data('filter');
+        var $logsDisplay = $btn.closest('.logs-card').find('.logs-display');
+        var $allBtns = $btn.closest('.logs-filter-group').find('.logs-filter-btn');
+        
+        // Update active state
+        $allBtns.removeClass('active');
+        $btn.addClass('active');
+        
+        // Filter log entries
+        var $entries = $logsDisplay.find('.log-entry');
+        if (filter === 'all') {
+            $entries.show();
+        } else {
+            $entries.hide();
+            $entries.filter('[data-level="' + filter + '"]').show();
+        }
+        
+        // Update visible count
+        var visibleCount = $entries.filter(':visible').length;
+        var $countBadge = $btn.closest('.logs-card').find('.logs-count-badge');
+        $countBadge.text(visibleCount);
+    });
+    
+    // Auto-scroll toggle
+    $(document).on('click', '.logs-auto-scroll-toggle', function() {
+        $(this).toggleClass('active');
+    });
 
     // Event handler for refresh logs button
     $(document).on('click', '.btn-refresh-logs', function() {
