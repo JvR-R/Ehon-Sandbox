@@ -1197,6 +1197,12 @@ $(document).ready(function () {
                 </div>
                 <div class="fms-modal-body">
                     <input type="hidden" id="fms_config_uid">
+                    <div class="fms-config-field fms-checkbox-field">
+                        <label class="fms-checkbox-label">
+                            <input type="checkbox" id="fms_sound_enabled" value="1">
+                            <span>Sound Enabled</span>
+                        </label>
+                    </div>
                     <div class="fms-config-field">
                         <label for="fms_nozzle_trigger_timeout">Nozzle Trigger Timeout (ms):</label>
                         <input type="number" id="fms_nozzle_trigger_timeout" value="30000">
@@ -1253,6 +1259,7 @@ $(document).ready(function () {
         })
         .done(function(response) {
             if (response.success && response.data) {
+                $('#fms_sound_enabled').prop('checked', response.data.sound_enabled == 1 || response.data.sound_enabled === true);
                 $('#fms_nozzle_trigger_timeout').val(response.data.nozzle_trigger_timeout_ms || 30000);
                 $('#fms_pulse_inactive_timeout').val(response.data.pulse_inactive_timeout_ms || 30000);
                 $('#fms_max_pulse_duration_timeout').val(response.data.max_pulse_duration_timeout_ms || 900000);
@@ -1287,6 +1294,7 @@ $(document).ready(function () {
         const uid = $('#fms_config_uid').val();
         const configData = {
             uid: uid,
+            sound_enabled: $('#fms_sound_enabled').is(':checked') ? 1 : 0,
             nozzle_trigger_timeout_ms: parseInt($('#fms_nozzle_trigger_timeout').val()) || 30000,
             pulse_inactive_timeout_ms: parseInt($('#fms_pulse_inactive_timeout').val()) || 30000,
             max_pulse_duration_timeout_ms: parseInt($('#fms_max_pulse_duration_timeout').val()) || 900000,

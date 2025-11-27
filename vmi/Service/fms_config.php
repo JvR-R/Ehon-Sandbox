@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
     
+    $sound_enabled = isset($_POST['sound_enabled']) ? intval($_POST['sound_enabled']) : 0;
     $nozzle_trigger_timeout_ms = isset($_POST['nozzle_trigger_timeout_ms']) ? intval($_POST['nozzle_trigger_timeout_ms']) : 30000;
     $pulse_inactive_timeout_ms = isset($_POST['pulse_inactive_timeout_ms']) ? intval($_POST['pulse_inactive_timeout_ms']) : 30000;
     $max_pulse_duration_timeout_ms = isset($_POST['max_pulse_duration_timeout_ms']) ? intval($_POST['max_pulse_duration_timeout_ms']) : 900000;
@@ -60,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($checkResult->num_rows > 0) {
         // Update existing record
         $sql = "UPDATE config_ehon_fms SET 
+                sound_enabled = ?,
                 nozzle_trigger_timeout_ms = ?,
                 pulse_inactive_timeout_ms = ?,
                 max_pulse_duration_timeout_ms = ?,
@@ -69,7 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 tank_ocio_number = ?
                 WHERE idconfig_ehon_fms = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iiiiisii", 
+        $stmt->bind_param("iiiiiisii", 
+            $sound_enabled,
             $nozzle_trigger_timeout_ms,
             $pulse_inactive_timeout_ms,
             $max_pulse_duration_timeout_ms,
@@ -82,12 +85,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Insert new record with specific ID
         $sql = "INSERT INTO config_ehon_fms 
-                (idconfig_ehon_fms, nozzle_trigger_timeout_ms, pulse_inactive_timeout_ms, max_pulse_duration_timeout_ms, 
+                (idconfig_ehon_fms, sound_enabled, nozzle_trigger_timeout_ms, pulse_inactive_timeout_ms, max_pulse_duration_timeout_ms, 
                  driver_auth_timeout_ms, pump_selection_timeout_ms, tank_gauging_method, tank_ocio_number) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iiiiiisi", 
+        $stmt->bind_param("iiiiiiiis", 
             $uid,
+            $sound_enabled,
             $nozzle_trigger_timeout_ms,
             $pulse_inactive_timeout_ms,
             $max_pulse_duration_timeout_ms,
@@ -117,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         // Build CSV content
-        $csv_content = "sound_enabled,1\n";
+        $csv_content = "sound_enabled,{$sound_enabled}\n";
         $csv_content .= "nozzle_trigger_timeout_ms,{$nozzle_trigger_timeout_ms}\n";
         $csv_content .= "pulse_inactive_timeout_ms,{$pulse_inactive_timeout_ms}\n";
         $csv_content .= "max_pulse_duration_timeout_ms,{$max_pulse_duration_timeout_ms}\n";
