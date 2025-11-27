@@ -479,18 +479,31 @@ $chartTxJson  = json_encode($chartTx , JSON_THROW_ON_ERROR);
 
 </div>
 <!-- ── Volume by site + map ────────────────────────────────────────── -->
-<div class="report-card">
-  <div class="grid-2-columns gap-0">
-    <div class="percentage-bars-small-section-container">
-      <h2>Volume by Site</h2><div class="divider"></div>
+<div class="chart-details-card-grid" style="margin-bottom: 1rem;">
+  <!-- Volume by Site Panel -->
+  <div class="site-volume-panel">
+    <h2>Volume by Site</h2>
+    <div class="divider" style="margin-bottom: 0.5rem;"></div>
+    <?php if (empty($siteVolRows)): ?>
+      <div style="color: #64748b; text-align: center; padding: 2rem 0; font-size: 0.9rem;">
+        No site data available
+      </div>
+    <?php else: ?>
       <?php foreach ($siteVolRows as $row): ?>
-        <div class="text-100"><?=esc($row['Site_name'] ?? '')?></div>
-        <div class="flex align-center gap-column-20px" style="justify-content:end">
-            <div class="text-100"><?=number_format($row['tot'],1)?> L</div></div>
-        <div class="divider"></div>
+        <div class="site-volume-item">
+          <span class="site-volume-name"><?=esc($row['Site_name'] ?? 'Unknown Site')?></span>
+          <span class="site-volume-value"><?=number_format($row['tot'],1)?> L</span>
+        </div>
       <?php endforeach; ?>
+    <?php endif; ?>
+  </div>
+  
+  <!-- Map Section -->
+  <div class="map-section">
+    <div class="map-section-header">
+      <h3 class="map-section-title">Site Locations</h3>
     </div>
-    <div class="pd-20px---52px"><div id="map" style="height:21rem"></div></div>
+    <div id="map"></div>
   </div>
 </div><!-- /.page-wrapper -->
 
