@@ -127,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $csv_content .= "tank_ocio_number,{$tank_ocio_number}\n";
         
         // Write CSV file
-        $csv_file = "{$csv_dir}/config.csv";
+        $csv_file = "{$csv_dir}/CONFIG.CSV";
         if (file_put_contents($csv_file, $csv_content) !== false) {
             echo json_encode(['success' => true, 'message' => 'Configuration saved and CSV created', 'csv_path' => $csv_file]);
         } else {
