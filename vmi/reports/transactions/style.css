@@ -81,6 +81,52 @@
 }
 
 /* ============================================
+   CHILD ROW CONTENT (Expanded Details)
+   ============================================ */
+/* DataTables child row - the row that contains the expanded content */
+table.dataTable tbody tr.dt-hasChild + tr,
+table.dataTable tbody tr.shown + tr {
+    background-color: var(--bg-secondary) !important;
+}
+
+table.dataTable tbody tr.dt-hasChild + tr > td,
+table.dataTable tbody tr.shown + tr > td {
+    padding: 0 !important;
+    background-color: var(--bg-secondary) !important;
+    border-top: none !important;
+}
+
+/* The child content container */
+.child-content {
+    width: calc(100% - 2rem);
+    min-height: 8rem;
+    padding: 1.5rem;
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    color: var(--text-primary) !important;
+    line-height: 1.6;
+    margin: 1rem;
+    font-family: inherit;
+}
+
+.child-content p {
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.child-content strong {
+    color: var(--accent-warning);
+}
+
+/* Ensure all nested elements use theme colors */
+table.dataTable tbody tr.shown + tr td,
+table.dataTable tbody tr.shown + tr td * {
+    color: var(--text-primary);
+}
+
+/* ============================================
    DATATABLES FILTER
    ============================================ */
 #customers_table_filter {
