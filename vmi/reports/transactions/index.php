@@ -23,11 +23,15 @@ include(BORDER_PATH);
   <!-- THEME CSS - MUST BE FIRST -->
   <link rel="stylesheet" href="/vmi/css/theme.css">
   <!-- Other CSS files -->
-<link rel="stylesheet" href="/vmi/css/normalize.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="/vmi/css/style_rep.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/vmi/css/normalize.css">
+  <!-- Bootstrap CSS - loaded early so theme overrides take precedence -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css">
+  <!-- VMI shared styles -->
+  <link rel="stylesheet" href="/vmi/css/vmi-tables.css">
+  <link rel="stylesheet" href="/vmi/css/style_rep.css">
+  <!-- Page-specific styles (must be last to override) -->
+  <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/vmi/clients/datatables.min.js"></script>
@@ -40,17 +44,15 @@ include(BORDER_PATH);
       <h1><img src="/vmi/images/company_15100.png" alt="">Vendor Managed Inventory</h1>            
     </section>
     <section class="table__filters">
-      <div  class="filter__button">
-        <div class="d-grid gap-2">
-          <button
-            type="button"
-            name="filter_btn"
-            id="filter_btn"
-            class="btn btn-secondary"
-            onclick="Filters(<?php echo $companyId; ?>)">
-            Filters
-          </button>
-        </div>
+      <div class="filter__button">
+        <button
+          type="button"
+          name="filter_btn"
+          id="filter_btn"
+          class="btn btn-secondary"
+          onclick="Filters(<?php echo $companyId; ?>)">
+          Filters
+        </button>
       </div>
       <div class="filter__div" id="filter__div">
         <!-- Nav tabs -->
@@ -181,25 +183,33 @@ include(BORDER_PATH);
             <input type="text"
               name="filter_cardholder"
               id="filter_cardholder"
-              style= "background: #011a37; color: white; border-radius: 0.5rem;"
+              class="form-control"
               aria-describedby="filter_cardholder"/>
             <label for="" class="form-label">Card Number</label>
             <input type="text"
               name="filter_cardnumber"
               id="filter_cardnumber"
-              style= "background: #011a37; color: white; border-radius: 0.5rem;"
+              class="form-control"
               aria-describedby="filter_cardnumber"/>
             <label for="" class="form-label">Registration</label>
             <input type="text"
               name="filter_registration"
               id="filter_registration"
-              style= "background: #011a37; color: white; border-radius: 0.5rem;"
+              class="form-control"
               aria-describedby="filter_registration"/>
           </div>
           <div class="tab-pane" 
             id="messages" 
             role="tabpanel" 
             aria-labelledby="messages-tab">
+            <div class="quick-date-filters mb-3">
+              <span class="quick-filter-label">Quick:</span>
+              <button type="button" class="quick-filter-btn" data-range="today">Today</button>
+              <button type="button" class="quick-filter-btn" data-range="1day">1 Day</button>
+              <button type="button" class="quick-filter-btn" data-range="1week">1 Week</button>
+              <button type="button" class="quick-filter-btn" data-range="1month">1 Month</button>
+              <button type="button" class="quick-filter-btn quick-filter-clear" data-range="clear">Clear</button>
+            </div>
             <div class="mb-3" style="max-width: 18rem;">
               <label for="start_date" class="form-label">Start Date</label>
               <input

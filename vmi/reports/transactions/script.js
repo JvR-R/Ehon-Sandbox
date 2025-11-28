@@ -119,26 +119,13 @@ $(document).ready(function () {
           var endDip = transaction.endDip ?? 'Unknown';
           // Build the child row HTML that displays the transaction's stop_method.
           var childContentHtml = `
-            <div class="child-content" style="
-              width: 100%;
-              min-height: 10rem;
-              padding: 1.5rem;
-              background: white;
-              border: 1px solid #e3e3e3;
-              border-radius: 8px;
-              box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-              color: #333;
-              line-height: 1.6;
-              margin: 1rem 0;
-            ">
+            <div class="child-content">
               <p><strong>Pulses:</strong> ${pulses}</p>
               <p><strong>Stop Method:</strong> ${transaction.description}</p>
               <p><strong>Start DateTime:</strong> ${startDateTime}</p>
               <p><strong>End DateTime:</strong> ${endDateTime}</p>
               <p><strong>Start Dip:</strong> ${startDip}</p>
               <p><strong>End Dip:</strong> ${endDip}</p>
-              <!-- Add any other details you want to display -->
             </div>
           `;
       
@@ -266,6 +253,9 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('end_date').value = '';
         document.getElementById('filter_sites').selectedIndex = 0;
         document.getElementById('filter_group').selectedIndex = 0;
+        
+        // Clear quick filter active state
+        document.querySelectorAll('.quick-filter-btn').forEach(btn => btn.classList.remove('active'));
 
         // Add any other form controls that need resetting here
     }
@@ -273,5 +263,63 @@ document.addEventListener('DOMContentLoaded', function() {
     // Bind the function to the Reset button
     document.getElementById('resetFilters').onclick = resetFilters;
 
+});
+
+// Quick Date Filter functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const quickFilterBtns = document.querySelectorAll('.quick-filter-btn');
+    
+    quickFilterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const range = this.dataset.range;
+            const today = new Date();
+            let startDate = new Date();
+            let endDate = new Date();
+            
+            // Format date as YYYY-MM-DD for input[type="date"]
+            const formatDate = (date) => {
+                return date.toISOString().split('T')[0];
+            };
+            
+            // Calculate date range based on button clicked
+            switch(range) {
+                case 'today':
+                    startDate = today;
+                    endDate = today;
+                    break;
+                case '1day':
+                    startDate.setDate(today.getDate() - 1);
+                    endDate = today;
+                    break;
+                case '1week':
+                    startDate.setDate(today.getDate() - 7);
+                    endDate = today;
+                    break;
+                case '1month':
+                    startDate.setMonth(today.getMonth() - 1);
+                    endDate = today;
+                    break;
+                case 'clear':
+                    document.getElementById('start_date').value = '';
+                    document.getElementById('end_date').value = '';
+                    // Remove active class from all buttons
+                    quickFilterBtns.forEach(b => b.classList.remove('active'));
+                    // Trigger apply
+                    document.querySelector('.button-div .btn-primary').click();
+                    return;
+            }
+            
+            // Set the date inputs
+            document.getElementById('start_date').value = formatDate(startDate);
+            document.getElementById('end_date').value = formatDate(endDate);
+            
+            // Update active state
+            quickFilterBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Auto-apply the filter
+            document.querySelector('.button-div .btn-primary').click();
+        });
+    });
 });
 

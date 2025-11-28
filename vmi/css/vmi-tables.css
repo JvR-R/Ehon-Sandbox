@@ -368,24 +368,7 @@ tbody tr.expanded-details {
     position: relative;
 }
 
-/* DataTables child row controls */
-table.dataTable tbody td.dt-control {
-    cursor: pointer;
-}
-
-table.dataTable tbody td.dt-control:before {
-    content: "+" !important;
-    color: var(--text-primary) !important;
-    border: none !important;
-    font-weight: bold;
-    font-size: 18px;
-}
-
-table.dataTable tbody tr.shown td.dt-control:before {
-    content: "−" !important;
-    color: var(--accent-danger) !important;
-    border: none !important;
-}
+/* DataTables child row controls - using default DataTables styling */
 
 /* ============================================
    RESPONSIVE ADJUSTMENTS
