@@ -1,3 +1,8 @@
+/**
+ * Transaction Reports - Enterprise Edition
+ * Clean, professional reporting for large organizations
+ */
+
 let currentfilters = {};
 
 function Filters(companyId) {
@@ -7,139 +12,95 @@ function Filters(companyId) {
     } else {
         element.style.display = "none";
     }
-    console.log(companyId);
 }
 
 $(document).ready(function () {
-    var currentPage = 1; // Start from the first page
+    var currentPage = 1;
 
+    // Initialize DataTable - clean enterprise configuration
     var table = $('#customers_table').DataTable({
         paging: false,
-        order: [[2, 'desc'], [3, 'desc']],
-        columnDefs: [
-          {
-            targets: 0,  // First column for our expand button
-            className: 'dt-control',
-            orderable: false,
-            data: null,
-            defaultContent: ''
-          }
-          // You can add more column definitions if needed.
-        ]
-      });
+        searching: false,
+        info: false,
+        order: [[0, 'desc'], [1, 'desc']], // Sort by Date, then Time descending
+        language: {
+            emptyTable: "No transactions found for the selected criteria"
+        }
+    });
 
-      function loadTransactions(page, filters) {
+    // Load transactions from server
+    function loadTransactions(page, filters) {
+        // Show loading state
+        table.clear().draw();
+        
         $.ajax({
-          url: 'get_transactions', // Adjust to your path
-          type: 'GET',
-          dataType: 'json', // Expect JSON from the server
-          data: {
-            page: page,
-            filters: filters 
-          },
-          success: function (data) {
-            // Clear existing rows
-            table.clear();
-      
-            // For each transaction, add a new row and attach the transaction object to it.
-            data.forEach(function (transaction) {
-              // Add the row to the DataTable. The first column is left empty because it
-              // will be replaced by our dt-control expand button.
-              var newRow = table.row.add([
-                '', // dt-control column (button is inserted automatically)
-                transaction.transaction_id,
-                transaction.transaction_date,
-                transaction.transaction_time,
-                transaction.uid,
-                transaction.site_name,
-                transaction.fms_id,
-                transaction.tank_id,
-                transaction.pump_id,
-                transaction.card_number,
-                transaction.card_holder_name,
-                transaction.odometer,
-                transaction.registration,
-                transaction.dispensed_volume
-                // Adjust the number of columns to match your table structure.
-              ]);
-              
-              // Attach the entire transaction object to this row's DOM element.
-              // This lets you access any property (like stop_method) later.
-              $(newRow.node()).data('transaction', transaction);
-            });
-      
-            table.draw(); // Redraw the table with new data
-            updatePageIndicator(page);
-          },
-          error: function (jqXHR, textStatus, errorThrown) {
-            console.error('Error loading transactions:', textStatus, errorThrown);
-          }
+            url: 'get_transactions',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                page: page,
+                filters: filters 
+            },
+            success: function (data) {
+                table.clear();
+                
+                if (data && data.length > 0) {
+                    data.forEach(function (tx) {
+                        // Format volume with 2 decimal places
+                        var volume = parseFloat(tx.dispensed_volume || 0).toFixed(2);
+                        
+                        table.row.add([
+                            tx.transaction_date,
+                            tx.transaction_time,
+                            tx.site_name || '-',
+                            tx.tank_id || '-',
+                            tx.pump_id || '-',
+                            tx.card_holder_name || '-',
+                            tx.card_number || '-',
+                            tx.registration || '-',
+                            tx.odometer || '-',
+                            volume
+                        ]);
+                    });
+                }
+                
+                table.draw();
+                updatePageIndicator(page, data ? data.length : 0);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error('Error loading transactions:', textStatus, errorThrown);
+                table.clear().draw();
+                updatePageIndicator(page, 0);
+            }
         });
-      }
+    }
       
+    // Initial load
+    loadTransactions(currentPage);
     
-      // Initial load of transactions
-      loadTransactions(currentPage);
-    
-      // Pagination event listeners
-      $('#nextPage').on('click', function () {
+    // Pagination
+    $('#nextPage').on('click', function () {
         currentPage++;
         loadTransactions(currentPage, currentfilters);
-      });
+    });
     
-      $('#prevPage').on('click', function () {
+    $('#prevPage').on('click', function () {
         if (currentPage > 1) {
-          currentPage--;
-          loadTransactions(currentPage, currentfilters);
+            currentPage--;
+            loadTransactions(currentPage, currentfilters);
         }
-      });
+    });
     
-      // Update page indicator
-      function updatePageIndicator(page) {
-        $('#pageIndicator').text('Page ' + page);
-      }
-    
-      // ========================
-      // dt-control (Expand/Collapse) Code:
-      $('#customers_table tbody').on('click', 'td.dt-control', function () {
-        var tr = $(this).closest('tr');  // Get the parent row
-        var row = table.row(tr);           // Get the DataTable row object
-      
-        if (row.child.isShown()) {
-          // If already open, close the child row.
-          row.child.hide();
-          tr.removeClass('shown');
-        } else {
-          // Retrieve the transaction object attached to this row.
-          var transaction = $(tr).data('transaction');
-          var pulses = transaction.pulses ?? 0;
-          var startDateTime = transaction.startDateTime ?? 'Unknown';
-          var endDateTime = transaction.endDateTime ?? 'Unknown';
-          var startDip = transaction.startDip ?? 'Unknown';
-          var endDip = transaction.endDip ?? 'Unknown';
-          // Build the child row HTML that displays the transaction's stop_method.
-          var childContentHtml = `
-            <div class="child-content">
-              <p><strong>Pulses:</strong> ${pulses}</p>
-              <p><strong>Stop Method:</strong> ${transaction.description}</p>
-              <p><strong>Start DateTime:</strong> ${startDateTime}</p>
-              <p><strong>End DateTime:</strong> ${endDateTime}</p>
-              <p><strong>Start Dip:</strong> ${startDip}</p>
-              <p><strong>End Dip:</strong> ${endDip}</p>
-            </div>
-          `;
-      
-          // Open the child row with the transaction details.
-          row.child(childContentHtml).show();
-          tr.addClass('shown');
+    // Update page indicator with record count
+    function updatePageIndicator(page, count) {
+        var text = 'Page ' + page;
+        if (count !== undefined) {
+            text += ' (' + count + ' records)';
         }
-      });
-      
-      // ========================
-      // End dt-control code.
-    
+        $('#pageIndicator').text(text);
+    }
 
-    // Add an event listener to the "Apply" button
+    // Apply Filters
     document.querySelector('.button-div .btn-primary').addEventListener('click', function() {
         currentfilters = {
             sites: $('#filter_sites').val(),
@@ -151,99 +112,69 @@ $(document).ready(function () {
             endDate: $('#end_date').val()
         };
 
-        // Include the new filter if companyId equals 15100
+        // Include company filter for admin users
         if (companyId == 15100 && document.getElementById('filter_company')) {
             currentfilters.company = $('#filter_company').val();
         }
 
-        // Reset the current page to 1 when applying filters
         currentPage = 1;
-
         loadTransactions(currentPage, currentfilters);
     });
     
-
+    // Export handlers
     document.getElementById('exportToExcel').addEventListener('click', function() {
-        // Construct the query string from currentfilters
         var queryString = $.param({ filters: currentfilters });
-        var exportUrl = 'export_to_excel.php?' + queryString;
-
-        // Redirect to the URL to initiate the download
-        window.location.href = exportUrl;
+        window.location.href = 'export_to_excel.php?' + queryString;
     });
 
     document.getElementById('exportTocsv').addEventListener('click', function() {
-        // Construct the query string from currentfilters
         var queryString = $.param({ filters: currentfilters });
-        var exportUrl = 'export_to_csv.php?' + queryString;
-
-        // Redirect to the URL to initiate the download
-        window.location.href = exportUrl;
+        window.location.href = 'export_to_csv.php?' + queryString;
     });
 
     document.getElementById('exportTopdf').addEventListener('click', function() {
-        // Construct the query string from currentfilters
         var queryString = $.param({ filters: currentfilters });
-        var exportUrl = 'export_to_pdf.php?' + queryString;
-
-        // Redirect to the URL to initiate the download
-        window.location.href = exportUrl;
+        window.location.href = 'export_to_pdf.php?' + queryString;
     });
 });
 
+// Tab Navigation
 document.addEventListener("DOMContentLoaded", function() {
-    // This function hides all tab panes
     function hideAllTabPanes() {
-        var tabPanes = document.querySelectorAll('.tab-pane');
-        tabPanes.forEach(function(pane) {
+        document.querySelectorAll('.tab-pane').forEach(pane => {
             pane.classList.remove('active');
         });
     }
 
-    // This function shows the selected tab pane
     function showTabPane(paneId) {
         var pane = document.querySelector(paneId);
-        if (pane) {
-            pane.classList.add('active');
-        }
+        if (pane) pane.classList.add('active');
     }
 
-    // Attach click event listeners to each tab
-    document.querySelectorAll('.nav-link').forEach(function(tab) {
+    document.querySelectorAll('.nav-link').forEach(tab => {
         tab.addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent default action
-            
-            // Hide all tab panes first
+            e.preventDefault();
             hideAllTabPanes();
-
-            // Show the tab pane associated with the clicked tab
-            var targetPane = tab.getAttribute('data-bs-target');
-            showTabPane(targetPane);
+            showTabPane(tab.getAttribute('data-bs-target'));
         });
     });
 });
 
+// Site/Group filter mutual exclusion
 document.addEventListener("DOMContentLoaded", function() {
     var filterSitesSelect = document.getElementById('filter_sites');
     var filterGroupSelect = document.getElementById('filter_group');
 
     filterSitesSelect.addEventListener('change', function() {
-        if (filterSitesSelect.value) {
-            filterGroupSelect.disabled = true;
-        } else {
-            filterGroupSelect.disabled = false;
-        }
+        filterGroupSelect.disabled = !!filterSitesSelect.value;
     });
 
     filterGroupSelect.addEventListener('change', function() {
-        if (filterGroupSelect.value) {
-            filterSitesSelect.disabled = true;
-        } else {
-            filterSitesSelect.disabled = false;
-        }
+        filterSitesSelect.disabled = !!filterGroupSelect.value;
     });
 });
 
+// Reset Filters
 document.addEventListener('DOMContentLoaded', function() {
     function resetFilters() {
         document.getElementById('filter_cardholder').value = '';
@@ -253,19 +184,17 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('end_date').value = '';
         document.getElementById('filter_sites').selectedIndex = 0;
         document.getElementById('filter_group').selectedIndex = 0;
+        document.getElementById('filter_sites').disabled = false;
+        document.getElementById('filter_group').disabled = false;
         
         // Clear quick filter active state
         document.querySelectorAll('.quick-filter-btn').forEach(btn => btn.classList.remove('active'));
-
-        // Add any other form controls that need resetting here
     }
 
-    // Bind the function to the Reset button
     document.getElementById('resetFilters').onclick = resetFilters;
-
 });
 
-// Quick Date Filter functionality
+// Quick Date Filters
 document.addEventListener('DOMContentLoaded', function() {
     const quickFilterBtns = document.querySelectorAll('.quick-filter-btn');
     
@@ -276,12 +205,8 @@ document.addEventListener('DOMContentLoaded', function() {
             let startDate = new Date();
             let endDate = new Date();
             
-            // Format date as YYYY-MM-DD for input[type="date"]
-            const formatDate = (date) => {
-                return date.toISOString().split('T')[0];
-            };
+            const formatDate = (date) => date.toISOString().split('T')[0];
             
-            // Calculate date range based on button clicked
             switch(range) {
                 case 'today':
                     startDate = today;
@@ -302,24 +227,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 case 'clear':
                     document.getElementById('start_date').value = '';
                     document.getElementById('end_date').value = '';
-                    // Remove active class from all buttons
                     quickFilterBtns.forEach(b => b.classList.remove('active'));
-                    // Trigger apply
                     document.querySelector('.button-div .btn-primary').click();
                     return;
             }
             
-            // Set the date inputs
             document.getElementById('start_date').value = formatDate(startDate);
             document.getElementById('end_date').value = formatDate(endDate);
             
-            // Update active state
             quickFilterBtns.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
             
-            // Auto-apply the filter
             document.querySelector('.button-div .btn-primary').click();
         });
     });
 });
-

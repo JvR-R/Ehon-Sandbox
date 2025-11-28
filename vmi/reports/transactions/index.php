@@ -244,23 +244,19 @@ include(BORDER_PATH);
         <table id="customers_table">
           <thead>
             <tr>
-              <th style = "border-top-left-radius: 0.5rem;"></th>
-              <th>Transaction ID</th>
-              <th>Date</th>
+              <th style="border-top-left-radius: 0.5rem;">Date</th>
               <th>Time</th>
-              <th>Console ID</th>
-              <th>Site Name</th>
-              <th>FMS ID</th>
-              <th>Tank Number</th>
-              <th>Pump Number</th>
+              <th>Site</th>
+              <th>Tank</th>
+              <th>Pump</th>
+              <th>Card Holder</th>
               <th>Card Number</th>
-              <th>Card Holder Name</th>
-              <th>Odometer</th>
               <th>Registration</th>
-              <th style="border-top-right-radius: 0.5rem;">Volume</th>                     
+              <th>Odometer</th>
+              <th style="border-top-right-radius: 0.5rem;">Volume (L)</th>                     
             </tr>
           </thead>
-          <tbody id="bodtest" style="max-height:540px;">
+          <tbody id="bodtest">
             <!-- Data will be loaded here -->
           </tbody>
         </table>

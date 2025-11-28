@@ -125,19 +125,18 @@ $banner = <<<HTML
 HTML;
 $pdf->writeHTML($banner, true, false, true, false, '');
 
-// ───────────────── TABLE COLUMN MAP ─────────────────
+// ───────────────── TABLE COLUMN MAP - Enterprise Format ─────────────────
 $columns = [
-    'Transaction ID'   => 'transaction_id',
-    'Date'             => 'transaction_date',
-    'Time'             => 'transaction_time',
-    'Console ID'       => 'uid',
-    'Site Name'        => 'site_name',
-    'Tank Number'      => 'tank_id',
-    'Card Number'      => 'card_number',
-    'Card Holder Name' => 'card_holder_name',
-    'Odometer'         => 'odometer',
-    'Registration'     => 'registration',
-    'Volume'           => 'dispensed_volume'
+    'Date'        => 'transaction_date',
+    'Time'        => 'transaction_time',
+    'Site'        => 'site_name',
+    'Tank'        => 'tank_id',
+    'Pump'        => 'pump_id',
+    'Card Holder' => 'card_holder_name',
+    'Card No.'    => 'card_number',
+    'Rego'        => 'registration',
+    'Odometer'    => 'odometer',
+    'Volume (L)'  => 'dispensed_volume'
 ];
 
 // ────────────────── PAGINATED OUTPUT ─────────────────
