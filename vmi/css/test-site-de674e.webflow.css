@@ -1370,6 +1370,7 @@ figcaption {
 .dashboard-main-section {
   align-items: flex-start;
   display: flex;
+  margin-top: 3rem;
 }
 
 .sidebar-spacer {
