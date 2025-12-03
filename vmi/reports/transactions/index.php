@@ -17,7 +17,7 @@ include(BORDER_PATH);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ehon Energy - Transactions</title>
+    <title>Ehon - Transactions</title>
       <!-- THEME INIT - Must be BEFORE theme.css for automatic browser dark mode detection -->
   <script src="/vmi/js/theme-init.js"></script>
   <!-- THEME CSS - MUST BE FIRST -->
