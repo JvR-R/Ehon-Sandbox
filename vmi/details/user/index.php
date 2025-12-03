@@ -89,9 +89,9 @@
             transition: color 0.2s ease;
         }
         
-        .icon-wrapper .input,
-        .icon-wrapper select {
-            padding-left: 48px;
+        .form .icon-wrapper .input,
+        .form .icon-wrapper select {
+            padding-left: 48px !important;
         }
         
         .icon-wrapper:focus-within i {
