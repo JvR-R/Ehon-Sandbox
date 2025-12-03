@@ -10,18 +10,88 @@ include('../../db/border.php');
   <title>New Company</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- THEME INIT - Must be BEFORE theme.css for automatic browser dark mode detection -->
+  <script src="/vmi/js/theme-init.js"></script>
+
   <!-- Existing CSS -->
   <link href="/vmi/css/normalize.css" rel="stylesheet" type="text/css">
   <link href="/vmi/css/webflow.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/vmi/css/theme.css">
   <link href="/vmi/css/style_rep.css" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="/vmi/details/menu.css">
   <link href="/vmi/css/test-site-de674e.webflow.css" rel="stylesheet" type="text/css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  
   <link href="/vmi/images/favicon.ico" rel="shortcut icon" type="image/x-icon">
 
   <!-- Toastr CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+
+  <style>
+    /* Theme-aware styles for dark/light mode */
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+    }
+
+    .page-wrapper {
+      background-color: var(--bg-primary);
+    }
+
+    .dashboard-main-section,
+    .dashboard-content {
+      background-color: var(--bg-primary);
+    }
+
+    .card {
+      background-color: var(--bg-card);
+      box-shadow: 0 2px 4px var(--shadow-sm);
+      border: 1px solid var(--border-color);
+    }
+
+    .display-4 {
+      color: var(--text-primary);
+    }
+
+    label {
+      color: var(--text-primary);
+    }
+
+    .input {
+      background-color: var(--input-bg);
+      color: var(--input-text);
+      border: 1px solid var(--input-border);
+      transition: all 0.2s;
+    }
+
+    .input:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px rgba(108, 114, 255, 0.1);
+    }
+
+    .input::placeholder {
+      color: var(--text-secondary);
+    }
+
+    .btn-primary {
+      background-color: var(--btn-primary-bg);
+      color: var(--btn-text);
+      transition: all 0.2s;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--btn-primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(108, 114, 255, 0.3);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+  </style>
 </head>
 <body>
 <div style="opacity:1" class="page-wrapper">
