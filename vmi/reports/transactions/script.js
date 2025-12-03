@@ -1,5 +1,12 @@
 let currentfilters = {};
 
+// Multi-Input Tag System - stores values for each filter field
+const multiInputData = {
+    cardholder: [],
+    cardnumber: [],
+    registration: []
+};
+
 function Filters(companyId) {
     var element = document.getElementById('filter__div');
     if (element.style.display === "none" || element.style.display === "") {
@@ -7,6 +14,92 @@ function Filters(companyId) {
     } else {
         element.style.display = "none";
     }
+}
+
+// Initialize Multi-Input Tag System
+function initMultiInputs() {
+    const inputs = [
+        { input: 'filter_cardholder_input', tags: 'cardholder_tags', key: 'cardholder' },
+        { input: 'filter_cardnumber_input', tags: 'cardnumber_tags', key: 'cardnumber' },
+        { input: 'filter_registration_input', tags: 'registration_tags', key: 'registration' }
+    ];
+
+    inputs.forEach(config => {
+        const inputEl = document.getElementById(config.input);
+        const tagsEl = document.getElementById(config.tags);
+        
+        if (!inputEl || !tagsEl) return;
+
+        // Add tag on Enter key
+        inputEl.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const value = this.value.trim();
+                if (value && !multiInputData[config.key].includes(value)) {
+                    multiInputData[config.key].push(value);
+                    renderTags(config.key, tagsEl);
+                    this.value = '';
+                }
+            }
+            // Remove last tag on Backspace if input is empty
+            if (e.key === 'Backspace' && this.value === '' && multiInputData[config.key].length > 0) {
+                multiInputData[config.key].pop();
+                renderTags(config.key, tagsEl);
+            }
+        });
+
+        // Focus input when clicking container
+        inputEl.closest('.multi-input-container').addEventListener('click', function() {
+            inputEl.focus();
+        });
+    });
+}
+
+// Render tags for a specific input
+function renderTags(key, container) {
+    container.innerHTML = multiInputData[key].map((value, index) => `
+        <span class="filter-tag">
+            ${escapeHtml(value)}
+            <button type="button" class="tag-remove" data-key="${key}" data-index="${index}">&times;</button>
+        </span>
+    `).join('');
+
+    // Add click handlers for remove buttons
+    container.querySelectorAll('.tag-remove').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const key = this.dataset.key;
+            const index = parseInt(this.dataset.index);
+            multiInputData[key].splice(index, 1);
+            renderTags(key, container);
+        });
+    });
+}
+
+// Helper to escape HTML
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Clear all multi-input tags
+function clearMultiInputs() {
+    multiInputData.cardholder = [];
+    multiInputData.cardnumber = [];
+    multiInputData.registration = [];
+    
+    const containers = ['cardholder_tags', 'cardnumber_tags', 'registration_tags'];
+    containers.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = '';
+    });
+
+    const inputs = ['filter_cardholder_input', 'filter_cardnumber_input', 'filter_registration_input'];
+    inputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
 }
 
 $(document).ready(function () {
@@ -123,14 +216,17 @@ $(document).ready(function () {
       });
     
 
+    // Initialize multi-input tag system
+    initMultiInputs();
+
     // Add an event listener to the "Apply" button
     document.querySelector('.button-div .btn-primary').addEventListener('click', function() {
         currentfilters = {
             sites: $('#filter_sites').val(),
             group: $('#filter_group').val(),
-            cardholder: $('#filter_cardholder').val(),
-            cardnumber: $('#filter_cardnumber').val(),
-            registration: $('#filter_registration').val(),
+            cardholder: multiInputData.cardholder,  // Array of values
+            cardnumber: multiInputData.cardnumber,  // Array of values
+            registration: multiInputData.registration,  // Array of values
             startDate: $('#start_date').val(),
             endDate: $('#end_date').val()
         };
@@ -230,9 +326,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
 document.addEventListener('DOMContentLoaded', function() {
     function resetFilters() {
-        document.getElementById('filter_cardholder').value = '';
-        document.getElementById('filter_cardnumber').value = '';
-        document.getElementById('filter_registration').value = '';
+        // Clear multi-input tags
+        clearMultiInputs();
+        
         document.getElementById('start_date').value = '';
         document.getElementById('end_date').value = '';
         document.getElementById('filter_sites').selectedIndex = 0;

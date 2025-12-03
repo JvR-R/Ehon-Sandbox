@@ -55,18 +55,54 @@ if (!empty($filters)) {
     }
 
     if (isset($filters['cardholder']) && !empty($filters['cardholder'])) {
-        $cardholder = $conn->real_escape_string($filters['cardholder']);
-        $conditions[] = "ct.card_holder_name LIKE '%$cardholder%'";
+        // Handle array of cardholders (multiple values)
+        if (is_array($filters['cardholder'])) {
+            $cardholderConditions = array();
+            foreach ($filters['cardholder'] as $cardholder) {
+                $cardholder = $conn->real_escape_string($cardholder);
+                $cardholderConditions[] = "ct.card_holder_name LIKE '%$cardholder%'";
+            }
+            if (!empty($cardholderConditions)) {
+                $conditions[] = "(" . implode(" OR ", $cardholderConditions) . ")";
+            }
+        } else {
+            $cardholder = $conn->real_escape_string($filters['cardholder']);
+            $conditions[] = "ct.card_holder_name LIKE '%$cardholder%'";
+        }
     }
 
     if (isset($filters['cardnumber']) && !empty($filters['cardnumber'])) {
-        $cardnumber = $conn->real_escape_string($filters['cardnumber']);
-        $conditions[] = "ct.card_number = '$cardnumber'";
+        // Handle array of card numbers (multiple values)
+        if (is_array($filters['cardnumber'])) {
+            $cardnumberConditions = array();
+            foreach ($filters['cardnumber'] as $cardnumber) {
+                $cardnumber = $conn->real_escape_string($cardnumber);
+                $cardnumberConditions[] = "ct.card_number = '$cardnumber'";
+            }
+            if (!empty($cardnumberConditions)) {
+                $conditions[] = "(" . implode(" OR ", $cardnumberConditions) . ")";
+            }
+        } else {
+            $cardnumber = $conn->real_escape_string($filters['cardnumber']);
+            $conditions[] = "ct.card_number = '$cardnumber'";
+        }
     }
 
     if (isset($filters['registration']) && !empty($filters['registration'])) {
-        $registration = $conn->real_escape_string($filters['registration']);
-        $conditions[] = "ct.registration LIKE '%$registration%'";
+        // Handle array of registrations (multiple values)
+        if (is_array($filters['registration'])) {
+            $registrationConditions = array();
+            foreach ($filters['registration'] as $registration) {
+                $registration = $conn->real_escape_string($registration);
+                $registrationConditions[] = "ct.registration LIKE '%$registration%'";
+            }
+            if (!empty($registrationConditions)) {
+                $conditions[] = "(" . implode(" OR ", $registrationConditions) . ")";
+            }
+        } else {
+            $registration = $conn->real_escape_string($filters['registration']);
+            $conditions[] = "ct.registration LIKE '%$registration%'";
+        }
     }
 
     if (isset($filters['startDate']) && !empty($filters['startDate'])) {

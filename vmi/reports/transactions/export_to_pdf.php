@@ -42,8 +42,19 @@ if (!empty($filters['group'])) {
                                      WHERE  group_id = " . intval($filters['group']) . ")";
 }
 if (!empty($filters['cardholder'])) {
-    $ch   = $conn->real_escape_string($filters['cardholder']);
-    $conditions[] = "ct.card_holder_name LIKE '%$ch%'";
+    if (is_array($filters['cardholder'])) {
+        $cardholderConditions = array();
+        foreach ($filters['cardholder'] as $cardholder) {
+            $ch = $conn->real_escape_string($cardholder);
+            $cardholderConditions[] = "ct.card_holder_name LIKE '%$ch%'";
+        }
+        if (!empty($cardholderConditions)) {
+            $conditions[] = "(" . implode(" OR ", $cardholderConditions) . ")";
+        }
+    } else {
+        $ch = $conn->real_escape_string($filters['cardholder']);
+        $conditions[] = "ct.card_holder_name LIKE '%$ch%'";
+    }
 }
 if (!empty($filters['company'])) {
     $conditions[] = "cs.Client_id = " . intval($filters['company']);
@@ -52,11 +63,33 @@ if (!empty($filters['company'])) {
 }
 
 if (!empty($filters['cardnumber'])) {
-    $conditions[] = "ct.card_number = " . intval($filters['cardnumber']);
+    if (is_array($filters['cardnumber'])) {
+        $cardnumberConditions = array();
+        foreach ($filters['cardnumber'] as $cardnumber) {
+            $cn = $conn->real_escape_string($cardnumber);
+            $cardnumberConditions[] = "ct.card_number = '$cn'";
+        }
+        if (!empty($cardnumberConditions)) {
+            $conditions[] = "(" . implode(" OR ", $cardnumberConditions) . ")";
+        }
+    } else {
+        $conditions[] = "ct.card_number = '" . $conn->real_escape_string($filters['cardnumber']) . "'";
+    }
 }
 if (!empty($filters['registration'])) {
-    $reg = $conn->real_escape_string($filters['registration']);
-    $conditions[] = "ct.registration LIKE '%$reg%'";
+    if (is_array($filters['registration'])) {
+        $registrationConditions = array();
+        foreach ($filters['registration'] as $registration) {
+            $reg = $conn->real_escape_string($registration);
+            $registrationConditions[] = "ct.registration LIKE '%$reg%'";
+        }
+        if (!empty($registrationConditions)) {
+            $conditions[] = "(" . implode(" OR ", $registrationConditions) . ")";
+        }
+    } else {
+        $reg = $conn->real_escape_string($filters['registration']);
+        $conditions[] = "ct.registration LIKE '%$reg%'";
+    }
 }
 if (!empty($filters['startDate'])) {
     $conditions[] = "ct.transaction_date >= '" . $conn->real_escape_string($filters['startDate']) . "'";

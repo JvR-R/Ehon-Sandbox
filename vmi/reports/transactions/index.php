@@ -17,7 +17,7 @@ include(BORDER_PATH);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Vendor Managed Inventory</title>
+    <title>Ehon Energy - Transactions</title>
       <!-- THEME INIT - Must be BEFORE theme.css for automatic browser dark mode detection -->
   <script src="/vmi/js/theme-init.js"></script>
   <!-- THEME CSS - MUST BE FIRST -->
@@ -41,7 +41,7 @@ include(BORDER_PATH);
 <body>
   <main class="table" style="overflow: overlay;">
     <section class="table__header">       
-      <h1><img src="/vmi/images/company_15100.png" alt="">Vendor Managed Inventory</h1>            
+      <h1><img src="/vmi/images/company_15100.png" alt="">Transactions</h1>            
     </section>
     <section class="table__filters">
       <div class="filter__button">
@@ -180,23 +180,34 @@ include(BORDER_PATH);
             role="tabpanel"
             aria-labelledby="profile-tab">
             <label for="" class="form-label">Card Holder Name</label>
-            <input type="text"
-              name="filter_cardholder"
-              id="filter_cardholder"
-              class="form-control"
-              aria-describedby="filter_cardholder"/>
+            <div class="multi-input-container" id="cardholder_container">
+              <div class="tags-wrapper" id="cardholder_tags"></div>
+              <input type="text"
+                id="filter_cardholder_input"
+                class="multi-input"
+                placeholder="Type and press Enter to add"/>
+            </div>
+            <small class="input-hint">Press Enter to add multiple values</small>
+            
             <label for="" class="form-label">Card Number</label>
-            <input type="text"
-              name="filter_cardnumber"
-              id="filter_cardnumber"
-              class="form-control"
-              aria-describedby="filter_cardnumber"/>
+            <div class="multi-input-container" id="cardnumber_container">
+              <div class="tags-wrapper" id="cardnumber_tags"></div>
+              <input type="text"
+                id="filter_cardnumber_input"
+                class="multi-input"
+                placeholder="Type and press Enter to add"/>
+            </div>
+            <small class="input-hint">Press Enter to add multiple values</small>
+            
             <label for="" class="form-label">Registration</label>
-            <input type="text"
-              name="filter_registration"
-              id="filter_registration"
-              class="form-control"
-              aria-describedby="filter_registration"/>
+            <div class="multi-input-container" id="registration_container">
+              <div class="tags-wrapper" id="registration_tags"></div>
+              <input type="text"
+                id="filter_registration_input"
+                class="multi-input"
+                placeholder="Type and press Enter to add"/>
+            </div>
+            <small class="input-hint">Press Enter to add multiple values</small>
           </div>
           <div class="tab-pane" 
             id="messages" 
