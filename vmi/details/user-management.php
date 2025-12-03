@@ -56,6 +56,7 @@
             padding-top: 4rem !important; /* Space for nav-w above content */
             border-radius: 12px;
             box-shadow: 0 4px 6px var(--shadow-sm);
+            margin-top: 3rem !important;
         }
         
         /* Page Header */
@@ -344,9 +345,9 @@
 </head>
 
 <body>
+<?php include('top_menu.php'); ?>
 <main class="table">
 
-<?php include('top_menu.php'); ?>
 
 <!-- Page Header -->
 <div class="page-header">
