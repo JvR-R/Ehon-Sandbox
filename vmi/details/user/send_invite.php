@@ -86,6 +86,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <p style='margin: 0; font-size: 13px; color: #2a5298; word-break: break-all; line-height: 1.5;'>$registration_link</p>
                                             </div>
                                             
+                                            <!-- Username Info -->
+                                            <div style='background-color: #e8f4f8; padding: 20px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #2a5298;'>
+                                                <p style='margin: 0 0 10px; font-size: 13px; color: #666666; font-weight: 600;'>📧 Your Login Information:</p>
+                                                <p style='margin: 0; font-size: 14px; color: #1e3c72; line-height: 1.5;'><strong>Username:</strong> $email</p>
+                                            </div>
+                                            
                                             <p style='margin: 0 0 20px; font-size: 14px; line-height: 1.6; color: #777777;'>
                                                 If you did not request this invitation, please disregard this email.
                                             </p>
