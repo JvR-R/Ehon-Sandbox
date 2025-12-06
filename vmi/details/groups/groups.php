@@ -286,9 +286,8 @@
     <div class="loading-overlay" id="loadingOverlay">
         <div class="spinner"></div>
     </div>
-
-    <main class="table">
     <?php include('../top_menu.php');?>
+    <main class="table">
         <div class="page-header">
             <h1><i class="fas fa-layer-group"></i> Site Groups</h1>
             <p>Create and manage groups of sites for easier organization and reporting</p>
