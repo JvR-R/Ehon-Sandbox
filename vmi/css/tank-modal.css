@@ -1,0 +1,368 @@
+/* /vmi/css/tank-modal.css
+ * Modal popup styles for tank details
+ * Modern, accessible modal with smooth animations
+ */
+
+/* ─── Modal Overlay ────────────────────────────────────────────────── */
+.tank-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  overflow-y: auto;
+}
+
+.tank-modal-overlay--visible {
+  opacity: 1;
+}
+
+/* ─── Modal Container ──────────────────────────────────────────────── */
+.tank-modal {
+  background: var(--bg-card, #ffffff);
+  border-radius: 1rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 95vw;
+  max-height: 95vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.tank-modal--visible {
+  transform: scale(1) translateY(0);
+}
+
+@media (min-width: 768px) {
+  .tank-modal {
+    max-width: 90vw;
+    width: 1200px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .tank-modal {
+    max-width: 85vw;
+    width: 1400px;
+  }
+}
+
+/* ─── Modal Header ─────────────────────────────────────────────────── */
+.tank-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+  background: var(--bg-secondary, #f5f5f5);
+  flex-shrink: 0;
+}
+
+.tank-modal__title-section {
+  flex: 1;
+  min-width: 0;
+}
+
+.tank-modal__title {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary, #222);
+  line-height: 1.2;
+}
+
+.tank-modal__subtitle {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary, #666);
+}
+
+.tank-modal__close {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 0.5rem;
+  color: var(--text-secondary, #666);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: 1rem;
+  position: relative;
+  z-index: 9999 !important; /* Ensure it's on top */
+  pointer-events: auto !important; /* Ensure it's clickable */
+  user-select: none;
+}
+
+.tank-modal__close:hover {
+  background: var(--bg-primary, #ffffff);
+  color: var(--text-primary, #222);
+  transform: rotate(90deg);
+}
+
+.tank-modal__close:active {
+  transform: rotate(90deg) scale(0.95);
+}
+
+.tank-modal__close svg {
+  width: 24px;
+  height: 24px;
+  pointer-events: none; /* Allow clicks to pass through to button */
+}
+
+/* ─── Modal Body ───────────────────────────────────────────────────── */
+.tank-modal__body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0;
+  position: relative;
+}
+
+.tank-modal__content {
+  padding: 1.5rem 2rem;
+  min-height: 400px;
+}
+
+/* Adjust child row content for modal */
+.tank-modal__content .child_details {
+  max-width: 100%;
+  width: 100%;
+}
+
+.tank-modal__content .child_details > * {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Don't force visibility - let the normal loading process handle it */
+
+.tank-modal__content .info-pane {
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .tank-modal__content .info-pane {
+    flex-direction: row;
+  }
+}
+
+.tank-modal__content .left-info {
+  min-width: auto;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .tank-modal__content .left-info {
+    width: auto;
+    min-width: 28rem;
+  }
+}
+
+.tank-modal__content .right-info {
+  flex: 1;
+  width: 100%;
+}
+
+.tank-modal__content .chart1 {
+  width: 100%;
+  max-width: 100%;
+  min-height: 350px;
+  height: 400px;
+  position: relative;
+}
+
+.tank-modal__content .nav-items {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+}
+
+.tank-modal__content .nav-items button {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+}
+
+/* Improve form styling in modal */
+.tank-modal__content .recip,
+.tank-modal__content input[type="number"],
+.tank-modal__content input[type="text"],
+.tank-modal__content input[type="email"],
+.tank-modal__content select {
+  max-width: 100%;
+}
+
+.tank-modal__content .grid-2-columns {
+  gap: 0.75rem;
+}
+
+/* Better spacing for forms in modal */
+.tank-modal__content .alert-inputs,
+.tank-modal__content .alerts_div,
+.tank-modal__content .gw-tanksinfo,
+.tank-modal__content .gw-ports {
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.tank-modal__content .info_text {
+  margin-left: 0;
+  margin-top: 0;
+}
+
+/* Ensure charts fit properly - don't use height:auto on canvas as it breaks Chart.js */
+.tank-modal__content canvas {
+  display: block;
+  max-width: 100%;
+  /* Let Chart.js handle canvas sizing - don't set height:auto */
+}
+
+/* Better button styling in modal */
+.tank-modal__content .button-js,
+.tank-modal__content .button-js2,
+.tank-modal__content .button-js3,
+.tank-modal__content .button-gwsave,
+.tank-modal__content .button-gwports,
+.tank-modal__content .button-gwalert {
+  margin-top: 1rem;
+  width: auto;
+  min-width: 120px;
+}
+
+/* ─── Modal Footer ─────────────────────────────────────────────────── */
+.tank-modal__footer {
+  padding: 1rem 2rem;
+  border-top: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+  background: var(--bg-secondary, #f5f5f5);
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+/* ─── Scrollbar Styling ────────────────────────────────────────────── */
+.tank-modal__body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tank-modal__body::-webkit-scrollbar-track {
+  background: var(--bg-secondary, #f5f5f5);
+}
+
+.tank-modal__body::-webkit-scrollbar-thumb {
+  background: var(--border-color, rgba(0, 0, 0, 0.2));
+  border-radius: 4px;
+}
+
+.tank-modal__body::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary, #666);
+}
+
+/* ─── Dark Theme Support ───────────────────────────────────────────── */
+[data-theme="dark"] .tank-modal {
+  background: var(--bg-card, #1a1a1a);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+}
+
+[data-theme="dark"] .tank-modal__header,
+[data-theme="dark"] .tank-modal__footer {
+  background: var(--bg-secondary, #2a2a2a);
+  border-color: var(--border-color, rgba(255, 255, 255, 0.1));
+}
+
+[data-theme="dark"] .tank-modal-overlay {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+[data-theme="dark"] .tank-modal__body::-webkit-scrollbar-track {
+  background: var(--bg-secondary, #2a2a2a);
+}
+
+/* ─── Responsive Design ────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .tank-modal {
+    max-width: 100vw;
+    max-height: 100vh;
+    border-radius: 0;
+    margin: 0;
+  }
+
+  .tank-modal__header {
+    padding: 1rem 1.5rem;
+  }
+
+  .tank-modal__title {
+    font-size: 1.25rem;
+  }
+
+  .tank-modal__content {
+    padding: 1rem 1.5rem;
+  }
+
+  .tank-modal__body {
+    max-height: calc(100vh - 120px);
+  }
+
+  .tank-modal__content .chart1 {
+    height: 300px;
+  }
+}
+
+/* ─── Loading State ────────────────────────────────────────────────── */
+.tank-modal__content .loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-card, #ffffff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: 0.5rem;
+}
+
+[data-theme="dark"] .tank-modal__content .loading-overlay {
+  background: var(--bg-card, #1a1a1a);
+}
+
+/* ─── Animation for Content ────────────────────────────────────────── */
+/* NOTE: Don't animate chart containers as it breaks Chart.js rendering */
+.tank-modal__content > .child_details > nav {
+  animation: fadeInUp 0.4s ease forwards;
+  opacity: 0;
+  animation-delay: 0.1s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

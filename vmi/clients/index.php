@@ -21,6 +21,10 @@ function safe_html($string) {
   <link rel="stylesheet" href="/vmi/css/normalize.css">
   <!-- Unified VMI Tables & Components -->
   <link rel="stylesheet" href="/vmi/css/vmi-tables.css">
+  <!-- Tank Card View Styles -->
+  <link rel="stylesheet" href="/vmi/css/tank-card-view.css">
+  <!-- Tank Modal Styles -->
+  <link rel="stylesheet" href="/vmi/css/tank-modal.css">
   <!-- Page-specific styles -->
   <link rel="stylesheet" href="style.css"> 
   <link rel="stylesheet" href="/vmi/css/style_rep.css">

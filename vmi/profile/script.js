@@ -5,12 +5,22 @@
 (function() {
   'use strict';
 
+  // Helper function for toastr notifications with fallback
+  const showToast = function(message, type = 'success') {
+    if (typeof toastr !== 'undefined') {
+      toastr[type](message);
+    } else {
+      alert(message);
+    }
+  };
+
   const ProfileSettings = {
     init: function() {
       this.setupProfileForm();
       this.setupPasswordForm();
       this.setupPasswordToggles();
       this.setupThemeToggle();
+      this.setupTankViewMode();
       this.validatePasswordForm();
     },
 
@@ -32,7 +42,7 @@
       const lastName = nameParts.slice(1).join(' ') || '';
 
       if (!firstName) {
-        alert('Full name is required');
+        showToast('Full name is required', 'error');
         return;
       }
 
@@ -51,18 +61,14 @@
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          if (typeof toastr !== 'undefined') {
-            toastr.success('Profile updated successfully');
-          } else {
-            alert('Profile updated successfully');
-          }
+          showToast('Profile updated successfully', 'success');
         } else {
-          alert(data.message || 'Failed to update profile');
+          showToast(data.message || 'Failed to update profile', 'error');
         }
       })
       .catch(error => {
         console.error('Error:', error);
-        alert('An error occurred while updating your profile');
+        showToast('An error occurred while updating your profile', 'error');
       })
       .finally(() => {
         submitBtn.textContent = originalText;
@@ -86,17 +92,17 @@
       const confirmPassword = document.getElementById('confirmPassword').value;
 
       if (!currentPassword) {
-        alert('Current password is required');
+        showToast('Current password is required', 'error');
         return;
       }
 
       if (newPassword && newPassword !== confirmPassword) {
-        alert('New passwords do not match');
+        showToast('New passwords do not match', 'error');
         return;
       }
 
       if (newPassword && newPassword.length < 6) {
-        alert('New password must be at least 6 characters long');
+        showToast('New password must be at least 6 characters long', 'error');
         return;
       }
 
@@ -119,18 +125,14 @@
           document.getElementById('passwordForm').reset();
           document.getElementById('updatePasswordBtn').disabled = true;
           
-          if (typeof toastr !== 'undefined') {
-            toastr.success('Password updated successfully');
-          } else {
-            alert('Password updated successfully');
-          }
+          showToast('Password updated successfully', 'success');
         } else {
-          alert(data.message || 'Failed to update password');
+          showToast(data.message || 'Failed to update password', 'error');
         }
       })
       .catch(error => {
         console.error('Error:', error);
-        alert('An error occurred while updating your password');
+        showToast('An error occurred while updating your password', 'error');
       })
       .finally(() => {
         submitBtn.textContent = originalText;
@@ -175,6 +177,23 @@
         if (window.ThemeManager) {
           window.ThemeManager.toggleTheme();
         }
+      });
+    },
+
+    setupTankViewMode: function() {
+      const select = document.getElementById('tankViewMode');
+      if (!select) return;
+
+      // Set initial state based on stored preference
+      const storedPreference = localStorage.getItem('tankViewMode') || 'auto';
+      select.value = storedPreference;
+
+      // Handle change
+      select.addEventListener('change', function() {
+        const value = this.value;
+        localStorage.setItem('tankViewMode', value);
+        
+        showToast('Tank view preference saved. Refresh the clients page to see changes.', 'success');
       });
     },
 

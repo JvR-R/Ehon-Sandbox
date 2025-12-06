@@ -70,7 +70,8 @@
 
 .profile-form-group input[type="text"],
 .profile-form-group input[type="email"],
-.profile-form-group input[type="password"] {
+.profile-form-group input[type="password"],
+.profile-select {
     width: 100%;
     padding: 0.75rem;
     background-color: var(--input-bg);
@@ -80,6 +81,29 @@
     font-size: 14px;
     transition: all 0.2s ease;
     box-sizing: border-box;
+}
+
+.profile-select-wrapper {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.profile-select {
+    min-width: 180px;
+    width: auto;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2.5rem;
+}
+
+.profile-select:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(108, 114, 255, 0.1);
 }
 
 .profile-form-group input[type="text"]:focus,

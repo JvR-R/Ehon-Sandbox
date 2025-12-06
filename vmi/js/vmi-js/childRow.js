@@ -5,7 +5,7 @@
 
 import { byId, qs, fetchJSON } from './api.js';
 import { navColor, toast } from './ui.js';
-import { drawChart, drawTempChart, setChartMode } from './charts.js';
+import { drawChart, drawTempChart, setChartMode, isChartCreating } from './charts.js';
 import { initGatewayCfg } from './gateway_cfg.js';
 
 /* tiny helpers */
@@ -915,7 +915,13 @@ export function buildChild(d, ctx) {
   wrap.append(nav, minfo, alertsTab, cfgTab, (showTxTab ? txTab : tempTab));
 
   // Fire single unified load on next frame (row is likely already appended)
-  requestAnimationFrame(() => unifiedLoadOnce(row));
+  // BUT: If this is in a modal, delay loading until modal is ready
+  const isInModal = wrap.hasAttribute('data-in-modal');
+  if (isInModal) {
+    // Don't auto-load - the modal will trigger loading after it's ready
+  } else {
+    requestAnimationFrame(() => unifiedLoadOnce(row));
+  }
 
   return wrap;
 }
@@ -950,7 +956,7 @@ export function showTab(row, n) {
   4) ONE unified loader per row
 ───────────────────────────────────────────────────────────────────*/
 
-async function unifiedLoadOnce(row) {
+export async function unifiedLoadOnce(row) {
   const firstNavItem = $one(`.navigation-item1${row}`);
   const nav = firstNavItem ? firstNavItem.closest('nav') : null;
   if (!nav) return;
@@ -981,15 +987,23 @@ async function unifiedLoadOnce(row) {
               ).join('');
             }
           }
-          // 2) Redraw charts from cache
+          // 2) Redraw charts from cache (only if not already being created)
           const chartData = chartCache[cacheKey] ? await chartCache[cacheKey] : null;
-          if (chartData) drawChart(chartData, row);
+          if (chartData && !isChartCreating(row)) {
+            drawChart(chartData, row);
+          } else if (chartData) {
+            console.log('[ChildRow Debug] Chart already being created, skipping rehydration drawChart');
+          }
           // 3) Unmask panes
           unmaskRow(row, ['minfo','alert_info','tank_info','tx_info']);
         } else {
           if (csType === 'MCS_PRO' || csType === 'MCS_LITE') {
             const series = await chartCache[cacheKey];
-            if (series) drawChart(series, row);
+            if (series && !isChartCreating(row)) {
+              drawChart(series, row);
+            } else if (series) {
+              console.log('[ChildRow Debug] Chart already being created, skipping rehydration drawChart');
+            }
             // Fill tx table from cache if present
             const tbody = $one(`#tx-table-${row} tbody`);
             if (tbody) {
@@ -1001,9 +1015,17 @@ async function unifiedLoadOnce(row) {
             unmaskRow(row, ['minfo','alert_info','tank_info','tx_info']);
           } else {
             const series = await chartCache[cacheKey];
-            if (series) drawChart(series, row);
+            if (series && !isChartCreating(row)) {
+              drawChart(series, row);
+            } else if (series) {
+              console.log('[ChildRow Debug] Chart already being created, skipping rehydration drawChart');
+            }
             const tseries = await tempCache[cacheKey];
-            if (tseries) drawTempChart(tseries, row);
+            if (tseries && !isChartCreating(row)) {
+              drawTempChart(tseries, row);
+            } else if (tseries) {
+              console.log('[ChildRow Debug] Temp chart already being created, skipping rehydration');
+            }
             unmaskRow(row, ['minfo','alert_info','tank_info','temp_info']);
           }
         }
@@ -1186,10 +1208,11 @@ function chart_dd(curr, arr, row) {
   6) Fillers for non-config info (unchanged)
 ───────────────────────────────────────────────────────────────────*/
 function fillinfo(r, row) {
-  const overlay = document.querySelector(`.left-info .loading-overlay`);
+  // Use row-scoped selectors to target the correct element in modal or table
+  const overlay = document.querySelector(`.minfo${row} .left-info .loading-overlay`);
   if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
 
-  const info = document.querySelector(`.left-info .info_text`);
+  const info = document.querySelector(`.minfo${row} .left-info .info_text`);
   if (info) info.style.visibility = '';
 
   const email = byId(`email-${row}`); if (email) email.value = r.mail || '';

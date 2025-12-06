@@ -34,6 +34,8 @@ $fullName = trim($userFirstName . ' ' . $userLastName) ?: '';
     <!-- Other CSS files -->
     <link rel="stylesheet" href="/vmi/css/style_rep.css">
     <link rel="stylesheet" href="style.css">
+    <!-- Toastr for notifications -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 </head>
 <body>
     <main class="profile-main">
@@ -133,15 +135,39 @@ $fullName = trim($userFirstName . ' ' . $userLastName) ?: '';
                             </div>
                         </div>
                     </div>
+                    <div class="profile-form-group">
+                        <label for="tankViewMode">Tank View Mode</label>
+                        <div class="profile-toggle-wrapper">
+                            <span class="profile-toggle-description">Display style for tank list</span>
+                            <div class="profile-select-wrapper">
+                                <select id="tankViewMode" class="profile-select">
+                                    <option value="auto">Automatic</option>
+                                    <option value="card">Card View</option>
+                                    <option value="table">Table View</option>
+                                </select>
+                            </div>
+                        </div>
+                        <span class="profile-field-note">Automatic: cards for ≤5 tanks, table for more</span>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
     <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+    toastr.options = {
+        "closeButton": true,
+        "newestOnTop": true,
+        "positionClass": "toast-top-right",
+        "timeOut": "5000"
+    };
+    </script>
     <script src="/vmi/js/theme-toggle.js"></script>
-    <script src="/vmi/js/user-menu.js"></script>
     <script src="script.js"></script>
+    <!-- Note: user-menu.js is already loaded by border2.php -->
 </body>
 </html>
 

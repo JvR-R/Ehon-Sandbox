@@ -7,6 +7,7 @@ section.topborder {
   background-color: var(--nav-bg);
   text-align: left;
   z-index: 501;
+  overflow: visible;
 }
 
 .border {
@@ -365,6 +366,9 @@ input[type="file"] {
   cursor: pointer;
   font-size: 14px;
   transition: all 0.2s ease;
+  position: relative;
+  z-index: 503;
+  pointer-events: auto;
 }
 
 .user-menu-button:hover {
@@ -411,13 +415,15 @@ input[type="file"] {
   visibility: hidden;
   transform: translateY(-10px);
   transition: all 0.2s ease;
-  z-index: 504;
+  z-index: 9999;
+  pointer-events: none;
 }
 
 .user-menu-dropdown.show {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+  pointer-events: auto;
 }
 
 .user-menu-header {

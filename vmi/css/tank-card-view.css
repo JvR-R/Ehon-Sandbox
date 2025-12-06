@@ -1,0 +1,414 @@
+/* /vmi/css/tank-card-view.css
+ * Modern card-based UI for tanks (≤5 tanks)
+ * Clean, friendly design with smooth animations
+ */
+
+/* ─── Cards Container ──────────────────────────────────────────────── */
+.tank-cards-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 400px;
+}
+
+/* When hidden, don't take up space */
+.tank-cards-container[style*="display: none"] {
+  display: none !important;
+}
+
+.tank-cards-empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-secondary, #666);
+  font-size: 1.125rem;
+}
+
+.tank-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+
+@media (min-width: 768px) {
+  .tank-cards-grid {
+    gap: 2rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .tank-cards-grid {
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 2.5rem;
+  }
+}
+
+/* ─── Individual Tank Card ─────────────────────────────────────────── */
+.tank-card {
+  background: var(--bg-card, #ffffff);
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tank-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: var(--accent-warning, #F7901E);
+}
+
+.tank-card:active {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ─── Card Header ──────────────────────────────────────────────────── */
+.tank-card__header {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, 
+    var(--bg-secondary, #f5f5f5) 0%, 
+    var(--bg-primary, #ffffff) 100%);
+  border-bottom: 2px solid var(--border-color, rgba(0, 0, 0, 0.08));
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  position: relative;
+}
+
+.tank-card__icon {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  color: var(--accent-warning, #F7901E);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(247, 144, 30, 0.1);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.tank-card:hover .tank-card__icon {
+  transform: scale(1.1);
+  background: rgba(247, 144, 30, 0.15);
+}
+
+.tank-card__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.tank-card__status-icon {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+}
+
+.tank-card__title {
+  flex: 1;
+  min-width: 0;
+}
+
+.tank-card__tank-id {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary, #222);
+  line-height: 1.2;
+}
+
+.tank-card__site-name {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary, #666);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ─── Card Body ────────────────────────────────────────────────────── */
+.tank-card__body {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.tank-card__progress {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tank-card__progress-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary, #222);
+}
+
+.tank-card__percent {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+/* Status-based color coding */
+.tank-card__progress.status-low .tank-card__percent {
+  color: var(--accent-danger, #dc3545);
+}
+
+.tank-card__progress.status-medium .tank-card__percent {
+  color: var(--accent-warning, #F7901E);
+}
+
+.tank-card__progress.status-high .tank-card__percent {
+  color: var(--accent-success, #28a745);
+}
+
+.tank-card__progress-bar-wrapper {
+  width: 100%;
+}
+
+.tank-card__progress-bar-wrapper .progress-bar {
+  width: 100%;
+  height: 24px;
+  border-radius: 12px;
+}
+
+.tank-card__progress-bar-wrapper .progress-bar .percentage {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* ─── Card Details ─────────────────────────────────────────────────── */
+.tank-card__details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
+}
+
+.tank-card__detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  gap: 1rem;
+}
+
+.tank-card__detail-label {
+  color: var(--text-secondary, #666);
+  font-weight: 500;
+}
+
+.tank-card__detail-value {
+  color: var(--text-primary, #222);
+  font-weight: 600;
+  text-align: right;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ─── Card Footer ──────────────────────────────────────────────────── */
+.tank-card__footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
+  background: var(--bg-secondary, #f5f5f5);
+}
+
+.tank-card__expand-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg-primary, #ffffff);
+  border: 2px solid var(--accent-warning, #F7901E);
+  border-radius: 0.5rem;
+  color: var(--accent-warning, #F7901E);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tank-card__expand-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: var(--accent-warning, #F7901E);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+  opacity: 0.1;
+  z-index: 0;
+}
+
+.tank-card__expand-btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.tank-card__expand-btn:hover {
+  background: var(--accent-warning, #F7901E);
+  color: var(--text-inverse, #ffffff);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(247, 144, 30, 0.3);
+}
+
+.tank-card__expand-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(247, 144, 30, 0.2);
+}
+
+.tank-card__expand-btn span,
+.tank-card__expand-btn svg {
+  position: relative;
+  z-index: 1;
+}
+
+.tank-card__expand-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.tank-card__expand-btn:hover svg {
+  transform: translateX(4px);
+}
+
+/* ─── Dark Theme Support ───────────────────────────────────────────── */
+[data-theme="dark"] .tank-card {
+  background: var(--bg-card, #1a1a1a);
+  border-color: var(--border-color, rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .tank-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .tank-card__header {
+  background: linear-gradient(135deg, 
+    var(--bg-secondary, #2a2a2a) 0%, 
+    var(--bg-primary, #1a1a1a) 100%);
+}
+
+[data-theme="dark"] .tank-card__footer {
+  background: var(--bg-secondary, #2a2a2a);
+}
+
+[data-theme="dark"] .tank-card__expand-btn {
+  background: var(--bg-primary, #1a1a1a);
+  color: var(--accent-warning, #F7901E);
+}
+
+[data-theme="dark"] .tank-card__expand-btn:hover {
+  background: var(--accent-warning, #F7901E);
+  color: var(--text-inverse, #ffffff);
+}
+
+/* ─── Responsive Design ────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .tank-cards-container {
+    padding: 1rem;
+  }
+
+  .tank-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .tank-card__header {
+    padding: 1rem;
+  }
+
+  .tank-card__body {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .tank-card__icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .tank-card__tank-id {
+    font-size: 1.25rem;
+  }
+}
+
+/* ─── Loading State ────────────────────────────────────────────────── */
+.tank-cards-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  padding: 2rem;
+}
+
+.tank-cards-loading::after {
+  content: '';
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--border-color, rgba(0, 0, 0, 0.1));
+  border-top-color: var(--accent-warning, #F7901E);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ─── Animation for Card Appearance ────────────────────────────────── */
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tank-card {
+  animation: cardFadeIn 0.4s ease forwards;
+}
+
+/* ─── Empty State ──────────────────────────────────────────────────── */
+.tank-cards-empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-secondary, #666);
+  font-size: 1.125rem;
+  background: var(--bg-card, #ffffff);
+  border-radius: 1rem;
+  border: 2px dashed var(--border-color, rgba(0, 0, 0, 0.1));
+}
+
+[data-theme="dark"] .tank-cards-empty {
+  border-color: var(--border-color, rgba(255, 255, 255, 0.1);
+}

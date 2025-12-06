@@ -7,10 +7,86 @@ import { byId } from './api.js';
 const registry   = Object.create(null);   // canvas-id → Chart instance
 const chartModes = Object.create(null);   // row → 'volume' | 'deliveries'
 let   chartReady = null;                  // singleton loader promise
+const chartCreating = Object.create(null); // Track charts being created to prevent duplicates
+
+/* Check if a chart is currently being created for a row */
+export function isChartCreating(row) {
+  return !!chartCreating[`chart-${row}`];
+}
 
 /* 0. destroyChart – clean re-draw -------------------------------- */
 export function destroyChart(id) {
-  if (registry[id]) { registry[id].destroy(); delete registry[id]; }
+  if (registry[id]) { 
+    registry[id].destroy(); 
+    delete registry[id]; 
+  }
+  // Clean up any pending retry timers
+  delete resizeRetries[id];
+}
+
+// Track resize retry attempts to prevent infinite loops
+const resizeRetries = Object.create(null);
+
+/* 0.b. resizeChart – force chart to resize -------------------------------- */
+export function resizeChart(id, retryCount = 0) {
+  if (!registry[id]) {
+    return;
+  }
+  
+  // Prevent infinite retry loops - max 5 attempts
+  if (retryCount > 5) {
+    delete resizeRetries[id];
+    return;
+  }
+  
+  try {
+    const chart = registry[id];
+    const canvas = chart.canvas;
+    
+    if (!canvas || !canvas.parentElement) {
+      delete resizeRetries[id];
+      return;
+    }
+    
+    // Check if container is actually in a visible modal
+    const modalOverlay = canvas.closest('.tank-modal-overlay');
+    if (modalOverlay && !modalOverlay.classList.contains('tank-modal-overlay--visible')) {
+      delete resizeRetries[id];
+      return;
+    }
+    
+    // Check if container has dimensions
+    const container = canvas.closest('.chart1') || canvas.parentElement;
+    const rect = container.getBoundingClientRect();
+    
+    if (rect.width === 0 || rect.height === 0) {
+      // Only retry if we haven't exceeded max retries
+      if (retryCount < 5) {
+        resizeRetries[id] = (resizeRetries[id] || 0) + 1;
+        setTimeout(() => resizeChart(id, retryCount + 1), 100);
+      } else {
+        delete resizeRetries[id];
+      }
+      return;
+    }
+    
+    // Clear retry counter on success
+    delete resizeRetries[id];
+    
+    // Resize the chart
+    chart.resize();
+    
+    // Force an update to ensure chart renders properly
+    chart.update('none'); // 'none' mode = don't animate
+  } catch (e) {
+    delete resizeRetries[id];
+  }
+}
+
+/* 0.c. resizeChartByRow – resize chart by row number -------------------------------- */
+export function resizeChartByRow(row) {
+  resizeChart(`chart-${row}`);
+  resizeChart(`tempchart-${row}`);
 }
 
 /* 1. lazy-load Chart.js ------------------------------------------ */
@@ -31,16 +107,43 @@ async function ensureChartJs() {
 
 /* 2. main volume-&-delivery chart -------------------------------- */
 export async function drawChart(data, row) {
+  const id = `chart-${row}`;
   await ensureChartJs();
 
-  const id     = `chart-${row}`;
   const canvas = byId(id);
 
   /* wait until the <canvas> is actually in the DOM */
   if (!(canvas instanceof HTMLCanvasElement) || !canvas.getContext?.('2d')) {
+    // Clear creating flag since we're retrying (new call will set it)
+    delete chartCreating[id];
     requestAnimationFrame(() => drawChart(data, row));
     return;
   }
+  
+  /* wait until the container has dimensions (modal might still be animating) */
+  const container = canvas.closest('.chart1') || canvas.parentElement;
+  if (container) {
+    const rect = container.getBoundingClientRect();
+    const hasDimensions = rect.width > 0 && rect.height > 0;
+    const isVisible = container.offsetParent !== null && 
+                     window.getComputedStyle(container).visibility !== 'hidden' &&
+                     window.getComputedStyle(container).display !== 'none';
+    
+    if (!hasDimensions || !isVisible) {
+      // Clear creating flag since we're retrying (new call will set it)
+      delete chartCreating[id];
+      setTimeout(() => drawChart(data, row), 100);
+      return;
+    }
+  }
+  
+  // Check if chart is already being created - if so, skip this call
+  if (chartCreating[id]) {
+    return;
+  }
+  
+  // Set creating flag now that we're past the retry checks and ready to create
+  chartCreating[id] = true;
 
   /* ─────────────── unpack with compatibility for non-gateway shape ─────── */
   let dMin = [], vMin = [], dMax = [], vMax = [], dDel = [], del = [];
@@ -109,7 +212,18 @@ export async function drawChart(data, row) {
     return j !== -1 ? del[j] : null;
   });
 
-  destroyChart(id);
+  // Only destroy existing chart if it exists and we have valid data to replace it with
+  // If chart exists and we have no data, just resize it instead
+  if (registry[id]) {
+    // If we have valid data points, destroy and recreate
+    if (scatterData.length > 0 || deliveries.some(d => d != null)) {
+      destroyChart(id);
+    } else {
+      delete chartCreating[id]; // Clear flag since we're not creating
+      resizeChart(id);
+      return;
+    }
+  }
 
   // Compute dynamic Y range
   const volumeMax = Math.max(
@@ -176,6 +290,9 @@ export async function drawChart(data, row) {
       ]
     },
     options : {               // because scatter objects carry x & y
+      responsive: true,
+      maintainAspectRatio: false,
+      resizeDelay: 200,  // Debounce resize to handle modal animations
       scales  : {
         x : { type:'category', labels: all },
         y : yScaleOptions
@@ -192,6 +309,8 @@ export async function drawChart(data, row) {
       }
     }
   });
+  // Clear the creating flag now that chart is done
+  delete chartCreating[id];
 }
 
 
@@ -237,6 +356,21 @@ export async function drawTempChart(data, row) {
   if (!(canvas instanceof HTMLCanvasElement) || !canvas.getContext?.('2d')) {
     requestAnimationFrame(() => drawTempChart(data, row));
     return;
+  }
+  
+  /* wait until the container has dimensions (modal might still be animating) */
+  const container = canvas.closest('.chart1') || canvas.parentElement;
+  if (container) {
+    const rect = container.getBoundingClientRect();
+    const hasDimensions = rect.width > 0 && rect.height > 0;
+    const isVisible = container.offsetParent !== null && 
+                     window.getComputedStyle(container).visibility !== 'hidden' &&
+                     window.getComputedStyle(container).display !== 'none';
+    
+    if (!hasDimensions || !isVisible) {
+      setTimeout(() => drawTempChart(data, row), 100);
+      return;
+    }
   }
 
   const cutoff = new Date();

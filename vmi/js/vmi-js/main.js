@@ -1,6 +1,6 @@
 /* /vmi/js/main.js  (entry file, <script type="module">) ----------- */
 import { byId } from './api.js';
-import { initTable }                from './table.js';
+import { initTable, dataTable } from './table.js';
 import { drawChart, drawTempChart, destroyChart } from './charts.js';
 import {
       buildChild,
@@ -8,6 +8,7 @@ import {
       fetchChartDataMCS,
       fetchGatewayData,
     } from './childRow.js';
+import { initViewSwitcher } from './view-switcher.js';
 
 import './events.js';      // just executes and wires global events
 
@@ -18,7 +19,14 @@ window.companyId       = +(hd?.dataset.companyId   ?? 0);
 window.userAccessLevel = +(hd?.dataset.accessLevel ?? 0);
 /*———— boot once DOM is ready ———————————————*/
 document.addEventListener('DOMContentLoaded', async () => {   
-  const table = await initTable();
+  // Initialize view switcher (which also initializes the table)
+  await initViewSwitcher();
+  
+  const table = dataTable;
+  if (!table) {
+    console.error('Failed to initialize table');
+    return;
+  }
 
   /* open/close child rows (uses the imported build Child) */
   document
