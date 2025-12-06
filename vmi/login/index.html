@@ -118,9 +118,12 @@
         <div class="dashboard-content">
           <div class="password-recovery-form">
             <!-- Modify the action below if your login-processor file is differently named or located -->
-            <form class="form" action="login.php" method="POST">
+            <form class="form" action="login.php" method="POST" id="loginForm">
               <p class="title">Login</p>
               <p class="message">Contact Ehon support for assistance</p>
+              
+              <!-- Hidden field for dark mode detection -->
+              <input type="hidden" name="dark_mode" id="dark_mode" value="0">
               
               <label>
                 <input placeholder="" type="text" class="inputlog" name="username" id="username" autocomplete="username" required>

@@ -75,11 +75,39 @@
         html.removeAttribute('data-theme');
       }
 
-      // Save preference
+      // Save preference to localStorage
       localStorage.setItem(THEME_KEY, theme);
+
+      // Save preference to database
+      this.saveThemeToDatabase(theme === THEME_DARK ? 1 : 0);
 
       // Update toggle button state
       this.updateToggleButton(theme);
+    },
+
+    /**
+     * Save theme preference to database
+     */
+    saveThemeToDatabase: function(darkMode) {
+      // Use FormData for POST request
+      const formData = new FormData();
+      formData.append('dark_mode', darkMode);
+
+      fetch('/vmi/db/update_dark_mode.php', {
+        method: 'POST',
+        credentials: 'same-origin',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (!data.success) {
+          console.warn('Failed to save theme preference to database:', data.message);
+        }
+      })
+      .catch(error => {
+        // Silently fail - localStorage is already updated
+        console.debug('Could not save theme to database:', error);
+      });
     },
 
     /**

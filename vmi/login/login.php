@@ -4,6 +4,11 @@ ini_set('session.gc_maxlifetime', 21600);
 session_set_cookie_params(21600); 
 session_start();
 
+// Set timezone and define date/time variables
+date_default_timezone_set('Australia/Brisbane');
+$date = date('Y-m-d');
+$time = date('H:i:s');
+
 
 if (isset($_POST['username'], $_POST['password'])) {
 
@@ -50,10 +55,20 @@ if (isset($_POST['username'], $_POST['password'])) {
                 // Fetch all the results
                 $result = $stmtd->fetch();
                 $stmtd->close();
+                // Update last login date/time
                 $stmupd= $conn->prepare("UPDATE login SET last_date = ?, last_time = ? WHERE username = ?");
                 $stmupd->bind_param("sss", $date, $time, $username);
                 $stmupd->execute();
                 $stmupd->close();
+
+                // Update dark_mode preference if provided (from browser detection)
+                if (isset($_POST['dark_mode'])) {
+                    $darkMode = (int)$_POST['dark_mode']; // 0 or 1
+                    $stmupdDark = $conn->prepare("UPDATE login SET dark_mode = ? WHERE username = ?");
+                    $stmupdDark->bind_param("is", $darkMode, $username);
+                    $stmupdDark->execute();
+                    $stmupdDark->close();
+                }
 
                 header("Location: /vmi/reports");
                 exit;

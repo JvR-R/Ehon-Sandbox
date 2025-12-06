@@ -73,6 +73,15 @@ try {
         $_SESSION['companyId']   = (int)$companyId;
         $_SESSION['userId']      = (int)$userId;
 
+        // Update dark_mode preference if provided (from browser detection)
+        if (isset($_POST['dark_mode'])) {
+            $darkMode = (int)$_POST['dark_mode']; // 0 or 1
+            $stmupdDark = $conn->prepare("UPDATE login SET dark_mode = ? WHERE username = ?");
+            $stmupdDark->bind_param("is", $darkMode, $email);
+            $stmupdDark->execute();
+            $stmupdDark->close();
+        }
+
         echo json_encode(['success' => true]);
     } else {
         echo json_encode(['success' => false, 'message' => 'User not found or inactive.']);

@@ -97,8 +97,19 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
   
-      // Send ID token to your backend
-      $.post("/vmi/login/callback.php", { credential: response.credential })
+      // Detect dark mode preference
+      function detectDarkMode() {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 1; // Dark mode
+        }
+        return 0; // Light mode
+      }
+  
+      // Send ID token and dark mode preference to your backend
+      $.post("/vmi/login/callback.php", { 
+        credential: response.credential,
+        dark_mode: detectDarkMode()
+      })
         .done(function(data) {
           try {
             var jsonResponse = (typeof data === 'string')
@@ -129,6 +140,36 @@ document.addEventListener('DOMContentLoaded', function() {
         // Redirect to Microsoft login handler (adjust path if needed)
         window.location.href = '/vmi/login/microsoft_login.php';
       });
+    }
+
+    // 6. Detect and set dark mode preference before form submission
+    var loginForm = document.getElementById('loginForm');
+    var darkModeInput = document.getElementById('dark_mode');
+    
+    if (loginForm && darkModeInput) {
+      // Detect browser dark mode preference
+      function detectDarkMode() {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          console.log('Dark mode detected: YES');
+          return 1; // Dark mode
+        }
+        console.log('Dark mode detected: NO');
+        return 0; // Light mode
+      }
+      
+      // Set dark mode value on page load
+      var detectedValue = detectDarkMode();
+      darkModeInput.value = detectedValue;
+      console.log('Dark mode input set to:', detectedValue);
+      
+      // Update before form submission (in case user changes system preference)
+      loginForm.addEventListener('submit', function(e) {
+        var finalValue = detectDarkMode();
+        darkModeInput.value = finalValue;
+        console.log('Form submitting with dark_mode:', finalValue);
+      });
+    } else {
+      console.warn('Login form or dark_mode input not found');
     }
   });
   
